@@ -56,4 +56,4 @@ Nothing. [It's still there.](https://github.com/pvr212/Anesidora) I just wanted 
 # Credits
 [pandora-api-docs](https://6xq.net/pandora-apidoc/) by [PromyLOPh](https://github.com/PromyLOPh)
 
-[javascript-blowfish](https://github.com/agorlov/javascript-blowfish/) by [agorlov](https://github.com/agorlov)
+[blowfish.js](http://sladex.org/blowfish.js/ext/blowfish.js)
