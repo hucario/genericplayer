@@ -28,6 +28,7 @@ Nothing. [It's still there.](https://github.com/pvr212/Anesidora) I just wanted 
  - Time slider
  - Volume slider
  - Sleep timer
+ - Lyrics
  - ~~maybe maybe maybe airplay??? maybe? if that's even possible?~~ 
  Not possible currently
  - Queue view (?)
@@ -38,7 +39,6 @@ Nothing. [It's still there.](https://github.com/pvr212/Anesidora) I just wanted 
 - Put last played song in station as cover
 - Grid mode
 - List mode
-- Aaaaaaa
 
 #### History panel:
 - Make buttons do stuff other than just look ~~good~~ ok
