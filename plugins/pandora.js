@@ -52,4 +52,7 @@ class Station {
 	constructor() {
 
 	}
+	play() {
+
+	}
 }

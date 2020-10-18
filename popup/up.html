@@ -5,7 +5,7 @@
 		<link rel="stylesheet" href="styles.css" type="text/css"></link>
 		<link href="../zilla slab/slab.css" rel="stylesheet">
 		<link href='../boxicons/boxicons.css' rel='stylesheet'>
-		<script src="../background.js"></script>
+		<script src="../js/background.js"></script>
 	</head>
 	<body>
 		<main id="main">
@@ -30,9 +30,11 @@
 				<section id="loginSection">
 					<div id="loginMain">
 						<h1>Log in</h1>
-						<span><label class="bx bx-envelope inputicon" for="email"></label><input placeholder="email" id="email" type="email" class="bx bx-envelope"></span>
-						<span><label class="bx bxs-lock inputicon" for="pw"></label><input placeholder="password" id="pw" type="password"></span>
-						<button type="submit" id="loginButton">Go</button>
+						<form id="login">
+							<span><label class="bx bx-envelope inputicon" for="email"></label><input placeholder="email" autocomplete="username" id="email" type="email" class="bx bx-envelope"></span>
+							<span><label class="bx bxs-lock inputicon" for="pw"></label><input placeholder="password" autocomplete="current-password" id="pw" type="password"></span>
+							<button type="submit" id="loginButton">Go</button>
+						</form>
 						<a href="javascript:whyprompt()">why should I trust you with my login credentials</a>
 						<!-- placeholder prompt, I'll work on something actually good tomorrow -->
 					</div>
@@ -53,7 +55,7 @@
 			<button id="pop">Populate history</button>
 		</div>
 		<script src="tabs.js"></script>
+		<script src="../plugins/pandora.js"></script>
 		<script src="script.js"></script>
-		<script data-main="scripts/main" src="scripts/require.js"></script>
 	</body>
 </html>

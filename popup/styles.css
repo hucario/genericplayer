@@ -355,13 +355,13 @@ div#loginMain {
     width: 100%;
 }
 
-#loginMain > h1 {
+#login > h1 {
     font-size: 3em;
     font-family: var(--font-family);
     font-weight: 400;
 }
 
-#loginMain > span > input {
+#login > span > input {
     background: none;
     color: var(--text-color);
     font-size: 1.5em;
@@ -384,7 +384,7 @@ div#loginMain {
     font-family: inherit;
 }
 
-section#loginSection > #loginMain > span {
+#login > span {
     position: relative;
 }
 
