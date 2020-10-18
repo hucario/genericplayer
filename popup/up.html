@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>NewAnesidora Popup</title>
+		<link rel="stylesheet" href="styles.css" type="text/css"></link>
+		<link href="../zilla slab/slab.css" rel="stylesheet">
+		<link href='../boxicons/boxicons.css' rel='stylesheet'>
+		<script src="../background.js"></script>
+	</head>
+	<body>
+		<main id="main">
+			<div id="slider">
+				<section id="recents">
+					<div class="topbar">
+						<h1>Recent songs</h1>
+						<div class="separator"></div>
+						<input type="checkbox" id="listgrid" class="bx bx-list-ul"></input>
+					</div>
+					<ol id="history"></ol>
+				</section>
+				<section></section>
+				<section>
+					<div class="topbar">
+						<h1>Stations</h1>
+<input id="search" placeholder="Search...">
+	<button class="bx bx-refresh" id="refresh"></button>
+	<input type="checkbox" id="listgrid2" class="bx bx-list-ul"></input>
+					</div>
+				</section>
+				<section id="loginSection">
+					<div id="loginMain">
+						<h1>Log in</h1>
+						<span><label class="bx bx-envelope inputicon" for="email"></label><input placeholder="email" id="email" type="email" class="bx bx-envelope"></span>
+						<span><label class="bx bxs-lock inputicon" for="pw"></label><input placeholder="password" id="pw" type="password"></span>
+						<button type="submit" id="loginButton">Go</button>
+						<a href="javascript:whyprompt()">why should I trust you with my login credentials</a>
+						<!-- placeholder prompt, I'll work on something actually good tomorrow -->
+					</div>
+				</section>
+			</div>
+
+			<div id="goleftcontainer">
+				<button id="goleft" class="bx bxs-left-arrow"></button>
+			</div>			
+			<div id="gorightcontainer">
+				<button id="goright" class="bx bxs-right-arrow"></button>	
+			</div>
+			
+		</main>
+		<div id="devtools">
+			<button id="vh">Vary height</button>
+			<button id="vw">Vary width</button>
+			<button id="pop">Populate history</button>
+		</div>
+		<script src="tabs.js"></script>
+		<script src="script.js"></script>
+		<script data-main="scripts/main" src="scripts/require.js"></script>
+	</body>
+</html>
