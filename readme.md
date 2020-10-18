@@ -1,3 +1,5 @@
+yea the repo name is GenericPlayer but the project name before uploading this was NewAnesidora so it's still called that like everywhere
+
 # NewAnesidora
 A complete rewrite of [Anesidora](https://github.com/pvr212/Anesidora).
 
