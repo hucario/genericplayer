@@ -19,17 +19,17 @@
 					<ol id="history"></ol>
 				</section>
 				<section id="player">
+					<div id="attribution">
+						<div id="songname">Johnny B. Goode</div>
+						<div id="albumname">Johnny B. Goode Sessions</div>
+						<div id="artistname">Chuck Berry</div>
+					</div>
 					<a id="albumLink" href="#">
 						<img id="albumArt" src="./sample/johnny_b_goode.jpg"/>
 					</a>
 					<div id="seekBar">
 						<div id="seekPrevious"></div>
 						<div id="seekHandle"></div>
-					</div>
-					<div id="attribution">
-						<div id="songname"></div>
-						<div id="albumname"></div>
-						<div id="artistname"></div>
 					</div>
 
 					<div id="controls">
@@ -73,8 +73,21 @@
 							<span><label class="bx bxs-lock inputicon" for="pw"></label><input placeholder="password" autocomplete="current-password" id="pw" type="password"></span>
 							<button type="submit" id="loginButton">Log in</button>
 						</form>
-						<a id="butwhytho" href="javascript:whyprompt()">why should I trust you with my login credentials</a>
+						<a id="butwhytho" href="#">why should I trust you with my login credentials</a>
 						<!-- placeholder prompt, I'll work on something actually good tomorrow -->
+					</div>
+					<div id="loginExplanation">
+						<h1>why should I trust you with my information</h1>
+						<hr>
+						<p>
+							honestly man I don't know either, but here's a few reasons why it's less likely I'd try to screw you over:
+							<ol>
+								<li>Extensions go through a "thorough" and "completely secure" (not thorough, barely does anything, wildly inconsistent) vetting process before they go on the Chrome Web Store / Firefox Addons Store. Nothing bad could POSSIBLY get through that impassable filter.</li>
+								<li><strong>Because the code is open-source, you can see everywhere I handle your login details.</strong></li>
+								<li>Yeah I don't have another point but I wanted it to look like I have more than two points</li>
+							</ol>
+						</p>
+						<a id="closeExp" href="#">back</a>
 					</div>
 				</section>
 			</div>

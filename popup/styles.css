@@ -3,7 +3,8 @@
 	--background-floating: #1b1b1b;
 	--text-color: white;
 	--text-muted: grey;
-	--font-family: "Zilla Slab","DejaVu Serif", serif;
+	--font-family: "DejaVu Sans", system-ui, serif;
+	--header-font-family: "Zilla Slab";
 	--accent-color: #009a00;
 	--width: 500px;
 	--height: 579px;
@@ -11,6 +12,10 @@
 	--interactive-active: #ffffff2b;
 	--interactive-hover: #ffffff33;
 	--recents-album-image-size: 6.9em;
+    --player-button-color: white;
+    --player-button-size: 2rem;
+    --player-big-button-size: 3rem;
+    --art-size: calc(var(--width) / 2);
 }
 body, html {
 	width: var(--width);
@@ -376,7 +381,7 @@ div#loginMain {
 
 #loginMain > h1 {
     font-size: 3em;
-    font-family: var(--font-family);
+    font-family: var(--header-font-family);
     font-weight: 400;
 }
 
@@ -388,7 +393,7 @@ div#loginMain {
     padding: 0.4em;
     border:  none;
     border-bottom: dotted 2px var(--text-muted);
-    font-family: var(--font-family) !important;
+    font-family: var(--header-font-family) !important;
 	overflow: visible;
 	padding-left: 1.4em;
 	width: 10em;
@@ -430,11 +435,11 @@ button#loginButton:active {
     background: var(--interactive-active);
 }
 
-a#butwhytho:before {content: "[ ";}
+a#butwhytho:before, a#closeExp:before {content: "[ ";}
 
-a#butwhytho:after {content: " ]";}
+a#butwhytho:after, a#closeExp:after {content: " ]";}
 
-a#butwhytho {
+a#butwhytho, #closeExp {
     color: var(--text-color);
     text-decoration-color: var(--text-muted);
 }
@@ -461,14 +466,6 @@ a#butwhytho {
     outline: none;
     transition: background 200ms;
     cursor: pointer;
-}
-
-
-:root {
-    --player-button-color: white;
-    --player-button-size: 2rem;
-    --player-big-button-size: 3rem;
-    --art-size: calc(var(--width) / 1.5);
 }
 
 div#controls {
@@ -567,4 +564,30 @@ form#login {
     display: flex;
     align-items: center;
     flex-direction: column;
+}
+
+div#loginExplanation {
+    position: absolute;
+	bottom: var(--height);
+	height: var(--height);
+    left: 0;
+    right: 0;
+    background: var(--background-floating);
+	padding: 1em;
+	box-sizing: border-box;
+	transition: bottom 500ms ease-in-out;
+}
+
+#loginExplanation h1 {
+    font-weight: 400;
+    font-size: 1.8em;
+}
+
+#loginExplanation p, #loginExplanation ol {
+    font-family: system-ui;
+}
+
+#leftControls .bx:before, #rightControls .bx:before {
+    position: relative;
+    right: 2px;
 }

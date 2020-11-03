@@ -160,11 +160,12 @@ gebid("loginButton").addEventListener('click',(e) => {
 	return false;
 })
 
-function whyprompt() {
-    alert(`Ultimately you can't really, I could probably stuff "TIPS AND TRICKS" in there to steal your info.
-However, there are several reasons why it would be less probable that I'd try to steal your stuff:
-1. Extensions go through a """thorough""" and """completely secure""" (not thorough, barely does anything, wildly inconsistent) vetting process before they go on the Chrome Web Store / Firefox Addons Store. Nothing bad could P O S S I B L Y get through that impassable filter.
-2. Because the code is open-source, you can see everywhere I handle your login details.
-3. Why would I care about collecting Pandora credentials lmao, they're literally useless unless you have Pandora One or something, and even then who cares. (I mean I could try password stuffing in which case the credentials would be pretty useful but I'm not in the game for that, I made this because I wanted to make this)
-4. Yeah I don't have another point but I wanted it to look like I have more than three points`);
-}
+gebid("butwhytho").addEventListener('click', (e) => {
+	e.preventDefault();
+	gebid('loginExplanation').style.bottom = "0px";
+});
+
+gebid('closeExp').addEventListener('click', (e) => {
+	e.preventDefault(e);
+	gebid('loginExplanation').style.bottom = "var(--height)";
+})

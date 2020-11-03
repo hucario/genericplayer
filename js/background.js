@@ -1,6 +1,6 @@
 let inDev = true;
-let loggedIn = false;
-let pageOn = (loggedIn?2:3);
+let loggedIn = true;
+let pageOn = (loggedIn?1:3);
 let settings = {
 	historyListView: true
 }

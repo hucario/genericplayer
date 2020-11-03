@@ -93,6 +93,7 @@ class PandoraExtension extends Extension {
 		if (encryptthis) {
 			data = encrypt(JSON.stringify(data));
 		}
+		console.log(data);
 		let req = await fetch(
 			'https://tuner.pandora.com/services/json/?method=' + method + queryString, {
 			method: 'POST',
