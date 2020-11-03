@@ -18,7 +18,45 @@
 					</div>
 					<ol id="history"></ol>
 				</section>
-				<section></section>
+				<section id="player">
+					<a id="albumLink" href="#">
+						<img id="albumArt" src="./sample/johnny_b_goode.jpg"/>
+					</a>
+					<div id="seekBar">
+						<div id="seekPrevious"></div>
+						<div id="seekHandle"></div>
+					</div>
+					<div id="attribution">
+						<div id="songname"></div>
+						<div id="albumname"></div>
+						<div id="artistname"></div>
+					</div>
+
+					<div id="controls">
+						<div id="leftControls">
+							<button id="repeat" class="bx bx-repeat"></button>
+							<button id="like" class="bx bx-like"></button>
+						</div>
+						<div id="centralControls">
+							<button id="replay" class="bx bx-skip-previous"></button>
+							<button id="play" class="bx bx-play"></button>
+							<button id="skip" class="bx bx-skip-next"></button>
+						</div>
+						<div id="rightControls">
+							<button id="dislike" class="bx bx-dislike"></button>
+							<button id="shuffle" class="bx bx-shuffle"></button>
+						</div>
+					</div>
+
+					<div id="volume">
+						<button id="mute" class="bx bxs-volume-full"></button>
+						<div id="volumeBar">
+							<div id="volumePrevious"></div>
+							<div id="volumeHandle"></div>
+						</div>
+					</div>
+
+				</section>
 				<section>
 					<div class="topbar">
 						<h1>Stations</h1>
@@ -29,13 +67,13 @@
 				</section>
 				<section id="loginSection">
 					<div id="loginMain">
-						<h1>Log in</h1>
+						<h1>Sign in</h1>
 						<form id="login">
 							<span><label class="bx bx-envelope inputicon" for="email"></label><input placeholder="email" autocomplete="username" id="email" type="email" class="bx bx-envelope"></span>
 							<span><label class="bx bxs-lock inputicon" for="pw"></label><input placeholder="password" autocomplete="current-password" id="pw" type="password"></span>
-							<button type="submit" id="loginButton">Go</button>
+							<button type="submit" id="loginButton">Log in</button>
 						</form>
-						<a href="javascript:whyprompt()">why should I trust you with my login credentials</a>
+						<a id="butwhytho" href="javascript:whyprompt()">why should I trust you with my login credentials</a>
 						<!-- placeholder prompt, I'll work on something actually good tomorrow -->
 					</div>
 				</section>
@@ -55,9 +93,6 @@
 			<button id="pop">Populate history</button>
 		</div>
 		<script src="tabs.js"></script>
-		<script src="../js/Blowfish.js"></script>
-		<script src="../plugins/extension.js"></script>
-		<script src="../plugins/pandora.js"></script>
 		<script src="script.js"></script>
 	</body>
 </html>

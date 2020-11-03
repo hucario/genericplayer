@@ -1,3 +1,5 @@
+'use strict'
+
 listgrid.checked = settings.historyListView;
 /* Elements */
 let hul = gebid("history");
@@ -145,6 +147,18 @@ if (!inDev) {
 		}
 	})
 }
+
+gebid("loginButton").addEventListener('click',(e) => {
+	e.preventDefault();
+	if (inDev) {
+		alert('yea im just going to assume thats correct');
+		loggedIn = true;
+		goleft.click();
+		goleft.click();
+		return;
+	}
+	return false;
+})
 
 function whyprompt() {
     alert(`Ultimately you can't really, I could probably stuff "TIPS AND TRICKS" in there to steal your info.

@@ -4,14 +4,25 @@
 	--text-color: white;
 	--text-muted: grey;
 	--font-family: "Zilla Slab","DejaVu Serif", serif;
-	--accent-color: lime;
+	--accent-color: #009a00;
 	--width: 500px;
-	--height: 700px;
+	--height: 579px;
 	--button-size: 2rem;
 	--interactive-active: #ffffff2b;
 	--interactive-hover: #ffffff33;
 	--recents-album-image-size: 6.9em;
 }
+body, html {
+	width: var(--width);
+	height: var(--height);
+	padding: 0;
+	margin: 0;
+}
+
+button {
+	cursor: pointer;
+}
+
 #main {
 	background: var(--background);
 	color: var(--text-color);
@@ -329,7 +340,13 @@ input#search {
     width: 0;
 }
 
-button#refresh {background: none;border: none;color: var(--text-color);font-size: 1em;outline: none;}
+#refresh {
+	background: none;
+	border: none;
+	color: var(--text-color);
+	font-size: 1em;
+	outline: none;
+}
 
 @keyframes spinney {
     0% {
@@ -340,7 +357,9 @@ button#refresh {background: none;border: none;color: var(--text-color);font-size
     }
 }
 
-button#refresh:active::before {animation: spinney 1.5s linear infinite;}
+#refresh:active::before {
+	animation: spinney 1.5s linear infinite;
+}
 
 section#loginSection {
     display: flex;
@@ -355,7 +374,7 @@ div#loginMain {
     width: 100%;
 }
 
-#login > h1 {
+#loginMain > h1 {
     font-size: 3em;
     font-family: var(--font-family);
     font-weight: 400;
@@ -369,8 +388,7 @@ div#loginMain {
     padding: 0.4em;
     border:  none;
     border-bottom: dotted 2px var(--text-muted);
-    font-family: var(--font-family);
-    speak: normal;
+    font-family: var(--font-family) !important;
 	overflow: visible;
 	padding-left: 1.4em;
 	width: 10em;
@@ -412,15 +430,141 @@ button#loginButton:active {
     background: var(--interactive-active);
 }
 
-a:before {content: "[ ";}
+a#butwhytho:before {content: "[ ";}
 
-a:after {content: " ]";}
+a#butwhytho:after {content: " ]";}
 
-a {
+a#butwhytho {
     color: var(--text-color);
     text-decoration-color: var(--text-muted);
 }
 
-#loginMain > a {
+#loginMain > a#butwhytho {
 	margin-top: 1em;
+}
+
+/* 12:56AM paste */
+#player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#player .bx {
+    background: none;
+    color: var(--player-button-color);
+    height: var(--player-button-size);
+    width: var(--player-button-size);
+    font-size: calc(var(--player-button-size) / 1.6);
+    border: solid 2px var(--player-button-color);
+    border-radius: 100%;
+    outline: none;
+    transition: background 200ms;
+    cursor: pointer;
+}
+
+
+:root {
+    --player-button-color: white;
+    --player-button-size: 2rem;
+    --player-big-button-size: 3rem;
+    --art-size: calc(var(--width) / 1.5);
+}
+
+div#controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+#centralControls .bx {
+    width: var(--player-big-button-size);
+    height: var(--player-big-button-size);
+    font-size: calc(var(--player-big-button-size) / 1.6);
+}
+
+#player .bx:hover {
+    background: var(--interactive-hover);
+}
+
+a#albumLink {height: var(--art-size);width: var(--art-size);margin: calc(var(--width) / 20) 0;background: var(--background-floating);border-radius: 8px;overflow: hidden;max-width: 400px;max-height: 400px;}
+
+#controls .bx {
+    margin: 0 3px;
+}
+
+#leftControls .bx, #rightControls .bx {
+    opacity: 0.6;
+}
+
+#player button#mute {
+    border: none;
+    height: var(--player-big-button-size);
+    width: var(--player-big-button-size);
+    font-size: calc(var(--player-big-button-size) / 1.6);
+}
+#player button#mute:hover {
+	background: none; /* let's not */
+}
+
+img#albumArt {
+    height: 100%;
+    width: 100%;
+}
+
+div#volumeBar {
+    height: 0.3rem;
+    background: white;
+    display: inline-block;
+    width: 10rem;
+    min-height: 0.2rem;
+    max-height: 0.4rem;
+    position: relative;
+    border-radius: 10000vw;
+}
+
+div#volume {
+    display: flex;
+    align-items: center;
+}
+
+div#volumePrevious, #seekPrevious {
+    width: 30%;
+    height: 100%;
+    background: var(--accent-color);
+    border-radius: 5vw 0 0 5vw;
+}
+
+div#volumeHandle, #seekHandle {
+    height: 0.8rem;
+    width: 0.8rem;
+    background: white;
+    position: absolute;
+    top: calc(0.8rem / -3);
+    left: 30%;
+    border-radius: 100%;
+    border: 1px solid gainsboro;
+}
+
+div#seekBar {
+    width: var(--art-size);
+    height: 0.3rem;
+    background: white;
+    margin-bottom: 20px;
+	position: relative;
+	border-radius: 5vw;
+}
+
+#seekHandle {
+    height: 1rem;
+    width: 1rem;
+    top: calc(-0.35rem);
+    border: none;
+}
+form#login {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
