@@ -19,27 +19,54 @@ class PandoraExtension extends Extension {
 
 	constructor(...a) {
 		super();
-		if (!this.partnerAuthToken || !this.partnerID) {
-			this.partnerLogin();
+		if  (!localStorage.pandora) {
+			localStorage.pandora = {};
+		}
+		if (localStorage.pandora.password && localStorage.pandora.username) {
+			this.login(localStorage.pandora.username, localStorage.pandora.password);
 		}
 	}
 	async login(username, pw) {
 		if (!this.partnerAuthToken || !this.partnerID) {
 			await this.partnerLogin();
 		}
-		console.log(await this.sendReq('auth.userLogin', {
+		let res = await this.sendReq('auth.userLogin', {
 			"loginType": "user",
 			"username": username,
 			"password": pw,
 			"partnerAuthToken": this.partnerAuthToken
-		}, true))
-
+		}, true)
+		if (res.stat == "fail") {
+			if (res.code == 1002) {
+				if (localStorage.pandora.username == username && localStorage.pandora.password == pw) {
+					localStorage.pandora.username = localStorage.pandora.password = "";
+				}
+				throw "Incorrect username or password."
+			}
+			throw "An unexpected error occurred.";
+		}
+		this.userAuthToken = res.result.userAuthToken;
+		this.userID = res.result.userId;
+		localStorage.pandoraUsername = username;
+		localStorage.pandoraPassword = pw;
+		return res.stat!=='fail';
 	}
-	getStations() {
-
+	async getStations() {
+		if (!this.userAuthToken) {
+			throw "User is not logged in.";
+		}
+		let res = await this.sendReq('user.getStationList', {
+			includeExplanations: true,
+			includeStationArtUrl: true,
+			userAuthToken: this.userAuthToken
+		}, true)
+		return res;
 	}
 	getHistory() {
 
+	}
+	getSyncTime() {
+		return this.syncTime + (Math.floor(Date.now() / 1000) - this.syncStart);
 	}
 	async partnerLogin(level=0) {
 
@@ -60,6 +87,7 @@ class PandoraExtension extends Extension {
 			return;
 		}
 		let c = a.result;
+		// @ts-ignore
 		let d = decrypt(c.syncTime).toString().substring(4);
 
 		this.syncTime = parseInt(d);
@@ -91,17 +119,27 @@ class PandoraExtension extends Extension {
 		console.log(data, method + queryString);
 		
 		if (encryptthis) {
+			// @ts-ignore
 			data = encrypt(JSON.stringify(data));
+		} else {
+			data = JSON.stringify(data);
 		}
 		console.log(data);
 		let req = await fetch(
 			'https://tuner.pandora.com/services/json/?method=' + method + queryString, {
 			method: 'POST',
-			credentials: 'same-origin',
+			credentials: 'include',
+			mode: 'cors',
 			headers: {
-				'Content-Type': (encryptthis?'text/plain':'application/json')
+				'Content-Type': (encryptthis?'text/plain':'application/json'),
+				"accept": "application/json, text/javascript, */*; q=0.01",
+				"accept-language": "en-US,en;q=0.9",
+				"referrerPolicy": "strict-origin-when-cross-origin",
+				"sec-fetch-dest": "empty",
+				"sec-fetch-mode": "cors",
+				"sec-fetch-site": "none"
 			},
-			body: JSON.stringify(data)
+			body: data
 		})
 		let b = await req.json();
 		return b;
@@ -141,5 +179,3 @@ class PandoraStation extends Station {
 
 	}
 }
-
-let a = new PandoraExtension();

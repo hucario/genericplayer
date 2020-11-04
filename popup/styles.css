@@ -395,7 +395,7 @@ div#loginMain {
     border-bottom: dotted 2px var(--text-muted);
     font-family: var(--header-font-family) !important;
 	overflow: visible;
-	padding-left: 1.4em;
+	padding-left: 2em;
 	width: 10em;
 }
 

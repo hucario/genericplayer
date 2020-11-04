@@ -1,12 +1,17 @@
+
+// @ts-ignore
+var settings = chrome.extension.getBackgroundPage().settings
+
+
 function gebid(id) {
 	return document.getElementById(id);
 }
-
+let pageOn = localStorage.pageOn || (settings('loggedIn')?2:3);
 
 let slideElem = gebid('slider');
 slideElem.style.right = `calc(var(--width)*${pageOn})`;
 
-if (!loggedIn) {
+if (!settings('loggedIn')) {
 	gebid('goleft').style.display = 'none';
 	gebid('goright').style.display = 'none';
 }
