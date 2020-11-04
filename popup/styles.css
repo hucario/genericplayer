@@ -399,6 +399,26 @@ div#loginMain {
 	width: 10em;
 }
 
+#seekControl, #volumeControl {
+    appearance: none;
+    width: 100%;
+    background: none;
+    outline: none;
+    position: absolute;
+    top: -2px;
+    height: 100%;
+}
+
+#seekControl::-webkit-slider-thumb, #volumeControl::-webkit-slider-thumb {
+    background: white;
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+	border-radius: 100%;
+    position: relative;
+    left: -2px;
+}
+
 #loginButton {
     background: none;
     color: var(--text-color);
@@ -532,17 +552,6 @@ div#volumePrevious, #seekPrevious {
     height: 100%;
     background: var(--accent-color);
     border-radius: 5vw 0 0 5vw;
-}
-
-div#volumeHandle, #seekHandle {
-    height: 0.8rem;
-    width: 0.8rem;
-    background: white;
-    position: absolute;
-    top: calc(0.8rem / -3);
-    left: 30%;
-    border-radius: 100%;
-    border: 1px solid gainsboro;
 }
 
 div#seekBar {

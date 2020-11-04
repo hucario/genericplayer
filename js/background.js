@@ -4,14 +4,18 @@ function updateRating(songId, newRating) { // placeholder function for now
 }
 // @ts-ignore
 function settings(key,value) {
-	if (!value) {
+	console.log(key, value)
+	if (typeof value === "undefined") {
 		return pog[key];
 	}
+	console.log(pog);
 	pog[key] = value;
+	console.log(pog)
 	return value;
 }
-var pog = {
+let pog = {
 	historyListView: true,
-	activeExtension: new PandoraExtension(),
-	loggedIn: false
+	activeExtension: new SampleExtension(),
+	loggedIn: true,
+	inDev: true
 }

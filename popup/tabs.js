@@ -6,8 +6,8 @@ var settings = chrome.extension.getBackgroundPage().settings
 function gebid(id) {
 	return document.getElementById(id);
 }
-let pageOn = localStorage.pageOn || (settings('loggedIn')?2:3);
-
+let pageOn = localStorage.pageOn || settings('pageOn') ||  (settings('loggedIn')?1:3);
+settings('pageOn', pageOn)
 let slideElem = gebid('slider');
 slideElem.style.right = `calc(var(--width)*${pageOn})`;
 
@@ -16,7 +16,13 @@ if (!settings('loggedIn')) {
 	gebid('goright').style.display = 'none';
 }
 let goleft = gebid('goleft'),
-	goright = gebid('goright')
+	goright = gebid('goright');
+
+if (pageOn > 0) {
+	goleft.style.display = "hidden";
+} else if (pageOn < 2) {
+	goright.style.display = "hidden";
+}
 
 goleft.addEventListener('click', (e) => {
 	if (pageOn<1) return;
