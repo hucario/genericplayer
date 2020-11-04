@@ -39,7 +39,9 @@ for (let i = 0; i < prevSongs.length; i++) {
 	tHI.elems.main = document.createElement('li');
 	tHI.elems.main.classList.add('hI'); //historyItem
 	tHI.elems.img = document.createElement('img');
-	tHI.elems.img.src = prevSongs[i].cover;
+	if (prevSongs[i].cover.includes('/')) {
+		tHI.elems.img.src = prevSongs[i].cover;
+	}
 
 	let a = tHI.name.split(' ');
 	let b = "";
