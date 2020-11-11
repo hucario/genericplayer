@@ -1,16 +1,76 @@
-function Popup() {
-	
+import React from 'react';
+import {SampleExtension, SampleStation, SampleSong} from './sampleextension'
+import History from './history'
+
+const activeExtension = {
+	'Extension': new SampleExtension(),
+	'Station': SampleStation,
+	'Song': SampleSong
+};
+
+class Popup extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {}
+
+		this.login = this.login.bind(this);
+		this.getPageOn = this.getPageOn.bind(this);
+		this.navLeft = this.navLeft.bind(this);
+		this.navRight = this.navRight.bind(this);
+
+		this.prepState()
+	}
+	prepState() {
+		if (typeof this.props.pageOn === "undefined") {
+			if (typeof this.props.loggedIn === "undefined") {
+				this.setState({
+					pageOn: 3
+				})
+			} else {
+				this.setState({
+					pageOn: (this.props.loggedIn?1:3)
+				})
+			}
+		} else {
+			this.setState({
+				pageOn: this.props.pageOn
+			})
+		}
+	}
+	getPageOn() {
+		if (typeof this.state.pageOn === "undefined") {
+			this.prepState();
+		}
+		return this.state.pageOn;
+	}
+	navLeft() {
+		this.setState({
+			pageOn: this.getPageOn() - 1
+		})
+	}
+	navRight() {
+		this.setState({
+			pageOn: this.getPageOn() + 1
+		})
+	}
+	login(e) {
+		e.preventDefault();
+		this.navLeft();
+	}
+	render() {
 	return (
 		<>
 		<main id="main">
-			<div id="slider">
+			<div id="slider" style={{
+				right: `calc(var(--width) * ${this.getPageOn()}`
+			}}>
 				<section id="recents">
 					<div className="topbar">
 						<h1>Recent songs</h1>
 						<div className="separator"></div>
 						<input type="checkbox" id="listgrid" className="bx bx-list-ul"></input>
 					</div>
-					<ol id="history"></ol>
+					<History activeExtension={activeExtension}/>
 				</section>
 				<section id="player">
 					<div id="attribution">
@@ -65,7 +125,12 @@ function Popup() {
 						<form id="login">
 							<span><label className="bx bx-envelope inputicon" htmlFor="email"></label><input placeholder="email" autoComplete="username" id="email" type="email" className="bx bx-envelope" /></span>
 							<span><label className="bx bxs-lock inputicon" htmlFor="pw"></label><input placeholder="password" autoComplete="current-password" id="pw" type="password" /></span>
-							<button type="submit" id="loginButton">Log in</button>
+							<button 
+								type="submit" 
+								id="loginButton"
+								onClick={
+									this.login
+								}>Log in</button>
 						</form>
 						<a id="butwhytho" href="#">why should I trust you with my login credentials</a>
 					</div>
@@ -86,10 +151,31 @@ function Popup() {
 			</div>
 
 			<div id="goleftcontainer">
-				<button id="goleft" className="bx bxs-left-arrow"></button>
+				<button 
+					id="goleft" 
+					className={
+						`bx bxs-left-arrow${
+							this.getPageOn()>0 &&
+							this.getPageOn()!==3 ?
+							"":" naw"
+						}`
+					}
+					onClick={
+						this.navLeft
+					} />
 			</div>			
 			<div id="gorightcontainer">
-				<button id="goright" className="bx bxs-right-arrow"></button>	
+				<button 
+					id="goright" 
+					className={
+						`bx bxs-right-arrow${
+							this.getPageOn()<2 ?
+							"":" naw"
+						}`
+					}
+					onClick={
+						this.navRight
+					} />
 			</div>
 			
 		</main>
@@ -101,8 +187,8 @@ function Popup() {
 		<script src="tabs.js"></script>
 		<script src="script.js"></script>
 		</>
-)
-
+			)
+	}
 };
 
 export default Popup; 

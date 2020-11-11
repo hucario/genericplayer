@@ -4,7 +4,7 @@ import Popup from './popup.js';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Popup />
+    <Popup loggedOn={false} />
   </React.StrictMode>,
   document.getElementById('root')
 );

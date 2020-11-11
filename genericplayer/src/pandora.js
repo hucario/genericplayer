@@ -4,6 +4,7 @@
  */
 
 import { Extension, Song, Station } from './extension';
+import { encrypt, decrypt } from './crypt';
 
 class PandoraExtension extends Extension {
 	allowsRatings = true
@@ -36,14 +37,14 @@ class PandoraExtension extends Extension {
 			"password": pw,
 			"partnerAuthToken": this.partnerAuthToken
 		}, true)
-		if (res.stat == "fail") {
-			if (res.code == 1002) {
-				if (localStorage.pandora.username == username && localStorage.pandora.password == pw) {
+		if (res.stat === "fail") {
+			if (res.code === 1002) {
+				if (localStorage.pandora.username === username && localStorage.pandora.password === pw) {
 					localStorage.pandora.username = localStorage.pandora.password = "";
 				}
-				throw "Incorrect username or password."
+				throw new Error("Incorrect username or password.");
 			}
-			throw "An unexpected error occurred.";
+			throw new Error("An unexpected error occurred.");
 		}
 		this.userAuthToken = res.result.userAuthToken;
 		this.userID = res.result.userId;
@@ -53,7 +54,7 @@ class PandoraExtension extends Extension {
 	}
 	async getStations() {
 		if (!this.userAuthToken) {
-			throw "User is not logged in.";
+			throw new Error("User is not logged in.");
 		}
 		let res = await this.sendReq('user.getStationList', {
 			includeExplanations: true,
@@ -82,7 +83,7 @@ class PandoraExtension extends Extension {
 			if (level<3) {
 				this.partnerLogin(level+1);
 			} else {
-				throw "After three retries, authentication request has failed."
+				throw new Error("After three retries, authentication request has failed.");
 			}
 			return;
 		}
@@ -157,6 +158,7 @@ class PandoraSong  extends Song {
 
 	constructor() {
 		super();
+		"not now eslint".toString();
 	}
 	like() {
 
@@ -174,8 +176,15 @@ class PandoraStation extends Station {
 
 	constructor() {
 		super();
+		"eslint just don't".toString();
 	}
 	play() {
 
 	}
+}
+
+export {
+	PandoraExtension,
+	PandoraSong,
+	PandoraStation
 }

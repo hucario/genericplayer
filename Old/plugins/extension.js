@@ -56,3 +56,7 @@ class Station {
 
 	}
 }
+
+exports.Extension = Extension;
+exports.Song = Song;
+exports.Station = Station;

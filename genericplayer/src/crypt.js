@@ -1,3 +1,10 @@
+// @ts-nocheck
+// look I dont know why this file works either but uhh it does
+// eslint throws errors everywhere
+// I'm just not going to touch it and hope it keeps working
+
+import { InputKey, OutputKey } from './keys'
+
 var mod = Math.pow(2, 32);
 
 function decrypt(string) {
@@ -27,6 +34,7 @@ function decrypt(string) {
 
 		r = r ^ InputKey["p"][1];
 		l = l ^ InputKey["p"][0];
+
 
 		ret += String.fromCharCode((l / Math.pow(2, 24)) & 0xff);
 		ret += String.fromCharCode((l / Math.pow(2, 16)) & 0xff);
@@ -100,4 +108,9 @@ function decodeFromHex(str) {
 		r = String.fromCharCode("0x" + str.substring(i - 2, i)) + r;
 	}
 	return r;
+}
+
+export {  
+	encrypt, 
+	decrypt
 }
