@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use strict'
 
 
@@ -29,6 +30,9 @@ listbutton.addEventListener('click', () => {
 // althought it _would_ be a hell of a lot simpler... 
 // and it wouldn't affect loading times because it's all predownloaded... 
 // :thinking:
+
+// note from future self: yea
+
 let prevSongs = settings('activeExtension').getHistory();
 for (let i = 0; i < prevSongs.length; i++) {
 	let tHI = prevSongs[i]; // this history item

@@ -407,11 +407,11 @@ input#search {
         transform: scaleX(-1) rotate(0deg);
     }
 }
-
-#refresh:active::before {
-	animation: spinney 1.5s linear infinite;
+@media (prefers-reduced-motion: no-preference) {
+	#refresh:active::before {
+		animation: spinney 1.5s linear infinite;
+	}
 }
-
 section#loginSection {
     display: flex;
     align-items: center;
