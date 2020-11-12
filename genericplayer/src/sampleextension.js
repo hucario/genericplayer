@@ -216,6 +216,7 @@ class SampleSong extends Song {
 class SampleStation extends Station {
 	latestCover = undefined;
 
+	// eslint-disable-next-line no-useless-constructor
 	constructor() {
 		super();
 	}

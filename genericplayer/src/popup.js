@@ -1,46 +1,40 @@
 import React from 'react';
 import {SampleExtension, SampleStation, SampleSong} from './sampleextension'
 import History from './history'
-
-const activeExtension = {
-	'Extension': new SampleExtension(),
-	'Station': SampleStation,
-	'Song': SampleSong
-};
+import IconToggle from './icontoggle.js';
 
 class Popup extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {}
+		this.state = {
+			activeExtension: {
+				'Extension': new SampleExtension(),
+				'Station': SampleStation,
+				'Song': SampleSong
+			},
+			config: props.config || {},
+			recentsGridMode: false,
+			stationsGridMode: false
+		}
 
 		this.login = this.login.bind(this);
 		this.getPageOn = this.getPageOn.bind(this);
 		this.navLeft = this.navLeft.bind(this);
 		this.navRight = this.navRight.bind(this);
-
-		this.prepState()
-	}
-	prepState() {
+		this.factory = this.factory.bind(this);
+		
 		if (typeof this.props.pageOn === "undefined") {
 			if (typeof this.props.loggedIn === "undefined") {
-				this.setState({
-					pageOn: 3
-				})
+				this.state.pageOn = 3
 			} else {
-				this.setState({
-					pageOn: (this.props.loggedIn?1:3)
-				})
+				this.state.pageOn = (this.props.loggedIn?1:3)
 			}
 		} else {
-			this.setState({
-				pageOn: this.props.pageOn
-			})
+			this.state.pageOn = this.props.pageOn;
 		}
+
 	}
 	getPageOn() {
-		if (typeof this.state.pageOn === "undefined") {
-			this.prepState();
-		}
 		return this.state.pageOn;
 	}
 	navLeft() {
@@ -57,6 +51,11 @@ class Popup extends React.Component {
 		e.preventDefault();
 		this.navLeft();
 	}
+	factory(a) {
+		return function() {
+			a.apply(this,arguments);
+		}.bind(this)
+	}
 	render() {
 	return (
 		<>
@@ -64,13 +63,20 @@ class Popup extends React.Component {
 			<div id="slider" style={{
 				right: `calc(var(--width) * ${this.getPageOn()}`
 			}}>
-				<section id="recents">
+				<section id="recents" className={(this.state.recentsGridMode?'gridmode':'')}>
 					<div className="topbar">
 						<h1>Recent songs</h1>
 						<div className="separator"></div>
-						<input type="checkbox" id="listgrid" className="bx bx-list-ul"></input>
+						<IconToggle 
+							icon="bx-list-ul"
+							onToggle={this.factory(function() {
+								this.setState({
+									recentsGridMode: !this.state.recentsGridMode
+								});
+							})}
+						/>
 					</div>
-					<History activeExtension={activeExtension}/>
+					<History activeExtension={this.state.activeExtension}/>
 				</section>
 				<section id="player">
 					<div id="attribution">
@@ -111,12 +117,19 @@ class Popup extends React.Component {
 					</div>
 
 				</section>
-				<section>
+				<section className={this.state.stationsGridMode?'gridmode':''}>
 					<div className="topbar">
 						<h1>Stations</h1>
 						<input id="search" placeholder="Search..." />
 						<button className="bx bx-refresh" id="refresh"></button>
-						<input type="checkbox" id="listgrid2" className="bx bx-list-ul"></input>
+						<IconToggle 
+							icon="bx-list-ul"
+							onToggle={this.factory(function() {
+								this.setState({
+									stationsGridMode: !this.state.stationsGridMode
+								});
+							})}
+						/>
 					</div>
 				</section>
 				<section id="loginSection">
