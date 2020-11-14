@@ -56,4 +56,4 @@ Nothing. [It's still there.](https://github.com/pvr212/Anesidora) I just wanted 
 # Credits
 [pandora-api-docs](https://6xq.net/pandora-apidoc/) by [PromyLOPh](https://github.com/PromyLOPh)
 
-[blowfish.js](http://sladex.org/blowfish.js/ext/blowfish.js)
+kinda stole the encryption from [anesidora, because blowfish.js wasn't working](https://github.com/pvrs12/anesidora)
