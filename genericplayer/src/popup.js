@@ -1,7 +1,12 @@
 import React from 'react';
-import {SampleExtension, SampleStation, SampleSong} from './sampleextension'
+import {
+	SampleExtension, 
+	SampleStation, 
+	SampleSong
+} from './sampleextension'
 import History from './history'
-import IconToggle from './icontoggle.js';
+import IconToggle from './components/icontoggle/icontoggle.js';
+import Range from './components/range/range.js';
 
 class Popup extends React.Component {
 	constructor(props) {
@@ -32,7 +37,6 @@ class Popup extends React.Component {
 		} else {
 			this.state.pageOn = this.props.pageOn;
 		}
-
 	}
 	getPageOn() {
 		return this.state.pageOn;
@@ -58,7 +62,6 @@ class Popup extends React.Component {
 	}
 	render() {
 	return (
-		<>
 		<main id="main">
 			<div id="slider" style={{
 				right: `calc(var(--width) * ${this.getPageOn()}`
@@ -87,10 +90,7 @@ class Popup extends React.Component {
 					<a id="albumLink" href="#thisShouldBeChangedViaJS">
 						<img alt='Album art for song.' id="albumArt" src="./sample/johnny_b_goode.jpg" />
 					</a>
-					<div id="seekBar">
-						<div id="seekPrevious"></div>
-						<input id="seekControl" type="range" min="0" max="100" defaultValue="50" />
-					</div>
+					<Range id="seekBar" />
 
 					<div id="controls">
 						<div id="leftControls">
@@ -110,10 +110,10 @@ class Popup extends React.Component {
 
 					<div id="volume">
 						<button id="mute" className="bx bxs-volume-full"></button>
-						<div id="volumeBar">
-							<div id="volumePrevious"></div>
-							<input id="volumeControl" type="range" min="0" max="100" />
-						</div>
+						<Range 
+							id="volumeBar" 
+							value="50"
+						/>
 					</div>
 
 				</section>
@@ -189,17 +189,10 @@ class Popup extends React.Component {
 					onClick={
 						this.navRight
 					} />
-			</div>
-			
+			</div>		
+			<script src="tabs.js"></script>
+			<script src="script.js"></script>
 		</main>
-		<div id="devtools">
-			<button id="vh">Vary height</button>
-			<button id="vw">Vary width</button>
-			<button id="pop">Populate history</button>
-		</div>
-		<script src="tabs.js"></script>
-		<script src="script.js"></script>
-		</>
 			)
 	}
 };

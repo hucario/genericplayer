@@ -1,5 +1,7 @@
 import React from 'react';
-import './icontoggle.css'
+// eslint doesn't know how to parse css modules :pensive:
+// @ts-expect-error
+import styles from './icontoggle.module.css'
 
 export default class IconToggle extends React.Component {
 	constructor(props) {
@@ -12,7 +14,7 @@ export default class IconToggle extends React.Component {
 	render() {
 		return <input 
 			type="checkbox" 
-			className="icontoggle bx bx-list-ul"
+			className={styles.icontoggle + " bx bx-list-ul"}
 			onClick={this.state.onToggle}
 		/>
 	}

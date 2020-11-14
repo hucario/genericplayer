@@ -6,5 +6,5 @@ ReactDOM.render(
   <React.StrictMode>
     <Popup loggedIn={true} />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.body
 );

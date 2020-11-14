@@ -11,6 +11,32 @@ class HistoryItem extends React.Component {
 		} else {
 			throw new Error("Missing prop 'info'");
 		}
+		this.state.rating = this.state.info.rating;
+
+		this.like = this.like.bind(this);
+		this.dislike = this.dislike.bind(this);
+	}
+	like() {
+		let res;
+		try {
+			res = this.state.info.like();
+		} catch(e) {
+			// TODO: HANDLE CATCH (modal?)
+		}
+		this.setState({
+			rating: res
+		});
+	}
+	dislike() {
+		let res;
+		try {
+			res = this.state.info.dislike();
+		} catch(e) {
+			// TODO: HANDLE CATCH (modal?)
+		}
+		this.setState({
+			rating: res
+		});
 	}
 	render() {
 		let tHI = this.state.info; // shorthand
@@ -29,16 +55,16 @@ class HistoryItem extends React.Component {
 				className="historyButtons"
 			>
 				<button
-					className={`bx ${tHI.rating === 'liked'?'bxs-like':'bx-like'}`}
-					onClick={tHI.like}
+					className={`bx ${this.state.rating === 'liked'?'bxs-like':'bx-like'}`}
+					onClick={this.like}
 				 />
 				<button
 					className='bx bxs-download'
 					onClick={tHI.download}
 					/>
 				<button
-					className={`bx ${tHI.rating === 'disliked'?'bxs-dislike':'bx-dislike'}`}
-					onClick={tHI.dislike}
+					className={`bx ${this.state.rating === 'disliked'?'bxs-dislike':'bx-dislike'}`}
+					onClick={this.dislike}
 					/>
 			</div>
 		</div>

@@ -1,3 +1,9 @@
+DUDE YOUR NEXT TASK IS GETTING BUTTONS TO WORK / LINK THEM TO EXTENSIONS
+DO THIS WHEN YOU WAKE UP
+THANK YOU FOR YOUR ATTENTION FUTURE SELF
+
+I SWEAR IF THIS ENDS UP IN A COMMIT I WILL MENTALLY SIGH AND MOVE ON
+
 yea the repo name is GenericPlayer but the project name before uploading this was NewAnesidora so it's still called that like everywhere
 
 # NewAnesidora

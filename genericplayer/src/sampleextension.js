@@ -161,7 +161,8 @@ class SampleExtension extends Extension {
 				artist: new Artist({
 					name: 'Jonathan Coulton'
 				}),
-				rating: 'disliked'
+				rating: 'disliked',
+				url: 'https://gaming.com'
 			}),
 			new SampleSong({
 				name: 'Something or idk im tired',
@@ -181,17 +182,17 @@ class SampleExtension extends Extension {
 					coverUrl: './sample/viva_la_vida.jpg'
 				}),
 				artist: new Artist({
-					name: 'Train'
+					name: 'Coldplay'
 				}),
 				rating: 'unrated'
 			})
-		]
+		];
 	}
 }
 
 class SampleSong extends Song {
 	rating = "unrated"
-	title = ""
+	name = ""
 	url = ""
 	artist = new Artist();
 	album = new Album();
@@ -201,15 +202,31 @@ class SampleSong extends Song {
 		for (let key in opt) {
 			this[key] = opt[key];
 		}
+		this.like = this.like.bind(this);
+		this.dislike = this.dislike.bind(this);
+		this.download = this.download.bind(this);
+
 	}
 	like() {
+		if (this.rating === 'liked') {
+			this.rating = 'unrated';
+		} else {
+			this.rating = 'liked'
+		}
 
+		return this.rating;
 	}
 	dislike() {
+		if (this.rating === 'disliked') {
+			this.rating = 'unrated';
+		} else {
+			this.rating = 'disliked'
+		}
 
+		return this.rating;
 	}
 	download() {
-
+		alert(`Downloading ${this.name}${(this.url !== ""?' from '+this.url:'')}`)
 	}
 }
 
