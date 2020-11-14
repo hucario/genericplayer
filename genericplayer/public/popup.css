@@ -493,7 +493,8 @@ button#loginButton:active {
     border: none;
     font: unset;
     text-decoration: underline;
-    text-decoration-style: dashed;
+	text-decoration-style: dashed;
+	margin-top: 1em;
 }
 
 #loginMain > a#butwhytho {
@@ -564,14 +565,9 @@ img#albumArt {
 }
 
 div#volumeBar {
-    height: 0.3rem;
-    background: white;
-    display: inline-block;
     width: 10rem;
     min-height: 0.2rem;
     max-height: 0.4rem;
-    position: relative;
-    border-radius: 10000vw;
 }
 
 div#volume {
@@ -581,19 +577,9 @@ div#volume {
 
 #seekBar {
     width: var(--art-size);
-    height: 0.3rem;
-    background: white;
     margin-bottom: 20px;
-	position: relative;
-	border-radius: 5vw;
 }
 
-#seekHandle {
-    height: 1rem;
-    width: 1rem;
-    top: calc(-0.35rem);
-    border: none;
-}
 form#login {
     display: flex;
     align-items: center;
