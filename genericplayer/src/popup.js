@@ -7,15 +7,13 @@ import {
 import History from './history'
 import IconToggle from './components/icontoggle/icontoggle.js';
 import Range from './components/range/range.js';
+import getSongInfo from './yealetspretendthisisachromeextension.js'
 
 /* polyfilling during dev because this sure ain't an extension yet */
-// @ts-ignore
-// eslint-disable-next-line no-use-before-define
-let chrome = chrome || {
+// eslint-disable-next-line no-unused-vars
+let chrome =  {
 	extension: {
-		getBackgroundPage: function() {
-			
-		}
+		getBackgroundPage: getSongInfo
 	}
 }
 
@@ -28,7 +26,6 @@ class Popup extends React.Component {
 				'Station': SampleStation,
 				'Song': SampleSong
 			},
-			config: props.config || {},
 			recentsGridMode: false,
 			stationsGridMode: false
 		}
