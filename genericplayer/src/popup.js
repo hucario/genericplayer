@@ -3,7 +3,7 @@ import {
 	SampleExtension, 
 	SampleStation, 
 	SampleSong
-} from './sampleextension'
+} from './extensions/sampleextension'
 import History from './components/history/history'
 import IconToggle from './components/icontoggle/icontoggle.js';
 import Range from './components/range/range.js';

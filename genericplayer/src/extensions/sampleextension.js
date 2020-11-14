@@ -4,7 +4,7 @@ import {
 	Station,
 	Album,
 	Artist
-} from './extensions/extension'
+} from './extension'
 
 /*
  * Sample extension.
