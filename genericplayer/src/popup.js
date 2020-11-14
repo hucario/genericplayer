@@ -4,7 +4,7 @@ import {
 	SampleStation, 
 	SampleSong
 } from './sampleextension'
-import History from './history'
+import History from './components/history/history'
 import IconToggle from './components/icontoggle/icontoggle.js';
 import Range from './components/range/range.js';
 import getSongInfo from './yealetspretendthisisachromeextension.js'

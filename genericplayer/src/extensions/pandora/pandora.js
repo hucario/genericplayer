@@ -3,7 +3,7 @@
  *
  */
 
-import { Extension, Song, Station } from './extension';
+import { Extension, Song, Station } from '../extension';
 import { encrypt, decrypt } from './crypt';
 
 class PandoraExtension extends Extension {
@@ -148,13 +148,7 @@ class PandoraExtension extends Extension {
 }
 
 class PandoraSong  extends Song {
-	rating = "unrated"
-	albumCover = undefined
-	title = ""
-	albumTitle = ""
-	artist = ""
 	songUrl = ""
-
 
 	constructor() {
 		super();
