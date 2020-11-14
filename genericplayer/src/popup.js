@@ -8,6 +8,17 @@ import History from './history'
 import IconToggle from './components/icontoggle/icontoggle.js';
 import Range from './components/range/range.js';
 
+/* polyfilling during dev because this sure ain't an extension yet */
+// @ts-ignore
+// eslint-disable-next-line no-use-before-define
+let chrome = chrome || {
+	extension: {
+		getBackgroundPage: function() {
+			
+		}
+	}
+}
+
 class Popup extends React.Component {
 	constructor(props) {
 		super(props);
@@ -23,7 +34,6 @@ class Popup extends React.Component {
 		}
 
 		this.login = this.login.bind(this);
-		this.getPageOn = this.getPageOn.bind(this);
 		this.navLeft = this.navLeft.bind(this);
 		this.navRight = this.navRight.bind(this);
 		this.factory = this.factory.bind(this);
@@ -38,17 +48,14 @@ class Popup extends React.Component {
 			this.state.pageOn = this.props.pageOn;
 		}
 	}
-	getPageOn() {
-		return this.state.pageOn;
-	}
 	navLeft() {
 		this.setState({
-			pageOn: this.getPageOn() - 1
+			pageOn: this.state.pageOn - 1
 		})
 	}
 	navRight() {
 		this.setState({
-			pageOn: this.getPageOn() + 1
+			pageOn: this.state.pageOn + 1
 		})
 	}
 	login(e) {
@@ -64,7 +71,7 @@ class Popup extends React.Component {
 	return (
 		<main id="main">
 			<div id="slider" style={{
-				right: `calc(var(--width) * ${this.getPageOn()}`
+				right: `calc(var(--width) * ${this.state.pageOn}`
 			}}>
 				<section id="recents" className={(this.state.recentsGridMode?'gridmode':'')}>
 					<div className="topbar">
@@ -168,8 +175,8 @@ class Popup extends React.Component {
 					id="goleft" 
 					className={
 						`bx bxs-left-arrow${
-							this.getPageOn()>0 &&
-							this.getPageOn()!==3 ?
+							this.state.pageOn>0 &&
+							this.state.pageOn!==3 ?
 							"":" naw"
 						}`
 					}
@@ -182,7 +189,7 @@ class Popup extends React.Component {
 					id="goright" 
 					className={
 						`bx bxs-right-arrow${
-							this.getPageOn()<2 ?
+							this.state.pageOn<2 ?
 							"":" naw"
 						}`
 					}
