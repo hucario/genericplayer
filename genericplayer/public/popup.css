@@ -481,13 +481,19 @@ button#loginButton:active {
     background: var(--interactive-active);
 }
 
-a#butwhytho:before, a#closeExp:before {content: "[ ";}
+#butwhytho:before, #closeExp:before {content: "[ ";}
 
-a#butwhytho:after, a#closeExp:after {content: " ]";}
+#butwhytho:after, #closeExp:after {content: " ]";}
 
-a#butwhytho, #closeExp {
+#butwhytho, #closeExp {
+    text-decoration-color: var(--text-muted);
     color: var(--text-color);
     text-decoration-color: var(--text-muted);
+    background: none;
+    border: none;
+    font: unset;
+    text-decoration: underline;
+    text-decoration-style: dashed;
 }
 
 #loginMain > a#butwhytho {

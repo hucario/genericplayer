@@ -27,7 +27,8 @@ class Popup extends React.Component {
 				'Song': SampleSong
 			},
 			recentsGridMode: false,
-			stationsGridMode: false
+			stationsGridMode: false,
+			showingLoginExp: false
 		}
 
 		this.login = this.login.bind(this);
@@ -149,9 +150,21 @@ class Popup extends React.Component {
 									this.login
 								}>Log in</button>
 						</form>
-						<a id="butwhytho" href="#">why should I trust you with my login credentials</a>
+						<button 
+							id="butwhytho"
+							onClick={this.factory(() => {
+								this.setState({
+									showingLoginExp: true
+								})
+							})}
+						>why should I trust you with my login credentials</button>
 					</div>
-					<div id="loginExplanation">
+					<div 
+						id="loginExplanation"
+						style={{
+							bottom: (this.state.showingLoginExp?'0px':'var(--height)')
+						}}
+					>
 						<h1>why should I trust you with my information</h1>
 						<hr />
 						<p>
@@ -162,7 +175,16 @@ class Popup extends React.Component {
 							<li><strong>Because the code is open-source, you can see everywhere I handle your login details.</strong></li>
 							<li>Yeah I don't have another point but I wanted it to look like I have more than two points</li>
 						</ol>
-						<a id="closeExp" href="#">back</a>
+						<button 
+							id="closeExp"
+							onClick={
+								this.factory(() => {
+									this.setState({
+										showingLoginExp: false
+									})
+								})
+							}
+						>back</button>
 					</div>
 				</section>
 			</div>

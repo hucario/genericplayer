@@ -4,7 +4,7 @@ import Popup from './popup.js';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Popup loggedIn={true} />
+    <Popup loggedIn={false} />
   </React.StrictMode>,
   document.body
 );
