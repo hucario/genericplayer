@@ -513,15 +513,14 @@ button#loginButton:active {
     color: var(--player-button-color);
     height: var(--player-button-size);
     width: var(--player-button-size);
-    font-size: calc(var(--player-button-size) / 1.6);
-    border: solid 2px var(--player-button-color);
+    font-size: var(--player-button-size);
     border-radius: 100%;
     outline: none;
     transition: background 200ms;
     cursor: pointer;
 }
 
-div#controls {
+#topControls, #bottomControls {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -529,23 +528,42 @@ div#controls {
     margin-bottom: 15px;
 }
 
-#centralControls .bx {
+#topControls .bx {
     width: var(--player-big-button-size);
     height: var(--player-big-button-size);
-    font-size: calc(var(--player-big-button-size) / 1.6);
+    font-size: var(--player-big-button-size);
+    border: none;
+    position: relative;
+}
+
+#bottomControls .bx {
+    width: var(--player-button-size);
+    height: var(--player-button-size);
+    font-size: var(--player-button-size);
+    border: none;
+    position: relative;
 }
 
 #player .bx:hover {
     background: var(--interactive-hover);
 }
 
-a#albumLink {height: var(--art-size);width: var(--art-size);margin: calc(var(--width) / 20) 0;background: var(--background-floating);border-radius: 8px;overflow: hidden;max-width: 400px;max-height: 400px;}
+a#albumLink {
+	height: var(--art-size);
+	width: var(--art-size);
+	margin: calc(var(--width) / 20) 0;
+	background: var(--background-floating);
+	border-radius: 8px;
+	overflow: hidden;
+	max-width: 400px;
+	max-height: 400px;
+}
 
-#controls .bx {
+#topControls .bx {
     margin: 0 3px;
 }
 
-#leftControls .bx, #rightControls .bx {
+#bottomControls .bx {
     opacity: 0.6;
 }
 
@@ -553,7 +571,9 @@ a#albumLink {height: var(--art-size);width: var(--art-size);margin: calc(var(--w
     border: none;
     height: var(--player-big-button-size);
     width: var(--player-big-button-size);
-    font-size: calc(var(--player-big-button-size) / 1.6);
+	font-size: var(--player-big-button-size);
+	position: relative;
+	margin-right: 1rem;
 }
 #player button#mute:hover {
 	background: none; /* let's not */
@@ -608,10 +628,13 @@ div#loginExplanation {
 #loginExplanation p, #loginExplanation ol {
     font-family: system-ui;
 }
-
-#leftControls .bx:before, #rightControls .bx:before {
-    position: relative;
-    right: 2px;
+#player .bx:before {
+    position: absolute;
+    top: 0;
+    left: 2px;
+    right: 0;
+    bottom: 0;
+    text-align: center;
 }
 
 .hI > img:before {

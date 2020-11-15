@@ -20,8 +20,28 @@
 }
 
 .stations > li > img {
-	width: 5em;
-	height: 5em;
+    height: 5rem;
+    width: 5rem;
+    position: relative;
+    background: var(--background);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: var(--background);
+    overflow: hidden;
+    box-sizing: border-box;
+    min-height: 5rem;
+    min-width: 5rem;
+}
+
+.stations > li > img:before {
+    content: "\e97a";
+    color: white;
+    height: 100%;
+    width: 100%;
+    font-family: 'boxicons';
+    font-size: 5rem;
+    display: block;
 }
 
 .name {

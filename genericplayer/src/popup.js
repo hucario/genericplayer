@@ -116,20 +116,16 @@ class Popup extends React.Component {
 					</a>
 					<Range id="seekBar" />
 
-					<div id="controls">
-						<div id="leftControls">
-							<button id="repeat" className="bx bx-repeat"></button>
-							<button id="like" className="bx bx-like"></button>
-						</div>
-						<div id="centralControls">
+					<div id="topControls">
 							<button id="replay" className="bx bx-skip-previous"></button>
 							<button id="play" className="bx bx-play"></button>
 							<button id="skip" className="bx bx-skip-next"></button>
-						</div>
-						<div id="rightControls">
-							<button id="dislike" className="bx bx-dislike"></button>
-							<button id="shuffle" className="bx bx-shuffle"></button>
-						</div>
+					</div>
+					<div id="bottomControls">
+						<button id="repeat" className="bx bx-repeat"></button>
+						<button id="like" className="bx bx-like"></button>
+						<button id="dislike" className="bx bx-dislike"></button>
+						<button id="shuffle" className="bx bx-shuffle"></button>
 					</div>
 
 					<div id="volume">
