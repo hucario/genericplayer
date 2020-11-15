@@ -100,6 +100,7 @@ class Popup extends React.Component {
 									recentsGridMode: !this.state.recentsGridMode
 								});
 							})}
+							checked={true}
 						/>
 					</div>
 					<History activeExtension={this.state.activeExtension}/>

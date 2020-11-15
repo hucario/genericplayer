@@ -53,9 +53,11 @@ class StationElement extends React.Component {
 			<li>
 				<img 
 					src={this.state.data.latestCover} 
-					alt={JSON.stringify(this.state.data) }
+					alt={this.state.data.name}
 				/>
-				{this.state.data.name}
+				<span 
+					className={styles.name}
+				>{this.state.data.name}</span>
 			</li>
 		)
 	}
