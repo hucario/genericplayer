@@ -54,6 +54,7 @@ class StationElement extends React.Component {
 				<img 
 					src={this.state.data.latestCover} 
 					alt={this.state.data.name}
+					title={this.state.data.name}
 				/>
 				<span 
 					className={styles.name}
