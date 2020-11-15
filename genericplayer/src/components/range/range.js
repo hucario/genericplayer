@@ -9,7 +9,9 @@ export default class Range extends React.Component {
 		this.state = {
 			firstValue: this.props.value || 0,
 			value: this.props.value || 0,
-			inputEvent: this.props.inputEvent || function(){}
+			inputEvent: this.props.inputEvent || function(){},
+			onmousedown: this.props.onMouseDown || function(){},
+			onmouseup: this.props.onMouseUp || function(){}
 		}
 
 		this.oninput = this.oninput.bind(this);
@@ -26,16 +28,19 @@ export default class Range extends React.Component {
 				<div 
 					className={styles.previous} 
 					style={{
-						width: `${this.state.value}%`
+						width: `${this.props.value / (0.01 * (this.props.max||100))}%`
 					}}
 				/>
                 <input 
                     className={styles.control} 
                     type='range' 
                     min="0" 
-					max="100" 
+					max={this.props.max || 100} 
 					onInput={this.oninput}
-					defaultValue={this.state.firstValue}
+					value={this.props.value}
+					onMouseDown={this.state.onmousedown}
+					onMouseUp={this.state.onmouseup}
+					title={this.props.title || ""}
                 />
             </div>
         );

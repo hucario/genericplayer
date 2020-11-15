@@ -32,11 +32,16 @@ class Popup extends React.Component {
 			loggedIn: this.props.loggedIn || false
 		}
 
+		this.state.activeExtension.forceUpdateList.push(this.forceUpdate.bind(this));
+
 		this.login = this.login.bind(this);
 		this.navLeft = this.navLeft.bind(this);
 		this.navRight = this.navRight.bind(this);
 		this.factory = this.factory.bind(this);
 		this.onerror = this.onerror.bind(this);
+		this.seekStart = this.seekStart.bind(this);
+		this.seekEnd = this.seekEnd.bind(this);
+
 		
 		if (typeof this.props.pageOn === "undefined") {
 			if (typeof this.props.loggedIn === "undefined") {
@@ -88,6 +93,17 @@ class Popup extends React.Component {
 			a.apply(this,arguments);
 		}.bind(this)
 	}
+	seekStart() {
+		this.setState({
+			wasPlaying: this.state.activeExtension.currentlyPlaying.playing
+		})
+		this.state.activeExtension.pause();		
+	}
+	seekEnd() {
+		if (this.state.wasPlaying) {
+			this.state.activeExtension.play();
+		}
+	}
 	render() {
 	return (
 		<main id="main">
@@ -112,23 +128,75 @@ class Popup extends React.Component {
 				</section>
 				<section id="player">
 					<div id="attribution">
-						<div id="songname">Johnny B. Goode</div>
-						<div id="albumname">Johnny B. Goode Sessions</div>
-						<div id="artistname">Chuck Berry</div>
+						<div id="songname">{
+							this.state.loggedIn && 
+							this.state.activeExtension.currentlyPlaying.song && 
+							this.state.activeExtension.currentlyPlaying.song.name
+						}</div>
+						<div id="albumname">{
+							this.state.loggedIn && 
+							this.state.activeExtension.currentlyPlaying.song && 
+							this.state.activeExtension.currentlyPlaying.song.album && 
+							this.state.activeExtension.currentlyPlaying.song.album.name
+						}</div>
+						<div id="artistname">{
+							this.state.loggedIn && 
+							this.state.activeExtension.currentlyPlaying.song && 
+							this.state.activeExtension.currentlyPlaying.song.artist && 
+							this.state.activeExtension.currentlyPlaying.song.artist.name
+						}</div>
 					</div>
-					<a id="albumLink" href="#thisShouldBeChangedViaJS">
-						<img alt='Album art for song.' id="albumArt" src="./sample/johnny_b_goode.jpg" />
+					<a id="albumLink" href={
+							this.state.loggedIn && 
+							this.state.activeExtension.currentlyPlaying.song && 
+							this.state.activeExtension.currentlyPlaying.song.album && 
+							this.state.activeExtension.currentlyPlaying.song.album.url
+						}>
+						<img alt='Album art for song.' id="albumArt" src={
+							this.state.loggedIn && 
+							this.state.activeExtension.currentlyPlaying.song && 
+							this.state.activeExtension.currentlyPlaying.song.album && 
+							this.state.activeExtension.currentlyPlaying.song.album.coverUrl
+						} />
 					</a>
-					<Range id="seekBar" />
+					<Range 
+						id="seekBar" 
+						max={
+							this.state.activeExtension.currentlyPlaying.song && 
+							this.state.activeExtension.currentlyPlaying.song.length
+						}
+						value={this.state.activeExtension.currentlyPlaying.time}
+						onMouseDown={
+							this.seekStart
+						}
+						onMouseUp={
+							this.seekEnd
+						}
+					/>
 
 					<div id="topControls">
-							<button id="replay" className="bx bx-skip-previous"></button>
-							<button id="play" className="bx bx-play"></button>
-							<button id="skip" className="bx bx-skip-next"></button>
+							<button id="back" className="bx bx-skip-previous"></button>
+							<button 
+								id="play" 
+								className={"bx "+(this.state.activeExtension.currentlyPlaying.playing?'bx-pause':'bx-play')}
+								onClick={this.state.activeExtension.togglePlay}
+							/>
+							<button 
+								id="skip" 
+								className="bx bx-skip-next"
+								onClick={this.state.activeExtension.skip}
+							/>
 					</div>
 					<div id="bottomControls">
 						<button id="repeat" className="bx bx-repeat"></button>
-						<button id="like" className="bx bx-like"></button>
+						<button 
+							id="like" 
+							className="bx bx-like"
+							onClick={
+								this.state.activeExtension.currentlyPlaying.song &&
+								this.state.activeExtension.currentlyPlaying.song.like
+							}
+						/>
 						<button id="dislike" className="bx bx-dislike"></button>
 						<button id="shuffle" className="bx bx-shuffle"></button>
 					</div>
@@ -137,7 +205,11 @@ class Popup extends React.Component {
 						<button id="mute" className="bx bxs-volume-full"></button>
 						<Range 
 							id="volumeBar" 
-							value="50"
+							value={
+								this.state.loggedIn && 
+								this.state.activeExtension.currentlyPlaying.volume
+							}
+							max="100"
 						/>
 					</div>
 

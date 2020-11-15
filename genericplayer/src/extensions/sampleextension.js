@@ -235,23 +235,81 @@ class SampleExtension extends Extension {
 	isLoggedIn = false
 	ok = true
 	currentlyPlaying = {
-		station: new SampleStation(),
+		station: null,
 		time: 0,
 		volume: 100,
-		song: undefined
+		song: null,
+		playing: false
 	}
+	playlist = []
 	history = []
+	forceUpdateList = []
 
-	constructor(...a) {
+	constructor(forceUpdate) {
 		super();
+
+		this.pause = this.pause.bind(this);
+		this.togglePlay = this.togglePlay.bind(this);
+		this.play = this.play.bind(this);
+		this.skip = this.skip.bind(this);
+
+		setInterval(() => {
+			if (!this.currentlyPlaying.playing) {
+				return;
+			}
+			this.currentlyPlaying.time++;
+			if (this.currentlyPlaying.time >= this.currentlyPlaying.song.length) {
+				this.skip();
+			} else {
+				this.forceUpdates();
+			}
+			console.log(this.currentlyPlaying.time);
+		}, 1000)
 	}
+	forceUpdates() {
+		for (let i = 0; i < this.forceUpdateList.length; i++) {
+			try {
+				this.forceUpdateList[i]()
+			} catch(e) {
+
+			}
+		}
+	}
+	togglePlay() {
+		this.currentlyPlaying.playing = !this.currentlyPlaying.playing;
+		this.forceUpdates();
+	}
+	play() {
+		this.currentlyPlaying.playing = true
+		this.forceUpdates();
+	}
+	pause() {
+		this.currentlyPlaying.playing = false;
+		this.forceUpdates();
+	}
+	skip() {
+		if (this.playlist.length > 0) {
+			this.history.unshift(this.currentlyPlaying.song);
+			this.currentlyPlaying.song = this.playlist.shift();
+		} else {
+			this.playlist = this.currentlyPlaying.station.getPlaylist();
+			this.history.unshift(this.currentlyPlaying.song);
+			this.currentlyPlaying.song = this.playlist.shift();
+		}
+		this.currentlyPlaying.time = 0;
+
+		this.forceUpdates();
+	}
+
 	async login(a,b) {
 		return true;
 	}
-	prepareRandom() {
-		this.currentlyPlaying.song = this.currentlyPlaying.station.getPlaylist()[0];
+	async prepareRandom() {
+		let x = await this.getStations();
+		this.currentlyPlaying.station = x[Math.floor(Math.random()*x.length)]
+		this.playlist = this.currentlyPlaying.station.getPlaylist()
+		this.currentlyPlaying.song = this.playlist[0];
 		this.currentlyPlaying.time = Math.floor(Math.random()*this.currentlyPlaying.song.length)
-
 	}
 	async getStations() {
 		let res= [

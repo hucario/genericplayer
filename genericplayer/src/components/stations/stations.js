@@ -26,7 +26,12 @@ export default class Stations extends React.Component {
 		}
 		let ch = []
 		for (let i = 0; i < this.state.stations.length; i++) {
-			ch.push(<StationElement data={this.state.stations[i]} />) 
+			ch.push(
+				<StationElement 
+					data={this.state.stations[i]} 
+					key={i}
+				/>
+			) 
 		}
 		return (
 			<ul
