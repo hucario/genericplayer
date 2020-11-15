@@ -8,7 +8,7 @@ export default class Stations extends React.Component {
 		this.state = {
 			activeExtension: this.props.activeExtension
 		}
-		this.props.activeExtension.Extension.getStations()
+		this.props.activeExtension.getStations()
 		.then((e) => {
 			this.setState({
 				stations: e
@@ -55,6 +55,9 @@ class StationElement extends React.Component {
 					src={this.state.data.latestCover} 
 					alt={this.state.data.name}
 					title={this.state.data.name}
+					style={{
+						color: ['white', 'red', 'orange', 'yellow', 'green', 'blue', 'purple'][Math.floor(Math.random()*7)]
+					}}
 				/>
 				<span 
 					className={styles.name}

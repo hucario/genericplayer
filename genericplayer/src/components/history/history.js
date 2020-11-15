@@ -84,7 +84,7 @@ export default class History extends React.Component {
 	}
 	render() {
 		let gaming = [];
-		let prevSongs = this.props.activeExtension.Extension.getHistory();
+		let prevSongs = this.props.activeExtension.getHistory();
 		for (let i = 0; i < prevSongs.length; i++) {
 			gaming.push(<HistoryItem info={prevSongs[i]} key={i} />)
 		}

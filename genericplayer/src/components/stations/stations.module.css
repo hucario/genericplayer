@@ -27,7 +27,6 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    color: var(--background);
     overflow: hidden;
     box-sizing: border-box;
     min-height: 5rem;
@@ -36,7 +35,6 @@
 
 .stations > li > img:before {
     content: "\e97a";
-    color: white;
     height: 100%;
     width: 100%;
     font-family: 'boxicons';

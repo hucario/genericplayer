@@ -71,7 +71,7 @@ class Song {
 }
 
 class Station {
-	cover = undefined;
+	latestCover = undefined;
 	name = "";
 
 	constructor(opts) {

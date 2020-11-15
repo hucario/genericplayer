@@ -16,8 +16,8 @@
 	--recents-album-image-size: 9em;
 	--recents-button-size: calc(var(--recents-album-image-size) / 4);
 	--player-button-color: white;
-	--player-button-size: 2rem;
-	--player-big-button-size: 3rem;
+	--player-button-size: 1.7rem;
+	--player-big-button-size: 3.5rem;
 	--art-size: calc(var(--width) / 2);
 }
 body, html {
@@ -516,8 +516,10 @@ button#loginButton:active {
     font-size: var(--player-button-size);
     border-radius: 100%;
     outline: none;
-    transition: background 200ms;
-    cursor: pointer;
+    transition: background-color 200ms;
+	cursor: pointer;
+	border: none;
+	position: relative;
 }
 
 #topControls, #bottomControls {
@@ -534,14 +536,7 @@ button#loginButton:active {
     font-size: var(--player-big-button-size);
     border: none;
     position: relative;
-}
-
-#bottomControls .bx {
-    width: var(--player-button-size);
-    height: var(--player-button-size);
-    font-size: var(--player-button-size);
-    border: none;
-    position: relative;
+    margin: 0 3px;
 }
 
 #player .bx:hover {
@@ -559,12 +554,10 @@ a#albumLink {
 	max-height: 400px;
 }
 
-#topControls .bx {
-    margin: 0 3px;
-}
-
 #bottomControls .bx {
-    opacity: 0.6;
+	opacity: 0.6;
+	width: 1.5em;
+	height: 1.5em;
 }
 
 #player button#mute {
@@ -574,6 +567,9 @@ a#albumLink {
 	font-size: var(--player-big-button-size);
 	position: relative;
 	margin-right: 1rem;
+	font-size: 2rem;
+	width: 1em;
+	height: 1em;
 }
 #player button#mute:hover {
 	background: none; /* let's not */
@@ -628,12 +624,9 @@ div#loginExplanation {
 #loginExplanation p, #loginExplanation ol {
     font-family: system-ui;
 }
-#player .bx:before {
-    position: absolute;
-    top: 0;
-    left: 2px;
-    right: 0;
-    bottom: 0;
+#topControls .bx:before {
+    position: relative;
+    right: 3px;
     text-align: center;
 }
 

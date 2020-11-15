@@ -4,13 +4,20 @@ import History from './components/history/history'
 import IconToggle from './components/icontoggle/icontoggle.js';
 import Range from './components/range/range.js';
 import Stations from './components/stations/stations.js';
-import getSongInfo from './yealetspretendthisisachromeextension.js'
 
 /* polyfilling during dev because this sure ain't an extension yet */
 // eslint-disable-next-line no-unused-vars
 let chrome =  {
 	extension: {
-		getBackgroundPage: getSongInfo
+		getBackgroundPage: function() {
+			return {
+				getCurrentExtension() {
+					let x = new SampleExtension();
+					x.prepareRandom(); // for indev testing
+					return x;
+				}
+			}
+		}
 	}
 }
 
@@ -18,9 +25,7 @@ class Popup extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			activeExtension: {
-				'Extension': new SampleExtension()
-			},
+			activeExtension: chrome.extension.getBackgroundPage().getCurrentExtension(),
 			recentsGridMode: false,
 			stationsGridMode: false,
 			showingLoginExp: false,
@@ -67,7 +72,7 @@ class Popup extends React.Component {
 	}
 	async login(e) {
 		e.preventDefault();
-		let x = await this.state.activeExtension.Extension.login('hughy62@gmail.com', 'monkey').catch((e) => {
+		let x = await this.state.activeExtension.login('hughy62@gmail.com', 'monkey').catch((e) => {
 
 		})
 		if (!x) {
