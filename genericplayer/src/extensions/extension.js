@@ -54,8 +54,10 @@ class Song {
 	album = new Album()
 
 
-	constructor() {
-		"eslint stop warning me about useless constructors"
+	constructor(opts) {
+		for (let key in opts) {
+			this[key] = opts[key];
+		}
 	}
 	like() {
 
@@ -69,10 +71,13 @@ class Song {
 }
 
 class Station {
-	latestCover = undefined;
+	cover = undefined;
+	name = "";
 
-	constructor() {
-		"hmm yes this is a constructor"
+	constructor(opts) {
+		for (let key in opts) {
+			this[key] = opts[key];
+		}
 	}
 	play() {
 

@@ -64,7 +64,7 @@ class PandoraExtension extends Extension {
 		return res;
 	}
 	getHistory() {
-
+		return []
 	}
 	getSyncTime() {
 		return this.syncTime + (Math.floor(Date.now() / 1000) - this.syncStart);
@@ -125,11 +125,9 @@ class PandoraExtension extends Extension {
 		} else {
 			data = JSON.stringify(data);
 		}
-		console.log(data);
 		let req = await fetch(
 			'https://tuner.pandora.com/services/json/?method=' + method + queryString, {
 			method: 'POST',
-			credentials: 'include',
 			mode: 'cors',
 			headers: {
 				'Content-Type': (encryptthis?'text/plain':'application/json'),

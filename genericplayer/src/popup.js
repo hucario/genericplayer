@@ -1,12 +1,9 @@
 import React from 'react';
-import {
-	SampleExtension, 
-	SampleStation, 
-	SampleSong
-} from './extensions/sampleextension'
+import {SampleExtension} from './extensions/sampleextension.js'
 import History from './components/history/history'
 import IconToggle from './components/icontoggle/icontoggle.js';
 import Range from './components/range/range.js';
+import Stations from './components/stations/stations.js';
 import getSongInfo from './yealetspretendthisisachromeextension.js'
 
 /* polyfilling during dev because this sure ain't an extension yet */
@@ -22,19 +19,19 @@ class Popup extends React.Component {
 		super(props);
 		this.state = {
 			activeExtension: {
-				'Extension': new SampleExtension(),
-				'Station': SampleStation,
-				'Song': SampleSong
+				'Extension': new SampleExtension()
 			},
 			recentsGridMode: false,
 			stationsGridMode: false,
-			showingLoginExp: false
+			showingLoginExp: false,
+			loggedIn: this.props.loggedIn || false
 		}
 
 		this.login = this.login.bind(this);
 		this.navLeft = this.navLeft.bind(this);
 		this.navRight = this.navRight.bind(this);
 		this.factory = this.factory.bind(this);
+		this.onerror = this.onerror.bind(this);
 		
 		if (typeof this.props.pageOn === "undefined") {
 			if (typeof this.props.loggedIn === "undefined") {
@@ -44,6 +41,18 @@ class Popup extends React.Component {
 			}
 		} else {
 			this.state.pageOn = this.props.pageOn;
+		}
+	}
+	onerror(e) {
+		switch(e) {
+			case "User is not logged in.":
+				this.setState({
+					pageOn: 3,
+					loggedIn: false
+				})
+				break;
+			default:
+				return;
 		}
 	}
 	navLeft() {
@@ -56,8 +65,17 @@ class Popup extends React.Component {
 			pageOn: this.state.pageOn + 1
 		})
 	}
-	login(e) {
+	async login(e) {
 		e.preventDefault();
+		let x = await this.state.activeExtension.Extension.login('hughy62@gmail.com', 'monkey').catch((e) => {
+
+		})
+		if (!x) {
+			return;
+		}
+		this.setState({
+			loggedIn: true
+		})
 		this.navLeft();
 	}
 	factory(a) {
@@ -136,6 +154,12 @@ class Popup extends React.Component {
 							})}
 						/>
 					</div>
+					{this.state.loggedIn && 
+					<Stations 
+						activeExtension={this.state.activeExtension}
+						onerror={this.onerror}
+					/>
+					}
 				</section>
 				<section id="loginSection">
 					<div id="loginMain">
