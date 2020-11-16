@@ -213,14 +213,7 @@ class SampleStation extends Station {
 				rating: 'unrated'
 			})
 		].sort(() => {
-			let x = Math.random()*100;
-			if (x < 33) {
-				return -1;
-			}
-			if (x < 66) {
-				return 0;
-			}
-			return 1;
+			return Math.round(Math.random() - Math.random())
 		})
 	}
 	play() {
@@ -247,12 +240,6 @@ class SampleExtension extends Extension {
 
 	constructor(forceUpdate) {
 		super();
-
-		this.pause = this.pause.bind(this);
-		this.togglePlay = this.togglePlay.bind(this);
-		this.play = this.play.bind(this);
-		this.skip = this.skip.bind(this);
-
 		setInterval(() => {
 			if (!this.currentlyPlaying.playing) {
 				return;
@@ -266,7 +253,11 @@ class SampleExtension extends Extension {
 			console.log(this.currentlyPlaying.time);
 		}, 1000)
 	}
-	forceUpdates() {
+
+	seek = (a) => {
+		this.currentlyPlaying.time = Math.max(a, this.currentlyPlaying.song.length)
+	}
+	forceUpdates = () => {
 		for (let i = 0; i < this.forceUpdateList.length; i++) {
 			try {
 				this.forceUpdateList[i]()
@@ -275,19 +266,19 @@ class SampleExtension extends Extension {
 			}
 		}
 	}
-	togglePlay() {
+	togglePlay = () => {
 		this.currentlyPlaying.playing = !this.currentlyPlaying.playing;
 		this.forceUpdates();
 	}
-	play() {
+	play = () => {
 		this.currentlyPlaying.playing = true
 		this.forceUpdates();
 	}
-	pause() {
+	pause = () => {
 		this.currentlyPlaying.playing = false;
 		this.forceUpdates();
 	}
-	skip() {
+	skip = () => {
 		if (this.playlist.length > 0) {
 			this.history.unshift(this.currentlyPlaying.song);
 			this.currentlyPlaying.song = this.playlist.shift();
@@ -301,17 +292,20 @@ class SampleExtension extends Extension {
 		this.forceUpdates();
 	}
 
-	async login(a,b) {
+	login = async function(a,b) {
 		return true;
 	}
-	async prepareRandom() {
+	prepareRandom = async () => {
 		let x = await this.getStations();
 		this.currentlyPlaying.station = x[Math.floor(Math.random()*x.length)]
 		this.playlist = this.currentlyPlaying.station.getPlaylist()
+		for (let i = 0, p = Math.random()*5; i < p; i++) {
+			this.playlist.shift()
+		}
 		this.currentlyPlaying.song = this.playlist[0];
 		this.currentlyPlaying.time = Math.floor(Math.random()*this.currentlyPlaying.song.length)
 	}
-	async getStations() {
+	getStations = async () => {
 		let res= [
 			new SampleStation({
 				"latestCover": "https://www.pandora.com/img/shuffle_art_500W_500H.png",
@@ -412,7 +406,7 @@ class SampleExtension extends Extension {
 		];
 		return res;
 	}
-	getHistory() {
+	getHistory = () => {
 		return this.history;
 	}
 }

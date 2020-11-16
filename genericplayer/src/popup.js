@@ -21,7 +21,7 @@ let chrome =  {
 	}
 }
 
-class Popup extends React.Component {
+export default class Popup extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -31,17 +31,7 @@ class Popup extends React.Component {
 			showingLoginExp: false,
 			loggedIn: this.props.loggedIn || false
 		}
-
-		this.state.activeExtension.forceUpdateList.push(this.forceUpdate.bind(this));
-
-		this.login = this.login.bind(this);
-		this.navLeft = this.navLeft.bind(this);
-		this.navRight = this.navRight.bind(this);
-		this.factory = this.factory.bind(this);
-		this.onerror = this.onerror.bind(this);
-		this.seekStart = this.seekStart.bind(this);
-		this.seekEnd = this.seekEnd.bind(this);
-
+		this.state.activeExtension.forceUpdateList.push(this.forceUpdate);
 		
 		if (typeof this.props.pageOn === "undefined") {
 			if (typeof this.props.loggedIn === "undefined") {
@@ -53,7 +43,7 @@ class Popup extends React.Component {
 			this.state.pageOn = this.props.pageOn;
 		}
 	}
-	onerror(e) {
+	onerror = (e) => {
 		switch(e) {
 			case "User is not logged in.":
 				this.setState({
@@ -65,17 +55,17 @@ class Popup extends React.Component {
 				return;
 		}
 	}
-	navLeft() {
+	navLeft = () => {
 		this.setState({
 			pageOn: this.state.pageOn - 1
 		})
 	}
-	navRight() {
+	navRight = () => {
 		this.setState({
 			pageOn: this.state.pageOn + 1
 		})
 	}
-	async login(e) {
+	login = async (e) => {
 		e.preventDefault();
 		let x = await this.state.activeExtension.login('hughy62@gmail.com', 'monkey').catch((e) => {
 
@@ -88,21 +78,45 @@ class Popup extends React.Component {
 		})
 		this.navLeft();
 	}
-	factory(a) {
+	factory = (a) => {
 		return function() {
 			a.apply(this,arguments);
 		}.bind(this)
 	}
-	seekStart() {
+	seekStart = () => {
 		this.setState({
 			wasPlaying: this.state.activeExtension.currentlyPlaying.playing
 		})
 		this.state.activeExtension.pause();		
 	}
-	seekEnd() {
+	seekEnd = () => {
 		if (this.state.wasPlaying) {
 			this.state.activeExtension.play();
 		}
+	}
+	formatTime = (duration) => {
+		/*
+		 * Because I'm uncreative, 
+		 * https://stackoverflow.com/questions/3733227/javascript-seconds-to-minutes-and-seconds
+		 */
+			// Hours, minutes and seconds
+			var hrs = ~~(duration / 3600);
+			var mins = ~~((duration % 3600) / 60);
+			var secs = ~~duration % 60;
+
+			// Output like "1:01" or "4:03:59" or "123:03:59"
+			var ret = "";
+
+			if (hrs > 0) {
+				ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+			}
+
+			ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+			ret += "" + secs;
+			return ret;
+	}
+	handleGetValueSetterAaa = (setvalue) => {
+
 	}
 	render() {
 	return (
@@ -172,6 +186,11 @@ class Popup extends React.Component {
 						onMouseUp={
 							this.seekEnd
 						}
+						title={	
+							this.state.activeExtension.currentlyPlaying.song && 
+							this.formatTime(this.state.activeExtension.currentlyPlaying.time) + ' / ' +
+							this.formatTime(this.state.activeExtension.currentlyPlaying.song.length)
+						}
 					/>
 
 					<div id="topControls">
@@ -210,6 +229,10 @@ class Popup extends React.Component {
 								this.state.activeExtension.currentlyPlaying.volume
 							}
 							max="100"
+							title={
+								this.state.loggedIn &&
+								this.state.activeExtension.currentlyPlaying.volume
+							}
 						/>
 					</div>
 
@@ -318,5 +341,3 @@ class Popup extends React.Component {
 			)
 	}
 };
-
-export default Popup; 

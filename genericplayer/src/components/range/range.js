@@ -13,14 +13,24 @@ export default class Range extends React.Component {
 			onmousedown: this.props.onMouseDown || function(){},
 			onmouseup: this.props.onMouseUp || function(){}
 		}
-
-		this.oninput = this.oninput.bind(this);
+		this.props.setValueCB && this.props.setValueCB(this.setValue)
 	}
-	oninput(e) {
+	setValue = (e) => {
+		this.setState({
+			value: e
+		})
+	}
+	oninput = (e) => {
 		this.setState({
 			value: e.target.value
 		})
 		this.state.inputEvent(e.target.value)
+	}
+	onmouseup = (e) => {
+		this.state.onmouseup(e.target.value);
+	}
+	onmousedown = (e) => {
+		this.state.onmousedown(e.target.value)
 	}
 	render() {
 		return (
@@ -35,11 +45,11 @@ export default class Range extends React.Component {
                     className={styles.control} 
                     type='range' 
                     min="0" 
-					max={this.props.max || 100} 
-					onInput={this.oninput}
-					value={this.props.value}
-					onMouseDown={this.state.onmousedown}
-					onMouseUp={this.state.onmouseup}
+					max={this.props.max || 100}  	
+					onChange={this.oninput}
+					value={this.state.value}
+					onMouseDown={this.onmousedown}
+					onMouseUp={this.onmouseup}
 					title={this.props.title || ""}
                 />
             </div>
