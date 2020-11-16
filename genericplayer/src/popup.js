@@ -39,11 +39,13 @@ export default class Popup extends React.Component {
 			playing: false,
 			rating: 'unrated'
 		}
+		// @ts-ignore
+		window.mainState = this.state;
 		this.state.activeExtension.addSetStateCb(this.wrappedSetState.bind(this));
 		this.state.pageOn = (this.state.activeExtension.loggedIn || this.state.loggedIn || this.props.loggedIn)?1:3
 	}
 	wrappedSetState = (obj) => {
-		console.log(obj)
+		//console.log(obj)
 		this.setState(obj);
 	}
 	onerror = (e) => {
@@ -172,6 +174,9 @@ export default class Popup extends React.Component {
 	render() {
 		this.state.setSeekValue(this.state.time)
 		this.state.setVolume(this.state.volume)
+
+		// @ts-ignore
+		window.mainState = this.state
 
 		return (
 		<React.Fragment>
