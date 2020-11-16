@@ -106,7 +106,7 @@ class Popup extends React.Component {
 	}
 	render() {
 	return (
-		<main id="main">
+		<React.Fragment>
 			<div id="slider" style={{
 				right: `calc(var(--width) * ${this.state.pageOn}`
 			}}>
@@ -313,10 +313,8 @@ class Popup extends React.Component {
 					onClick={
 						this.navRight
 					} />
-			</div>		
-			<script src="tabs.js"></script>
-			<script src="script.js"></script>
-		</main>
+			</div>
+		</React.Fragment>
 			)
 	}
 };

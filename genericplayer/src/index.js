@@ -6,5 +6,5 @@ ReactDOM.render(
   <React.StrictMode>
     <Popup loggedIn={true} pageOn={2} />
   </React.StrictMode>,
-  document.body
+  document.getElementById('main')
 );
