@@ -41,6 +41,8 @@ export default class Popup extends React.Component {
 		}
 		// @ts-ignore
 		window.mainState = this.state;
+		console.log('Logging Popup state to window.mainState');	
+
 		this.state.activeExtension.addSetStateCb(this.wrappedSetState.bind(this));
 		this.state.pageOn = (this.state.activeExtension.loggedIn || this.state.loggedIn || this.props.loggedIn)?1:3
 	}
