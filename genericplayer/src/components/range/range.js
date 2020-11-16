@@ -8,7 +8,7 @@ export default class Range extends React.Component {
 
 		this.state = {
 			firstValue: this.props.value || 0,
-			value: this.props.value || 0,
+			value: this.props.value,
 			inputEvent: this.props.inputEvent || function(){},
 			onmousedown: this.props.onMouseDown || function(){},
 			onmouseup: this.props.onMouseUp || function(){}
@@ -38,7 +38,7 @@ export default class Range extends React.Component {
 				<div 
 					className={styles.previous} 
 					style={{
-						width: `${this.props.value / (0.01 * (this.props.max||100))}%`
+						width: `${this.state.value / (0.01 * (this.props.max||100))}%`
 					}}
 				/>
                 <input 

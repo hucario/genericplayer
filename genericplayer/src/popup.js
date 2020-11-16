@@ -29,19 +29,22 @@ export default class Popup extends React.Component {
 			recentsGridMode: false,
 			stationsGridMode: false,
 			showingLoginExp: false,
-			loggedIn: this.props.loggedIn || false
+			loggedIn: false,
+			setSeekValue: (a) => {},
+			setVolume: (a) => {},
+			currentStation: null,
+			time: 0,
+			volume: 100,
+			currentSong: null,
+			playing: false,
+			rating: 'unrated'
 		}
-		this.state.activeExtension.forceUpdateList.push(this.forceUpdate);
-		
-		if (typeof this.props.pageOn === "undefined") {
-			if (typeof this.props.loggedIn === "undefined") {
-				this.state.pageOn = 3
-			} else {
-				this.state.pageOn = (this.props.loggedIn?1:3)
-			}
-		} else {
-			this.state.pageOn = this.props.pageOn;
-		}
+		this.state.activeExtension.addSetStateCb(this.wrappedSetState.bind(this));
+		this.state.pageOn = (this.state.activeExtension.loggedIn || this.state.loggedIn || this.props.loggedIn)?1:3
+	}
+	wrappedSetState = (obj) => {
+		console.log(obj)
+		this.setState(obj);
 	}
 	onerror = (e) => {
 		switch(e) {
@@ -85,14 +88,16 @@ export default class Popup extends React.Component {
 	}
 	seekStart = () => {
 		this.setState({
-			wasPlaying: this.state.activeExtension.currentlyPlaying.playing
+			wasPlaying: this.state.playing
 		})
 		this.state.activeExtension.pause();		
 	}
-	seekEnd = () => {
+	seekEnd = (e) => {
+		console.log(e);
 		if (this.state.wasPlaying) {
 			this.state.activeExtension.play();
 		}
+		this.state.activeExtension.seek(e)
 	}
 	formatTime = (duration) => {
 		/*
@@ -116,10 +121,59 @@ export default class Popup extends React.Component {
 			return ret;
 	}
 	handleGetValueSetterAaa = (setvalue) => {
-
+		this.setState({
+			setSeekValue: setvalue
+		})
+	}
+	likeCurrentSong = async () => {
+		this.setState({
+			rating: 'liked'
+		});
+		if (this.state.currentSong) {
+			let x = await this.state.currentSong.like();
+			this.setState({
+				rating: x
+			})
+		}
+	}
+	dislikeCurrentSong = async () => {
+		this.setState({
+			rating: 'disliked'
+		})
+		if (this.state.currentSong) {
+			let x = await this.state.currentSong.dislike();
+			this.setState({
+				rating: x
+			})
+		}
+	}
+	volumeClick = () => {
+		if (this.state.volume === 0) {
+			this.setState({
+				volume: this.state.prevVolume || 100
+			})
+		} else {
+			this.setState({
+				prevVolume: this.state.volume,
+				volume: 0
+			})
+		}
+	}
+	changeVolume = async (e) => {
+		this.setState({
+			volume: e
+		})
+	}
+	setVolumeCB = (e) => {
+		this.setState({
+			setVolume: e
+		})
 	}
 	render() {
-	return (
+		this.state.setSeekValue(this.state.time)
+		this.state.setVolume(this.state.volume)
+
+		return (
 		<React.Fragment>
 			<div id="slider" style={{
 				right: `calc(var(--width) * ${this.state.pageOn}`
@@ -143,95 +197,107 @@ export default class Popup extends React.Component {
 				<section id="player">
 					<div id="attribution">
 						<div id="songname">{
-							this.state.loggedIn && 
-							this.state.activeExtension.currentlyPlaying.song && 
-							this.state.activeExtension.currentlyPlaying.song.name
+							this.state.currentSong && 
+							this.state.currentSong.name
 						}</div>
 						<div id="albumname">{
-							this.state.loggedIn && 
-							this.state.activeExtension.currentlyPlaying.song && 
-							this.state.activeExtension.currentlyPlaying.song.album && 
-							this.state.activeExtension.currentlyPlaying.song.album.name
+							this.state.currentSong && 
+							this.state.currentSong.album &&
+							this.state.currentSong.album.name
 						}</div>
 						<div id="artistname">{
-							this.state.loggedIn && 
-							this.state.activeExtension.currentlyPlaying.song && 
-							this.state.activeExtension.currentlyPlaying.song.artist && 
-							this.state.activeExtension.currentlyPlaying.song.artist.name
+							this.state.currentSong && 
+							this.state.currentSong.artist && 
+							this.state.currentSong.artist.name
 						}</div>
 					</div>
 					<a id="albumLink" href={
-							this.state.loggedIn && 
-							this.state.activeExtension.currentlyPlaying.song && 
-							this.state.activeExtension.currentlyPlaying.song.album && 
-							this.state.activeExtension.currentlyPlaying.song.album.url
+							this.state.currentSong && 
+							this.state.currentSong.album && 
+							this.state.currentSong.album.url
 						}>
 						<img alt='Album art for song.' id="albumArt" src={
-							this.state.loggedIn && 
-							this.state.activeExtension.currentlyPlaying.song && 
-							this.state.activeExtension.currentlyPlaying.song.album && 
-							this.state.activeExtension.currentlyPlaying.song.album.coverUrl
+							this.state.currentSong && 
+							this.state.currentSong.album && 
+							this.state.currentSong.album.coverUrl
 						} />
 					</a>
 					<Range 
 						id="seekBar" 
 						max={
-							this.state.activeExtension.currentlyPlaying.song && 
-							this.state.activeExtension.currentlyPlaying.song.length
+							this.state.currentSong && 
+							this.state.currentSong.length
 						}
-						value={this.state.activeExtension.currentlyPlaying.time}
+						value={this.state.time}
 						onMouseDown={
 							this.seekStart
 						}
 						onMouseUp={
 							this.seekEnd
 						}
+						setValueCB={
+							this.handleGetValueSetterAaa
+						}
 						title={	
-							this.state.activeExtension.currentlyPlaying.song && 
-							this.formatTime(this.state.activeExtension.currentlyPlaying.time) + ' / ' +
-							this.formatTime(this.state.activeExtension.currentlyPlaying.song.length)
+							this.state.currentSong && 
+							this.formatTime(this.state.time) + ' / ' +
+							this.formatTime(this.state.currentSong.length)
 						}
 					/>
 
 					<div id="topControls">
-							<button id="back" className="bx bx-skip-previous"></button>
+							<button 
+								className="bx bx-skip-previous"
+							/>
 							<button 
 								id="play" 
-								className={"bx "+(this.state.activeExtension.currentlyPlaying.playing?'bx-pause':'bx-play')}
+								className={"bx "+(this.state.playing?'bx-pause':'bx-play')}
 								onClick={this.state.activeExtension.togglePlay}
 							/>
 							<button 
-								id="skip" 
 								className="bx bx-skip-next"
 								onClick={this.state.activeExtension.skip}
 							/>
 					</div>
 					<div id="bottomControls">
-						<button id="repeat" className="bx bx-repeat"></button>
 						<button 
-							id="like" 
-							className="bx bx-like"
+							className="bx bx-repeat"
+						/>
+						<button 
+							className={"bx bx"+ (this.state.rating === "liked"?'s':'') + '-like'}
 							onClick={
-								this.state.activeExtension.currentlyPlaying.song &&
-								this.state.activeExtension.currentlyPlaying.song.like
+								this.likeCurrentSong
 							}
 						/>
-						<button id="dislike" className="bx bx-dislike"></button>
-						<button id="shuffle" className="bx bx-shuffle"></button>
+						<button
+							className={"bx bx"+ (this.state.rating === "disliked"?'s':'') + '-dislike'}
+							onClick={
+								this.dislikeCurrentSong
+							}
+						/>
+						<button className="bx bx-shuffle"></button>
 					</div>
 
 					<div id="volume">
-						<button id="mute" className="bx bxs-volume-full"></button>
+						<button 
+							className="bx bxs-volume-full"
+							id="mute"
+							onClick={this.volumeClick}
+						/>
 						<Range 
 							id="volumeBar" 
 							value={
-								this.state.loggedIn && 
-								this.state.activeExtension.currentlyPlaying.volume
+								this.state.volume
 							}
 							max="100"
 							title={
-								this.state.loggedIn &&
-								this.state.activeExtension.currentlyPlaying.volume
+								this.state.volume
+							}
+							inputEvent={
+								this.changeVolume
+							}
+							setValueCB={
+								this.setVolumeCB
 							}
 						/>
 					</div>
