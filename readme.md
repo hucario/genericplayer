@@ -1,3 +1,5 @@
+# This readme is outdated. I'll work on it tomorrow but for now just keep in mind that there's actually more done than looks like on this list.
+
 yea the repo name is GenericPlayer but the project name before uploading this was NewAnesidora so it's still called that like everywhere
 
 # NewAnesidora
