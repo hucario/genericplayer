@@ -4,19 +4,17 @@ class HistoryItem extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {}
-		if (this.props.info) {
-			this.state.info = this.props.info;
-		} else {
+		if (!this.props.info) {
 			throw new Error("Missing prop 'info'");
 		}
-		this.state.rating = this.state.info.rating;
+		this.state.rating = this.props.info.rating;
 	}
 	like = () => {
 		this.setState({
 			rating: (this.state.rating==='liked'?'unrated':'liked') // preview, so you don't have to wait for ping
 			// if it doesn't work, then it'll just undo itself below
 		})
-		this.state.info.like().then((e) => {
+		this.props.info.like().then((e) => {
 			this.setState({
 				rating: e
 			});
@@ -27,14 +25,14 @@ class HistoryItem extends React.Component {
 			rating: (this.state.rating==='disliked'?'unrated':'disliked') // preview, so you don't have to wait for ping
 			// if it doesn't work, then it'll just undo itself below
 		})
-		this.state.info.dislike().then((e) => {
+		this.props.info.dislike().then((e) => {
 			this.setState({
 				rating: e
 			});
 		})
 	}
 	render() {
-		let tHI = this.state.info; // shorthand
+		let tHI = this.props.info; // shorthand
 		return (<li className='hI'>
 		<img 
 			src={tHI.album.coverUrl.includes('/')?tHI.album.coverUrl:'invalid url'}
@@ -74,12 +72,12 @@ export default class History extends React.Component {
 			extension: props.activeExtension,
 			history: []
 		}
-		this.props.activeExtension.getHistory().then(e => {
+		this.state.extension.getHistory().then(e => {
 			this.setState({
 				history: e
 			})
 		})
-		this.props.activeExtension.addSetHistoryCb(this.setHistory.bind(this));
+		this.state.extension.addSetHistoryCb(this.setHistory);
 	}
 	setHistory = (hist) => {
 		console.log('updating history')
