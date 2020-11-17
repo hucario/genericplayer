@@ -51,6 +51,9 @@ export default class Range extends React.Component {
 					onMouseDown={this.onmousedown}
 					onMouseUp={this.onmouseup}
 					title={this.props.title || ""}
+					aria-label={
+						this.props['aria-label']
+					}
                 />
             </div>
         );

@@ -9,15 +9,25 @@ export default class IconToggle extends React.Component {
 		this.state = {
 			icon: props.icon || 'bx-list-ul',
 			onToggle: props.onToggle || function(){},
-			defaultChecked: props.checked || false
+			defaultChecked: props.checked || false,
+			value: props.checked || false
 		}
+	}
+	onToggle = (e) => {
+		this.state.onToggle(e)
+		this.setState({
+			value: e.target.value
+		})
 	}
 	render() {
 		return <input 
 			type="checkbox" 
 			className={styles.icontoggle + " bx bx-list-ul"}
-			onClick={this.state.onToggle}
+			onClick={this.onToggle}
 			defaultChecked={this.state.defaultChecked}
+			aria-checked={
+				this.state.value
+			}
 		/>
 	}
 }

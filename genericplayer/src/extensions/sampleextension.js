@@ -228,7 +228,8 @@ class SampleExtension extends Extension {
 		time: 0,
 		volume: 100,
 		song: null,
-		playing: false
+		playing: false,
+		repeatOne: false
 	}
 	/** @type { SampleSong[] } */
 	playlist = []
@@ -251,7 +252,8 @@ class SampleExtension extends Extension {
 			time: this.currentlyPlaying.time,
 			volume: this.currentlyPlaying.volume,
 			song: this.currentlyPlaying.song,
-			playing: this.currentlyPlaying.playing
+			playing: this.currentlyPlaying.playing,
+			repeatOne: this.currentlyPlaying.repeatOne
 		})
 
 		setInterval(() => {
@@ -260,6 +262,13 @@ class SampleExtension extends Extension {
 			}
 			this.currentlyPlaying.time++;
 			if (this.currentlyPlaying.time >= this.currentlyPlaying.song.length) {
+				if (this.currentlyPlaying.repeatOne) {
+					this.currentlyPlaying.time = 0;
+					this.setStates({
+						time: this.currentlyPlaying.time
+					})
+					return;
+				}
 				this.skip();
 			} else {
 				this.setStates({
@@ -267,6 +276,13 @@ class SampleExtension extends Extension {
 				});
 			}
 		}, 1000)
+	}
+
+	setRepeat = (bool) => {
+		this.currentlyPlaying.repeatOne = bool;
+		this.setStates({
+			repeat: this.currentlyPlaying.repeatOne
+		})
 	}
 
 	playStation = async (stat) => {
@@ -281,7 +297,8 @@ class SampleExtension extends Extension {
 			currentStation: this.currentlyPlaying.station,
 			currentSong: this.currentlyPlaying.song,
 			time: this.currentlyPlaying.time,
-			rating: this.currentlyPlaying.song.rating
+			rating: this.currentlyPlaying.song.rating,
+			repeatOne: this.currentlyPlaying.repeatOne
 		})
 	}
 
@@ -303,7 +320,8 @@ class SampleExtension extends Extension {
 			volume: this.currentlyPlaying.volume,
 			song: this.currentlyPlaying.song,
 			playing: this.currentlyPlaying.playing,
-			rating: (this.currentlyPlaying.song && this.currentlyPlaying.song.rating) || 'unrated'
+			rating: (this.currentlyPlaying.song && this.currentlyPlaying.song.rating) || 'unrated',
+			repeatOne: this.currentlyPlaying.repeatOne
 		})
 	}
 	setStates = (obj) => {
@@ -359,6 +377,12 @@ class SampleExtension extends Extension {
 			time: this.currentlyPlaying.time
 		})
 		this.updateHistories(this.history)
+	}
+	backSong = () => {
+		this.currentlyPlaying.time = 0;
+		this.setStates({
+			time: this.currentlyPlaying.time
+		})
 	}
 
 	login = async (a,b) => {

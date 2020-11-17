@@ -85,11 +85,6 @@ export default class Popup extends React.Component {
 		})
 		this.navLeft();
 	}
-	factory = (a) => {
-		return function() {
-			a.apply(this,arguments);
-		}.bind(this)
-	}
 	seekStart = () => {
 		this.setState({
 			wasPlaying: this.state.playing
@@ -195,11 +190,11 @@ export default class Popup extends React.Component {
 						<div className="separator"></div>
 						<IconToggle 
 							icon="bx-list-ul"
-							onToggle={this.factory(function() {
+							onToggle={() => {
 								this.setState({
 									recentsGridMode: !this.state.recentsGridMode
 								});
-							})}
+							}}
 							checked={true}
 						/>
 					</div>
@@ -256,33 +251,66 @@ export default class Popup extends React.Component {
 							this.formatTime(this.state.time) + ' / ' +
 							this.formatTime(this.state.currentSong.length)
 						}
+						aria-label={
+							"Seek slider. \n" +
+							"Is actually a range so should be accessible. \n" +
+							"One unit of this is equivalent to one second of song time: "+
+							"if you want to seek to one minute and twenty seconds, "+
+							"you would change this to 80."
+						}
 					/>
 
 					<div id="topControls">
 							<button 
+								aria-label={
+									"Skip previous"
+								}
 								className="bx bx-skip-previous"
+								onClick={
+									this.state.activeExtension.backSong
+								}
 							/>
 							<button 
+								aria-label={
+									this.state.playing?'Pause':'Play'
+								}
 								id="play" 
 								className={"bx "+(this.state.playing?'bx-pause':'bx-play')}
 								onClick={this.state.activeExtension.togglePlay}
 							/>
 							<button 
+								aria-label={
+									'Skip'
+								}
 								className="bx bx-skip-next"
 								onClick={this.state.activeExtension.skip}
 							/>
 					</div>
 					<div id="bottomControls">
 						<button 
+							aria-label={
+								'Repeat'
+							}
+							onClick={
+								() => {
+									this.state.activeExtension.setRepeat(!this.state.repeat)
+								}
+							}
 							className="bx bx-repeat"
 						/>
 						<button 
+							aria-label={
+								this.state.rating==='liked'?'Remove like':'Like'
+							}
 							className={"bx bx"+ (this.state.rating === "liked"?'s':'') + '-like'}
 							onClick={
 								this.likeCurrentSong
 							}
 						/>
 						<button
+							aria-label={
+								this.state.rating==='disliked'?'Remove dislike':'Dislike'
+							}
 							className={"bx bx"+ (this.state.rating === "disliked"?'s':'') + '-dislike'}
 							onClick={
 								this.dislikeCurrentSong
@@ -293,11 +321,21 @@ export default class Popup extends React.Component {
 
 					<div id="volume">
 						<button 
+							aria-label={
+								this.state.volume === 0?'Unmute':'Mute'
+							}
 							className="bx bxs-volume-full"
 							id="mute"
 							onClick={this.volumeClick}
 						/>
 						<Range 
+							aria-label={
+								"Volume slider. \n" +
+								"Is actually a range so should be accessible. \n" +
+								"Max volume is 100 units: "+
+								"if you want to set volume to 30 percent, "+
+								"you would change this to 30."
+							}
 							id="volumeBar" 
 							value={
 								this.state.volume
@@ -322,12 +360,15 @@ export default class Popup extends React.Component {
 						<input id="search" placeholder="Search..." />
 						<button className="bx bx-refresh" id="refresh"></button>
 						<IconToggle 
+							aria-label={
+								'Station grid mode checkbox'
+							}
 							icon="bx-list-ul"
-							onToggle={this.factory(function() {
+							onToggle={() => {
 								this.setState({
 									stationsGridMode: !this.state.stationsGridMode
 								});
-							})}
+							}}
 						/>
 					</div>
 					{this.state.loggedIn && 
@@ -353,11 +394,11 @@ export default class Popup extends React.Component {
 						</form>
 						<button 
 							id="butwhytho"
-							onClick={this.factory(() => {
+							onClick={() => {
 								this.setState({
 									showingLoginExp: true
 								})
-							})}
+							}}
 						>why should I trust you with my login credentials</button>
 					</div>
 					<div 
@@ -379,11 +420,11 @@ export default class Popup extends React.Component {
 						<button 
 							id="closeExp"
 							onClick={
-								this.factory(() => {
+								() => {
 									this.setState({
 										showingLoginExp: false
 									})
-								})
+								}
 							}
 						>back</button>
 					</div>
