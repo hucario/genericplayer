@@ -307,6 +307,18 @@ export default class Popup extends React.Component {
 								this.likeCurrentSong
 							}
 						/>
+						<button 
+							aria-label={
+								'Download'
+							}
+							className="bx bxs-download"
+							onClick={
+								() => {
+									this.state.currentSong &&
+									this.state.currentSong.download()
+								}
+							}
+						/>
 						<button
 							aria-label={
 								this.state.rating==='disliked'?'Remove dislike':'Dislike'
