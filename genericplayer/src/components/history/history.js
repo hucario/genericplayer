@@ -3,40 +3,35 @@ import React from 'react';
 class HistoryItem extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-
-		}
+		this.state = {}
 		if (this.props.info) {
 			this.state.info = this.props.info;
 		} else {
 			throw new Error("Missing prop 'info'");
 		}
 		this.state.rating = this.state.info.rating;
-
-		this.like = this.like.bind(this);
-		this.dislike = this.dislike.bind(this);
 	}
-	like() {
-		let res;
-		try {
-			res = this.state.info.like();
-		} catch(e) {
-			// TODO: HANDLE CATCH (modal?)
-		}
+	like = () => {
 		this.setState({
-			rating: res
-		});
+			rating: (this.state.rating==='liked'?'unrated':'liked') // preview, so you don't have to wait for ping
+			// if it doesn't work, then it'll just undo itself below
+		})
+		this.state.info.like().then((e) => {
+			this.setState({
+				rating: e
+			});
+		})
 	}
-	dislike() {
-		let res;
-		try {
-			res = this.state.info.dislike();
-		} catch(e) {
-			// TODO: HANDLE CATCH (modal?)
-		}
+	dislike = () => {
 		this.setState({
-			rating: res
-		});
+			rating: (this.state.rating==='disliked'?'unrated':'disliked') // preview, so you don't have to wait for ping
+			// if it doesn't work, then it'll just undo itself below
+		})
+		this.state.info.dislike().then((e) => {
+			this.setState({
+				rating: e
+			});
+		})
 	}
 	render() {
 		let tHI = this.state.info; // shorthand
@@ -75,18 +70,31 @@ class HistoryItem extends React.Component {
 export default class History extends React.Component {
 	constructor(props) {
 		super(props);
-		this.setState({
-			extension: props.activeExtension
+		this.state = {
+			extension: props.activeExtension,
+			history: []
+		}
+		this.props.activeExtension.getHistory().then(e => {
+			this.setState({
+				history: e
+			})
 		})
+		this.props.activeExtension.addSetHistoryCb(this.setHistory.bind(this));
 	}
-	likeSong() {
-
+	setHistory = (hist) => {
+		console.log('updating history')
+		this.setState({
+			history: hist
+		})
 	}
 	render() {
 		let gaming = [];
-		let prevSongs = this.props.activeExtension.getHistory();
-		for (let i = 0; i < prevSongs.length; i++) {
-			gaming.push(<HistoryItem info={prevSongs[i]} key={i} />)
+		for (let i = 0; i < this.state.history.length; i++) {
+			gaming.push(
+				<HistoryItem 
+					info={this.state.history[i]} 
+					key={i} 
+				/>)
 		}
 		return (
 			<ol id="history">

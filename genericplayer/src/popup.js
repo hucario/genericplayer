@@ -97,7 +97,6 @@ export default class Popup extends React.Component {
 		this.state.activeExtension.pause();		
 	}
 	seekEnd = (e) => {
-		console.log(e);
 		if (this.state.wasPlaying) {
 			this.state.activeExtension.play();
 		}
@@ -173,6 +172,11 @@ export default class Popup extends React.Component {
 			setVolume: e
 		})
 	}
+	goToPage = (e) => {
+		this.setState({
+			pageOn: e
+		})
+	}
 	render() {
 		this.state.setSeekValue(this.state.time)
 		this.state.setVolume(this.state.volume)
@@ -199,7 +203,9 @@ export default class Popup extends React.Component {
 							checked={true}
 						/>
 					</div>
-					<History activeExtension={this.state.activeExtension}/>
+					<History 
+						activeExtension={this.state.activeExtension}
+					/>
 				</section>
 				<section id="player">
 					<div id="attribution">
@@ -328,6 +334,7 @@ export default class Popup extends React.Component {
 					<Stations 
 						activeExtension={this.state.activeExtension}
 						onerror={this.onerror}
+						goToPage={this.goToPage}
 					/>
 					}
 				</section>

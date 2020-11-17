@@ -212,17 +212,17 @@ class SampleStation extends Station {
 			return Math.round(Math.random() - Math.random())
 		})
 	}
-	play() {
-
-	}
 }
 
 class SampleExtension extends Extension {
+	/** @type { Boolean } */
 	allowsRatings = true
+	/** @type { String } */
 	logo = "https://1.gravatar.com/avatar/ab748872b9461554f80c9f1326727984?s=128"
+	/** @type { String } */
 	name = "Pandora"
+	/** @type { Boolean } */
 	loggedIn = true
-	ok = true
 	currentlyPlaying = {
 		station: null,
 		time: 0,
@@ -230,23 +230,22 @@ class SampleExtension extends Extension {
 		song: null,
 		playing: false
 	}
+	/** @type { SampleSong[] } */
 	playlist = []
+	/** @type { SampleSong[] } */
 	history = []
+	/** @type { SampleStation[] } */
+	stations = []
+	/** @type { Function[] } */
 	setStatesList = []
+	/** @type { Function[] } */
+	setHistoriesList = []
 
 	constructor() {
 		super();
-
-		this.seek = this.seek.bind(this);
-		this.setStates = this.setStates.bind(this);
-		this.togglePlay = this.togglePlay.bind(this);
-		this.play = this.play.bind(this);
-		this.pause = this.pause.bind(this);
-		this.skip = this.skip.bind(this);
-		this.login = this.login.bind(this);
-		this.getHistory = this.getHistory.bind(this);
-		this.getStations = this.getStations.bind(this)
-
+		this.getStations().then((e) => {
+			this.stations = e;
+		})
 		this.setStates({
 			currentStation: this.currentlyPlaying.station,
 			time: this.currentlyPlaying.time,
@@ -270,7 +269,23 @@ class SampleExtension extends Extension {
 		}, 1000)
 	}
 
-	seek(a) {
+	playStation = async (stat) => {
+		if (this.currentlyPlaying.song) {
+			this.history.unshift(this.currentlyPlaying.song);
+		}
+		this.currentlyPlaying.station = stat
+		this.playlist = this.currentlyPlaying.station.getPlaylist()
+		this.currentlyPlaying.song = this.playlist.shift();
+		this.currentlyPlaying.time = 0;
+		this.setStates({
+			currentStation: this.currentlyPlaying.station,
+			currentSong: this.currentlyPlaying.song,
+			time: this.currentlyPlaying.time,
+			rating: this.currentlyPlaying.song.rating
+		})
+	}
+
+	seek = (a) => {
 		this.currentlyPlaying.time = Math.min(a, this.currentlyPlaying.song.length)
 		if (this.currentlyPlaying.time === this.currentlyPlaying.song.length) {
 			this.skip();
@@ -280,7 +295,7 @@ class SampleExtension extends Extension {
 			})
 		}
 	}
-	addSetStateCb(cb) {
+	addSetStateCb = (cb) => {
 		this.setStatesList.push(cb);
 		cb({
 			currentStation: this.currentlyPlaying.station,
@@ -291,7 +306,7 @@ class SampleExtension extends Extension {
 			rating: (this.currentlyPlaying.song && this.currentlyPlaying.song.rating) || 'unrated'
 		})
 	}
-	setStates(obj) {
+	setStates = (obj) => {
 		for (let i = 0; i < this.setStatesList.length; i++) {
 			try {
 				this.setStatesList[i](obj)
@@ -300,25 +315,35 @@ class SampleExtension extends Extension {
 			}
 		}
 	}
-	togglePlay() {
+	addSetHistoryCb = async (cb) => {
+		this.setHistoriesList.push(cb)
+		let x = await this.getHistory();
+		cb(x);
+	}
+	updateHistories = (songArg) => {
+		for (let i = 0; i < this.setHistoriesList.length; i++) {
+			this.setHistoriesList[i](songArg)
+		}
+	}
+	togglePlay = () => {
 		this.currentlyPlaying.playing = !this.currentlyPlaying.playing;
 		this.setStates({
 			playing: this.currentlyPlaying.playing
 		})
 	}
-	play() {
+	play = () => {
 		this.currentlyPlaying.playing = true
 		this.setStates({
 			playing: this.currentlyPlaying.playing
 		})	
 	}
-	pause() {
+	pause = () => {
 		this.currentlyPlaying.playing = false;
 		this.setStates({
 			playing: this.currentlyPlaying.playing
 		})
 	}
-	skip() {
+	skip = () => {
 		if (this.playlist.length > 0) {
 			this.history.unshift(this.currentlyPlaying.song);
 			this.currentlyPlaying.song = this.playlist.shift();
@@ -330,34 +355,39 @@ class SampleExtension extends Extension {
 		this.currentlyPlaying.time = 0;
 		this.setStates({
 			currentSong: this.currentlyPlaying.song,
-			rating: this.currentlyPlaying.song.rating
+			rating: this.currentlyPlaying.song.rating,
+			time: this.currentlyPlaying.time
 		})
+		this.updateHistories(this.history)
 	}
 
-	async login(a,b) {
+	login = async (a,b) => {
 		this.loggedIn = true;		
 		this.setStates({
 			loggedIn: this.loggedIn
 		})
 		return true;
 	}
-	async prepareRandom() {
+	prepareRandom = async () => {
 		let x = await this.getStations();
 		this.currentlyPlaying.station = x[Math.floor(Math.random()*x.length)]
 		this.playlist = this.currentlyPlaying.station.getPlaylist()
 		for (let i = 0, p = Math.random()*5; i < p; i++) {
 			this.playlist.shift()
 		}
-		this.currentlyPlaying.song = this.playlist[0];
+		this.currentlyPlaying.song = this.playlist.shift();
 		this.currentlyPlaying.time = Math.floor(Math.random()*this.currentlyPlaying.song.length)
+		this.currentlyPlaying.playing = true;
 		this.setStates({
 			currentStation: this.currentlyPlaying.station,
 			currentSong: this.currentlyPlaying.song,
 			time: this.currentlyPlaying.time,
-			rating: this.currentlyPlaying.song.rating
+			rating: this.currentlyPlaying.song.rating,
+			loggedIn: true,
+			playing: true
 		})
 	}
-	async getStations() {
+	getStations = async () => {
 		let res= [
 			new SampleStation({
 				"latestCover": "https://www.pandora.com/img/shuffle_art_500W_500H.png",
@@ -458,7 +488,8 @@ class SampleExtension extends Extension {
 		];
 		return res;
 	}
-	getHistory() {
+	getHistory = async () => {
+		// doesn't have to be async but to keep consistency between extensions
 		return this.history;
 	}
 }

@@ -29,7 +29,9 @@ export default class Stations extends React.Component {
 			ch.push(
 				<StationElement 
 					data={this.state.stations[i]} 
+					ext={this.state.activeExtension}
 					key={i}
+					goToPage={this.props.goToPage || function(){}}
 				/>
 			) 
 		}
@@ -47,7 +49,8 @@ class StationElement extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: this.props.data
+			data: this.props.data,
+			ext: this.props.ext
 		}
 		if (!this.state.data) {
 			throw new Error("No data provided.")
@@ -64,9 +67,16 @@ class StationElement extends React.Component {
 						color: ['white', 'red', 'orange', 'yellow', 'green', 'blue', 'purple'][Math.floor(Math.random()*7)]
 					}}
 				/>
-				<span 
+				<button
 					className={styles.name}
-				>{this.state.data.name}</span>
+					onClick={
+						(() => {
+							this.state.ext.playStation(this.state.data).then(() => {
+								this.props.goToPage(1);
+							})
+						})
+					}
+				>{this.state.data.name}</button>
 			</li>
 		)
 	}
