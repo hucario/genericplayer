@@ -261,7 +261,7 @@ class SampleExtension extends Extension {
 				return;
 			}
 			this.currentlyPlaying.time++;
-			if (this.currentlyPlaying.time >= this.currentlyPlaying.song.length) {
+			if (this.currentlyPlaying.time > this.currentlyPlaying.song.length) {
 				if (this.currentlyPlaying.repeatOne) {
 					this.currentlyPlaying.time = 0;
 					this.setStates({
@@ -281,7 +281,7 @@ class SampleExtension extends Extension {
 	setRepeat = (bool) => {
 		this.currentlyPlaying.repeatOne = bool;
 		this.setStates({
-			repeat: this.currentlyPlaying.repeatOne
+			repeatOne: this.currentlyPlaying.repeatOne
 		})
 	}
 

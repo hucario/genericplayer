@@ -37,7 +37,8 @@ export default class Popup extends React.Component {
 			volume: 100,
 			currentSong: null,
 			playing: false,
-			rating: 'unrated'
+			rating: 'unrated',
+			repeatOne: false
 		}
 		// @ts-ignore
 		window.mainState = this.state;
@@ -293,16 +294,22 @@ export default class Popup extends React.Component {
 							}
 							onClick={
 								() => {
-									this.state.activeExtension.setRepeat(!this.state.repeat)
+									this.state.activeExtension.setRepeat(!this.state.repeatOne)
 								}
 							}
-							className="bx bx-repeat"
+							className={
+								"bx bx-repeat" + (this.state.repeatOne?' active':'')
+							}
 						/>
 						<button 
 							aria-label={
 								this.state.rating==='liked'?'Remove like':'Like'
 							}
-							className={"bx bx"+ (this.state.rating === "liked"?'s':'') + '-like'}
+							className={
+								"bx bx" + 
+								(this.state.rating === "liked"?'s-like active':'-like')
+							
+							}
 							onClick={
 								this.likeCurrentSong
 							}
@@ -323,12 +330,18 @@ export default class Popup extends React.Component {
 							aria-label={
 								this.state.rating==='disliked'?'Remove dislike':'Dislike'
 							}
-							className={"bx bx"+ (this.state.rating === "disliked"?'s':'') + '-dislike'}
+							className={
+								"bx bx"+ 
+								(this.state.rating === "disliked"?'s-dislike active':'-dislike')}
 							onClick={
 								this.dislikeCurrentSong
 							}
 						/>
-						<button className="bx bx-shuffle"></button>
+						<a
+							id="settingsCog"
+							href="./settings"
+							className="bx bx-cog"
+						>Settings</a>
 					</div>
 
 					<div id="volume">

@@ -555,9 +555,21 @@ a#albumLink {
 }
 
 #bottomControls .bx {
-	opacity: 0.6;
+	color: #999999;
 	width: 1.5em;
 	height: 1.5em;
+	transition: color 250ms;
+}
+
+#bottomControls .bx.active {
+	color: gold;
+}
+
+#settingsCog.bx {
+	font-size: 0;
+}
+#settingsCog.bx:before {
+	font-size: 1.5rem;
 }
 
 #player button#mute {
@@ -571,6 +583,7 @@ a#albumLink {
 	width: 1em;
 	height: 1em;
 }
+
 #player button#mute:hover {
 	background: none; /* let's not */
 }
