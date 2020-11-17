@@ -418,7 +418,7 @@ section#loginSection {
     flex-direction: row;
 }
 
-div#loginMain {
+#loginMain {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -565,13 +565,18 @@ a#albumLink {
 	color: gold;
 }
 
-#settingsCog.bx {
-	font-size: 0;
+.bx.bx-cog#settingsCog {
+    font-size: 0;
+    text-decoration: none;
+    text-decoration-color: transparent;
+    width: calc(var(--player-button-size) * 1.5);
+    height: calc(var(--player-button-size) * 1.5);
 }
 #settingsCog.bx:before {
-	font-size: 1.5rem;
+	font-size: var(--player-button-size);
+	transform: translate(0.25em,0.25em);
+	display: block;
 }
-
 #player button#mute {
     border: none;
     height: var(--player-big-button-size);
@@ -593,13 +598,13 @@ img#albumArt {
     width: 100%;
 }
 
-div#volumeBar {
+#volumeBar {
     width: 10rem;
     min-height: 0.2rem;
     max-height: 0.4rem;
 }
 
-div#volume {
+#volume {
     display: flex;
     align-items: center;
 }
@@ -615,7 +620,7 @@ form#login {
     flex-direction: column;
 }
 
-div#loginExplanation {
+#loginExplanation {
     position: absolute;
 	bottom: var(--height);
 	height: var(--height);
@@ -691,3 +696,30 @@ div#loginExplanation {
 }
 
 
+#attribution > a {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+	display: inline-block;
+	color: white;
+	max-width: 100%;
+	text-decoration: none;
+	cursor: default;
+}
+
+#attribution > a[href] {
+	cursor: pointer;
+}
+
+#attribution {
+	min-width: var(--art-size);
+	max-width: calc(var(--width) * 0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+#songname {
+    font-size: 2em;
+    font-weight: bold;
+}

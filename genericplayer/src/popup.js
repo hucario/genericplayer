@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import {SampleExtension} from './extensions/sampleextension.js'
 import History from './components/history/history'
@@ -205,31 +206,83 @@ export default class Popup extends React.Component {
 				</section>
 				<section id="player">
 					<div id="attribution">
-						<div id="songname">{
+						<a 
+							id="songname"
+							href={
+								this.state.currentSong &&
+								(() => {
+									if (this.state.currentSong.url === undefined) {
+										return null;
+									} else if (this.state.currentSong.url === "") {
+										return null;
+									} else {
+										return this.state.currentSong.url;
+									}
+								})()
+							}
+						>{
 							this.state.currentSong && 
 							this.state.currentSong.name
-						}</div>
-						<div id="albumname">{
+						}</a>
+						<a 
+							id="albumname"
+							href={
+								this.state.currentSong &&
+								this.state.currentSong.album &&
+								(() => {
+									if (this.state.currentSong.album.url === undefined) {
+										return null;
+									} else if (this.state.currentSong.album.url === "") {
+										return null;
+									} else {
+										return this.state.currentSong.album.url;
+									}
+								})()
+							}
+						>{
 							this.state.currentSong && 
 							this.state.currentSong.album &&
 							this.state.currentSong.album.name
-						}</div>
-						<div id="artistname">{
+						}</a>
+						
+						<a 
+							id="artistname"
+							href={
+								this.state.currentSong &&
+								this.state.currentSong.artist &&
+								(() => {
+									if (this.state.currentSong.artist.url === undefined) {
+										return null;
+									} else if (this.state.currentSong.artist.url === "") {
+										return null;
+									} else {
+										return this.state.currentSong.artist.url;
+									}
+								})()
+							}
+						>{
 							this.state.currentSong && 
 							this.state.currentSong.artist && 
 							this.state.currentSong.artist.name
-						}</div>
+						}</a>
 					</div>
-					<a id="albumLink" href={
+					<a 
+						id="albumLink" 
+						href={
 							this.state.currentSong && 
 							this.state.currentSong.album && 
 							this.state.currentSong.album.url
-						}>
-						<img alt='Album art for song.' id="albumArt" src={
-							this.state.currentSong && 
-							this.state.currentSong.album && 
-							this.state.currentSong.album.coverUrl
-						} />
+						}
+					>
+						<img 
+							alt='Album art for song.' 
+							id="albumArt" 
+							src={
+								this.state.currentSong && 
+								this.state.currentSong.album && 
+								this.state.currentSong.album.coverUrl
+							}
+						/>
 					</a>
 					<Range 
 						id="seekBar" 
@@ -383,7 +436,10 @@ export default class Popup extends React.Component {
 					<div className="topbar">
 						<h1>Stations</h1>
 						<input id="search" placeholder="Search..." />
-						<button className="bx bx-refresh" id="refresh"></button>
+						<button 
+							className="bx bx-refresh"
+							id="refresh"
+						></button>
 						<IconToggle 
 							aria-label={
 								'Station grid mode checkbox'
