@@ -6,17 +6,21 @@ export default class Stations extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			activeExtension: this.props.activeExtension
+			activeExtension: this.props.ext,
+			stations: this.props.stations
 		}
-		this.props.activeExtension.getStations()
-		.then((e) => {
-			this.setState({
-				stations: e
+		if (!this.props.stations) {
+			console.log('getting stations')
+			this.props.activeExtension.getStations()
+			.then((e) => {
+				this.setState({
+					stations: e
+				})
 			})
-		})
-		.catch((e) => {
-			this.props.onerror(e);
-		})
+			.catch((e) => {
+				this.props.onerror(e);
+			})
+		}
 	}
 	render() {
 		if (!this.state.stations) {

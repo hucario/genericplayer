@@ -46,6 +46,9 @@ class SampleSong extends Song {
 
 		return this.rating;
 	}
+	getRating = () => {
+		return this.rating;
+	}
 	download = () => {
 		alert(`Downloading ${this.name}${(this.url !== ""?' from '+this.url:'')}`)
 	}

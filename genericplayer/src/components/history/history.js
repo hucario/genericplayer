@@ -7,7 +7,7 @@ class HistoryItem extends React.Component {
 		if (!this.props.info) {
 			throw new Error("Missing prop 'info'");
 		}
-		this.state.rating = this.props.info.rating;
+		this.state.rating = this.props.info.getRating();
 	}
 	like = () => {
 		this.setState({
@@ -48,7 +48,7 @@ class HistoryItem extends React.Component {
 				className="historyButtons"
 			>
 				<button
-					className={`bx ${this.state.rating === 'liked'?'bxs-like':'bx-like'}`}
+					className={`bx ${tHI.getRating() === 'liked'?'bxs-like':'bx-like'}`}
 					onClick={this.like}
 				 />
 				<button
@@ -56,7 +56,7 @@ class HistoryItem extends React.Component {
 					onClick={tHI.download}
 					/>
 				<button
-					className={`bx ${this.state.rating === 'disliked'?'bxs-dislike':'bx-dislike'}`}
+					className={`bx ${tHI.getRating() === 'disliked'?'bxs-dislike':'bx-dislike'}`}
 					onClick={this.dislike}
 					/>
 			</div>

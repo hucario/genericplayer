@@ -39,13 +39,19 @@ export default class Popup extends React.Component {
 			currentSong: null,
 			playing: false,
 			rating: 'unrated',
-			repeatOne: false
+			repeatOne: false,
+			stations: []
 		}
 		// @ts-ignore
 		window.mainState = this.state;
 		console.log('Logging Popup state to window.mainState');	
 
 		this.state.activeExtension.addSetStateCb(this.wrappedSetState.bind(this));
+		this.state.activeExtension.getStations().then(e => {
+			this.setState({
+				stations: e
+			})
+		})
 		this.state.pageOn = (this.state.activeExtension.loggedIn || this.state.loggedIn || this.props.loggedIn)?1:3
 	}
 	wrappedSetState = (obj) => {
@@ -437,8 +443,24 @@ export default class Popup extends React.Component {
 						<h1>Stations</h1>
 						<input id="search" placeholder="Search..." />
 						<button 
-							className="bx bx-refresh"
+							className={
+								"bx bx-refresh" +
+								(this.state.refreshing?' bx-spin':'')
+							}
 							id="refresh"
+							onClick={
+								() => {
+									this.state.activeExtension.getStations().then((e) => {
+										this.setState({
+											stations: e,
+											refreshing: false
+										})
+									})
+									this.setState({
+										refreshing: true
+									})
+								}
+							}
 						></button>
 						<IconToggle 
 							aria-label={
@@ -454,7 +476,8 @@ export default class Popup extends React.Component {
 					</div>
 					{this.state.loggedIn && 
 					<Stations 
-						activeExtension={this.state.activeExtension}
+						stations={this.state.stations}
+						ext={this.state.activeExtension}
 						onerror={this.onerror}
 						goToPage={this.goToPage}
 					/>

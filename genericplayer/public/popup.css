@@ -398,20 +398,6 @@ input#search {
 	font-size: 1em;
 	outline: none;
 }
-
-@keyframes spinney {
-    0% {
-        transform: scaleX(-1) rotate(359deg);
-    }
-    100% {
-        transform: scaleX(-1) rotate(0deg);
-    }
-}
-@media (prefers-reduced-motion: no-preference) {
-	#refresh:active::before {
-		animation: spinney 1.5s linear infinite;
-	}
-}
 section#loginSection {
     display: flex;
     align-items: center;
