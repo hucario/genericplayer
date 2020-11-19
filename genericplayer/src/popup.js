@@ -475,6 +475,8 @@ export default class Popup extends React.Component {
 						/>
 					</div>
 					{this.state.loggedIn && 
+					this.state.stations &&
+					this.state.stations.length > 0 &&
 					<Stations 
 						stations={this.state.stations}
 						ext={this.state.activeExtension}

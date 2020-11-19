@@ -9,7 +9,7 @@ export default class Stations extends React.Component {
 			activeExtension: this.props.ext,
 			stations: this.props.stations
 		}
-		if (!this.props.stations) {
+		if (!this.props.stations || (this.props.stations && this.props.stations.length === 0)) {
 			console.log('getting stations')
 			this.props.activeExtension.getStations()
 			.then((e) => {
@@ -20,6 +20,8 @@ export default class Stations extends React.Component {
 			.catch((e) => {
 				this.props.onerror(e);
 			})
+		} else {
+			console.log('yay for stations', this.state.stations)
 		}
 	}
 	render() {

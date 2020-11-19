@@ -72,11 +72,6 @@ export default class History extends React.Component {
 			extension: props.activeExtension,
 			history: []
 		}
-		this.state.extension.getHistory().then(e => {
-			this.setState({
-				history: e
-			})
-		})
 		this.state.extension.addSetHistoryCb(this.setHistory);
 	}
 	setHistory = (hist) => {
