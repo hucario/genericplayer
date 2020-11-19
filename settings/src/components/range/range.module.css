@@ -1,0 +1,43 @@
+
+.control {
+    appearance: none;
+    width: 100%;
+    background: none;
+    outline: none;
+    position: absolute;
+    top: -2px;
+	height: 100%;
+	user-select: none;
+}
+
+.control::-webkit-slider-thumb {
+    background: white;
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+	border-radius: 100%;
+    position: relative;
+	left: -2px;
+	user-select: none;
+}
+
+.previous {
+    width: 30%;
+    height: 100%;
+    background: var(--accent-color);
+	border-radius: 5vw 0 0 5vw;
+	user-select: none;
+	pointer-events: none;
+}
+
+.wrapper {
+    height: 0.3rem;
+    background: white;
+    display: inline-block;
+    width: 10rem;
+    min-height: 0.2rem;
+    max-height: 0.4rem;
+    position: relative;
+	border-radius: 10000vw;
+	user-select: none;
+}
