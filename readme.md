@@ -1,59 +1,44 @@
-# This readme is outdated. I'll work on it tomorrow but for now just keep in mind that there's actually more done than looks like on this list.
+# GenericPlayer
+a generic player extension.
+allows for extensions (of the extension) that add more services.
 
-yea the repo name is GenericPlayer but the project name before uploading this was NewAnesidora so it's still called that like everywhere
-
-# NewAnesidora
-A complete rewrite of [Anesidora](https://github.com/pvr212/Anesidora).
-
-#### Hold up what happened to the original?
-Nothing. [It's still there.](https://github.com/pvr212/Anesidora) I just wanted to remake it.
-
-~~also I can't reupload it to the Chrome Web Store as exactly the same so LOOK GUYS IT'S A DIFFERENT EXTENSION~~
-
-#### What's the difference?
-- Doesn't rely on jQuery
-- Uses font icons, which makes [this whole mess a lot easier](https://github.com/pvrs12/Anesidora/pull/54) (in my defense, I knew a lot more about it now than I did then)
-- Doesn't have to be just Pandora - going to make this work for several streaming services hopefully (although they'll have to be radio based) 
 ## This is still a WIP, and doesn't actually function at all yet lol
 ### To-do:
 
 
 #### Overall:
-- Add functionality (as in, pull stations/history and login, for now it just uses S A M P L E T E X T)
-- Populate stations button
-- Plugins (?)
-- """3d""" panels
+- Create pandora extension
 
 #### Player pane:
- - Controls
- - Ratings
- - Settings icon (see below)
- - Album cover
- - Time slider
- - Volume slider
- - Sleep timer
- - Lyrics
+ - ~~Controls~~ Working!
+ - ~~Ratings~~ Works.
+ - ~~Settings icon (see below)~~ Works, but links to an uncreated page.
+ - ~~Album cover~~ Works. Need to create a default cover for when there is no working cover.
+ - ~~Time slider~~ Works.
+ - ~~Volume slider~~ Works.
+ - ~~Sleep timer~~ Will not implement - probably no point to it.
+ - Lyrics (In progress: getting a genius api key right now. Will probably only be for the big player tho)
  - ~~maybe maybe maybe airplay??? maybe? if that's even possible?~~ 
  Not possible currently
- - Queue view (?)
+ - Queue view (?): Will implement in the big player.
 
 #### Stations panel:
-- Search
-- Play
-- Put last played song in station as cover
+- Search: Not functional currently
+- ~~Play~~ Functional.
+- ~~Put last played song in station as cover~~ Works. Uses the pandora "last used cover" instead of keeping track itself.
 - Grid mode
-- List mode
+- ~~List mode~~ Works.
 
 #### History panel:
-- Make buttons do stuff other than just look ~~good~~ ok
+- ~~Make buttons do stuff other than just look good~~ Done.
 - ~~Grid mode~~ Done
 - ~~List mode~~ Done
 - ~~animation transitioning between the two~~ Done	
 
 #### Options panel:
-- actually exist
-- plugins draglist (think iOS lists?)
-- add accounts? I'm going to have to think on this
+- actually exist: Is next in line on the to-do list.
+- ~~plugins draglist (think iOS lists?)~~ Probaby will be a select as you can only have one plugin at a time.
+- ~~add accounts? I'm going to have to think on this~~ Login will be per-extension.
 
 # Credits
 [pandora-api-docs](https://6xq.net/pandora-apidoc/) by [PromyLOPh](https://github.com/PromyLOPh)
