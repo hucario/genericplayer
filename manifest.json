@@ -1,0 +1,22 @@
+{
+	"manifest_version": 2,
+	"background_COMMENTED_OUT": {
+		"page": "background.html"
+	},
+	"browser_action_COMMENTED_OUT": {
+		"browser_style": true,
+		"default_popup": "popup/up.html"
+	},
+	"description": "Generic player.",
+	"name": "GenericPlayer",
+	"omnibox": {
+		"keyword": "radio"
+	},
+	"permissions": [
+		"http://*.pandora.com/*",
+		"https://*.pandora.com/*",
+		"http://*.p-cdn.com/*",
+		"http://*.p-cdn.us/*"
+	],
+	"version": "0.0.1"
+}
