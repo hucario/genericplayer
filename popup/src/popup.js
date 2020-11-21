@@ -42,9 +42,6 @@ export default class Popup extends React.Component {
 			repeatOne: false,
 			stations: []
 		}
-		// @ts-ignore
-		window.mainState = this.state;
-		console.log('Logging Popup state to window.mainState');	
 
 		this.state.activeExtension.addSetStateCb(this.wrappedSetState.bind(this));
 		this.state.activeExtension.getStations().then(e => {
