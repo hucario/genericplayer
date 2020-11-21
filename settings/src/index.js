@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Popup from './popup.js';
+import SettingsApp from './settings.js';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Popup loggedIn={true} pageOn={2} />
+    <SettingsApp />
   </React.StrictMode>,
   document.getElementById('main')
 );

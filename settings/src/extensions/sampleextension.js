@@ -5,6 +5,7 @@ import {
 	Album,
 	Artist
 } from './extension'
+import React from 'react'
 
 /*
  * Sample extension.
@@ -281,6 +282,29 @@ class SampleExtension extends Extension {
 		}, 1000)
 	}
 
+	/*
+	 * Settings segment.
+	 * 
+	 */
+
+	/**
+	 * When the settings page opens, it's going to need to know
+	 * all the options to show. This returns those options.
+	 */
+
+	getSettings = () => {
+		return SampleSettings;
+	}
+
+
+
+
+
+
+
+
+
+
 	setRepeat = (bool) => {
 		this.currentlyPlaying.repeatOne = bool;
 		this.setStates({
@@ -387,7 +411,6 @@ class SampleExtension extends Extension {
 			time: this.currentlyPlaying.time
 		})
 	}
-
 	login = async (a,b) => {
 		this.loggedIn = true;		
 		this.setStates({
@@ -521,9 +544,20 @@ class SampleExtension extends Extension {
 	}
 }
 
+class SampleSettings extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+
+		}
+	}
+	render() {
+		return (<>
+			
+		</>)
+	}
+}
 
 export {
-	SampleExtension,
-	SampleSong,
-	SampleStation
+	SampleExtension
 }
