@@ -8,7 +8,7 @@
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
 	--header-font-family: "Zilla Slab";
-	--accent-color: #009a00;
+	--accent-color: #4BD89B;
 	--width: 500px;
 	--height: 579px;
 	--button-size: 2rem;
@@ -20,6 +20,8 @@
 	--player-button-size: 1.7rem;
 	--player-big-button-size: 3.5rem;
 	--art-size: calc(var(--width) / 2);
+	--active-icon-color: gold;
+	--hint-icon-color: rgb(255, 236, 130);
 }
 
 html, body {
@@ -95,16 +97,40 @@ li:not(:first-of-type) {
 	border-top: 1px solid rgba(255,255,255,0.1);
 }
 
-input[type="color"] {
-	cursor: pointer;
-	border: solid 1px rgba(255,255,255,0.1);
-	border-radius: 5px;
-	background: none;
-}
 .label-primary {
 	flex-grow: 1;
 }
 .label-secondary {
 	color: var(--text-muted);
 	font-weight: 400;
+}
+.toplogo {
+	max-width: 196px;
+}
+
+h2 {
+	text-decoration: var(--accent-color) underline 3px;
+	cursor: default;
+}
+
+div {
+	cursor: default;
+}
+
+input[type="number"] {
+	width: 3.8rem;
+    padding: 0 0.3rem;
+    border: 0;
+    background: var(--background-floating);
+    color: var(--text-color);
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+    box-sizing: border-box;
+    height: 24px;
+    text-align: center;
+    outline: none !important;
+    transition: all 50ms;
+}
+
+input[type="number"]:invalid {
+	color: red;
 }

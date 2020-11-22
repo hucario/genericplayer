@@ -308,7 +308,11 @@ class SampleExtension extends Extension {
 	seek = (a) => {
 		this.currentlyPlaying.time = Math.min(a, this.currentlyPlaying.song.length)
 		if (this.currentlyPlaying.time === this.currentlyPlaying.song.length) {
-			this.skip();
+			if (this.currentlyPlaying.repeatOne) {
+				this.currentlyPlaying.time = 0;
+			} else {
+				this.skip();
+			}
 		} else {
 			this.setStates({
 				time: this.currentlyPlaying.time

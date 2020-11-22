@@ -1,0 +1,63 @@
+.main {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	border: solid 2px transparent;
+
+	border-radius: 3px;
+
+	transition: border-color 50ms;
+}
+
+.manual {
+    width: 3.8rem;
+    padding: 0 0.3rem;
+    border: 0;
+    background: var(--background-floating);
+    color: var(--text-color);
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',    monospace;
+    box-sizing: border-box;
+    height: 24px;
+    text-align: right;
+	outline: none !important;
+	
+	transition: all 50ms;
+}
+
+.show {
+	width: 1.5em;
+	height: 1.5em;
+	position: relative;
+
+	border: solid 1px #b3b3b32e;
+	box-sizing: border-box;
+
+	transition: all 50ms;
+}
+
+.hiddenPicker {
+	opacity: 0;
+	
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
+.main:focus-within {
+	outline: none;
+	border-color: white;
+}
+
+.main:focus-within > .manual {
+    border-radius: 2px 0 0 2px;
+}
+
+.main:focus-within > .show {
+    border-radius: 0 2px 2px 0;
+}
