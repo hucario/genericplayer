@@ -29,6 +29,7 @@ export default class SettingsApp extends React.Component {
 			colorStandardizerCanvas: document.createElement('canvas').getContext("2d")
 		}
 		// D E B U G
+		// @ts-ignore
 		window.getVar = this.getVar;
 	}
 	setVar = (key,value) => {
