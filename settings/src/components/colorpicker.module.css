@@ -10,18 +10,18 @@
 }
 
 .manual {
-    width: 3.8rem;
-    padding: 0 0.3rem;
+    width: 4.8em;
+    padding: 0.75em 0.5em;
     border: 0;
     background: var(--background-floating);
     color: var(--text-color);
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
     box-sizing: border-box;
     height: 24px;
     text-align: right;
-	outline: none !important;
-	
-	transition: all 50ms;
+    outline: none !important;
+    transition: all 50ms;
+    font-size: inherit;
 }
 
 .show {

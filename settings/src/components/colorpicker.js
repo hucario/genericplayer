@@ -11,7 +11,6 @@ export default class ColorPicker extends React.Component {
 		}
 	}
 	onChange = (e) => {
-		console.log(e);
 		this.setState({
 			value: e.target.value
 		})
