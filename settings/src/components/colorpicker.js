@@ -7,12 +7,22 @@ export default class ColorPicker extends React.Component {
 		super(props);
 		this.state = {
 			onChange: this.props.onChange || function(){},
-			value: this.props.defaultValue || '000000'
+			value: (this.props.stdColor && this.props.stdColor(this.props.defaultValue || '#000')) || this.props.defaultValue,
 		}
+		if (this.props.defaultValue.includes('rgb')) {
+			let x = this.props.defaultValue.replace('rgb(','').replace(')','').slice(',');
+			this.state.nonstdValue = "#" + ((1 << 24) + (x[0] << 16) + (x[1] << 8) + x[2]).toString(16).slice(1)
+		} else {
+			this.state.nonstdValue = this.props.defaultValue || "#000"
+		}
+
+		// https://stackoverflow.com/a/5624139/11726576
+
 	}
 	onChange = (e) => {
 		this.setState({
-			value: e.target.value
+			value: e.target.value,
+			nonstdValue: e.target.value
 		})
 		this.state.onChange(e);
 	}
@@ -25,7 +35,7 @@ export default class ColorPicker extends React.Component {
 					Styles.manual
 				}
 				value={
-					this.state.value.toUpperCase()	
+					this.state.nonstdValue.toUpperCase()	
 				}
 				onChange={
 					this.onChange

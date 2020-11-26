@@ -36,9 +36,26 @@ class SampleExtension extends Extension {
 	 * all the options to show. This returns those options.
 	 */
 
-	settingsPage = [{
-		title: 'Gaming'
-	}]
+	settingsPage = {
+		saveAs: 'sampleExtension',
+		title: 'SampleExtension Settings',
+		defaults: {
+			httpOnly: true
+		},
+		sections: [
+			{
+				title: 'General',
+				fields: [
+					{
+						label: 'Only use secured connections',
+						sublabel: 'HTTP may be used if HTTPS is unavailable and this is unchecked.',
+						type: 'toggle',
+						rawName: 'httpOnly'
+					}
+				]
+			}
+		]
+	}
 }
 
 export {

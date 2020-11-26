@@ -43,6 +43,14 @@ export default class Popup extends React.Component {
 			stations: []
 		}
 
+		localStorage.popupSettings = localStorage.popupSettings ?? "{}"
+
+		this.state.settings = JSON.parse(localStorage.popupSettings);
+
+		for (let key in this.state.settings) {
+			document.documentElement.style.setProperty('--' + key, this.state.settings[key])
+		}
+
 		this.state.activeExtension.addSetStateCb(this.wrappedSetState.bind(this));
 		this.state.activeExtension.getStations().then(e => {
 			this.setState({

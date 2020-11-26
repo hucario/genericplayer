@@ -26,34 +26,92 @@ let chrome =  {
 export default class SettingsApp extends React.Component {
 	constructor(props) {
 		super(props);
+
+
 		this.state = {
 			activeExtension: chrome.extension.getBackgroundPage().getCurrentExtension(),
-			colorStandardizerCanvas: document.createElement('canvas').getContext("2d")
+			colorStandardizerCanvas: document.createElement('canvas').getContext("2d"),
+			settings: {}
 		}
+
+		this.state.inpSettings = [
+			{
+				saveAs: 'settings',
+				title: 'GenericPlayer',
+				defaults: {
+
+				},
+				sections: [
+					{
+						title: 'General Settings',
+						fields: [
+							{
+								label: 'Streaming service',
+								sublabel: 'Which streaming service to play from.',
+								type: 'select',
+								options: [
+								{ value: 'sampleExtension', label: 'Sample Extension' },
+								{ value: 'pandoraExtension', label: 'Pandora' },
+								],
+								rawName: 'extSelect'
+							},
+							{
+								label: 'Show lyrics',
+								sublabel: 'Attempt to show lyrics. This would send your listening information to Genius.',
+								type: 'toggle',
+								rawName: 'httpsonly'
+							}
+						]
+					}
+				]
+			},
+			new Popup().settings,
+			this.state.activeExtension.settingsPage
+		]
+
+		for (let i = 0; i < this.state.inpSettings.length; i++) {
+			localStorage[this.state.inpSettings[i].saveAs + 'Settings'] = localStorage[this.state.inpSettings[i].saveAs + 'Settings'] || JSON.stringify(this.state.inpSettings[i].defaults ?? {})
+			this.state.settings[this.state.inpSettings[i].saveAs] = JSON.parse(localStorage[this.state.inpSettings[i].saveAs + 'Settings']);
+
+			for (let key in this.state.settings[this.state.inpSettings[i].saveAs]) {
+				this.setVar(this.state.inpSettings[i].saveAs, key, this.state.settings[this.state.inpSettings[i].saveAs][key])
+			}
+		}
+
 		// D E B U G
 		// @ts-ignore
 		window.getVar = this.getVar;
-		for (let key in localStorage) {
-			document.documentElement.style.setProperty('--'+key, localStorage[key]);
+	}
+	setVarFactory = (what) => {
+		return (key, value) => {
+			return this.setVar(what, key, value)
 		}
 	}
-	setVar = (key,value) => {
-		localStorage[key] = value;
+	setVar = (what, key,value) => {
+		if (!this.state.settings[what]) {
+			this.setState({
+				settings: {
+					[what]: {
+						[key]: value
+					}
+				}
+			})
+		} else {
+			this.state.settings[what][key] = value;
+		}
 		document.documentElement.style.setProperty("--" + key, value);
+		localStorage[what+"Settings"] = JSON.stringify(this.state.settings[what]);
 	}
-	getVar = (key) => {
-		let x = localStorage[key] || 
+	getVarFactory = (which) => {
+		let what = which;
+		return (key) => {
+			return this.getVar(what,key)
+		}
+	}
+	getVar = (which,key) => {
+		let x = this.state.settings[which]?.[key] ?? 
 		getComputedStyle(document.documentElement).getPropertyValue("--"+key);
 		x = (x + "").trim();
-		if (typeof x === 'string') {
-			if (this.standardize_color(x) !== x) {
-				return this.standardize_color(x);
-			} else if (/^#([0-9A-F]{3}){1,2}$/i.test(x)) {
-				return x;
-			}
-		} else {
-
-		}
 		return x;
 	}
 	standardize_color = (str) => {
@@ -71,25 +129,34 @@ export default class SettingsApp extends React.Component {
 		return ctx.fillStyle;
 	}
 	render() {
-		let inpSettings = [
-			new Popup().settings,
-			this.state.activeExtension.settingsPage
-		]
+		let inpSettings = this.state.inpSettings
 		let segs = []
-		let count = 0;
+		let count = 2;
 		for (let i = 0; i < inpSettings.length; i++) {
-			for (let f = 0; f < inpSettings[i].length; f++) {
-				let theseFields = inpSettings[i][f].fields,
+			if (!inpSettings[i].saveAs || !inpSettings[i].sections) {
+				continue;
+			}
+			if (inpSettings[i].title) {
+				segs.push(
+					<h1 
+						key={count++}
+					>
+						{inpSettings[i].title}
+					</h1>
+				)
+			}
+			for (let f = 0; f < inpSettings[i].sections.length; f++) {
+				let theseFields = inpSettings[i].sections[f].fields,
 					localSegments = []
 
 				segs.push(
 					<h2 
 						key={count++}
 					>
-						{inpSettings[i][f].title}
+						{inpSettings[i].sections[f].title}
 					</h2>
 				)
-				if (!inpSettings[i][f].fields) {
+				if (!inpSettings[i].sections[f].fields) {
 					continue;
 				}
 				for (let b = 0; b < theseFields.length; b++) {
@@ -101,9 +168,11 @@ export default class SettingsApp extends React.Component {
 							min={theseFields[b].min}
 							max={theseFields[b].max}
 							toChange={theseFields[b].rawName}
-							g={this.getVar}
-							changeWith={this.setVar}
+							g={this.getVarFactory(inpSettings[i].saveAs)}
+							changeWith={this.setVarFactory(inpSettings[i].saveAs)}
 							key={count++}
+							options={theseFields[b].options ?? null}
+							stdColor={this.standardize_color}
 						/>)
 				}
 				segs.push(

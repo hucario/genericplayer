@@ -23,6 +23,7 @@
 	--active-icon-color: gold;
 	--hint-icon-color: rgb(255, 236, 130);
 	--font-size: 16px;
+	--icon-color: white;
 }
 
 html, body {
@@ -150,4 +151,29 @@ input[type="number"]:invalid {
     height: 24px;
     text-align: left;	
     outline: none !important;
+}
+
+
+.react-switch-bg {
+	background: var(--background) !important;
+	transition: background-color 150ms !important;
+}
+.toggleChecked > .react-switch-handle {
+	background: var(--active-icon-color) !important;
+}
+.toggleUnchecked > .react-switch-handle {
+	background: var(--icon-color) !important;
+}
+.toggleChecked:hover > .react-switch-handle {
+	background: var(--hint-icon-color) !important;
+}
+.react-switch-bg > div:nth-child(1) > svg > path {
+	fill: var(--active-icon-color);
+	transition: fill 150ms !important;
+}
+.toggleChecked:hover > .react-switch-bg > div:nth-child(1) > svg > path {
+	fill: var(--hint-icon-color);
+}
+.react-switch-bg > div:nth-child(2) > svg > path {
+	fill: var(--icon-color);
 }
