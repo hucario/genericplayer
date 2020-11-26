@@ -1,13 +1,39 @@
 import React from 'react';
 
+/* polyfilling during dev because this sure ain't an extension yet */
+// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-use-before-define
+var chrome = chrome || {
+	extension: {
+		getBackgroundPage: function() {
+			return {
+				getSettings: function() {
+					return {
+
+					}
+				}
+			}
+		}
+	}
+}
+
 export class Popup extends React.Component {
 	state = {}
+	setVar = (a,b) => {
+		this.settings[a] = b;
+	}
+	getVar = (a) => {
+		return this.settings[a];
+	}
+	settings = chrome.extension.getBackgroundPage().getSettings();
 	/** @type {Object} */
-	settings = {
+	settingsPage = {
 		saveAs: 'popup',
 		title: 'Popup Settings',
 		defaults: {
 		},
+		setVar: this.setVar,
+		getVar: this.getVar,
 		sections: [
 			{
 				title: 'Colors',
@@ -94,11 +120,6 @@ export class Popup extends React.Component {
 						min:"1",
 						max:"50"
 					},
-					{
-						label: 'Test toggle',
-						type: 'toggle',
-						rawName: 'testToggle'
-					}
 				]
 			}
 		]

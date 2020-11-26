@@ -38,6 +38,8 @@ export default class SettingsApp extends React.Component {
 			{
 				saveAs: 'settings',
 				title: 'GenericPlayer',
+				setVar: () => {},
+				getVar: () => {},
 				defaults: {
 
 				},
@@ -65,7 +67,7 @@ export default class SettingsApp extends React.Component {
 					}
 				]
 			},
-			new Popup().settings,
+			new Popup().settingsPage,
 			this.state.activeExtension.settingsPage
 		]
 
@@ -97,6 +99,7 @@ export default class SettingsApp extends React.Component {
 				}
 			})
 		} else {
+			// eslint-disable-next-line react/no-direct-mutation-state
 			this.state.settings[what][key] = value;
 		}
 		document.documentElement.style.setProperty("--" + key, value);

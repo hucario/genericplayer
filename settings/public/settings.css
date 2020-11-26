@@ -44,7 +44,7 @@ body {
 	align-items: center;
 }
 h1 {
-	font-size: 14px;
+	font-size: 2rem;
 	font-weight: 400;
 	margin-bottom: 12px;
 	margin-top: 21px;
@@ -54,6 +54,7 @@ h1 {
 	margin-right: 0;
 	padding-left: 0;
 	padding-right: 0;
+	border-bottom: solid 1px var(--text-muted);
 }
 
 main {

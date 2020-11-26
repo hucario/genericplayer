@@ -42,6 +42,12 @@ class SampleExtension extends Extension {
 		defaults: {
 			httpOnly: true
 		},
+		setVar: (a,b) => {
+			this.settings[a] = b;
+		},
+		getVar: (a) => {
+			return this.settings[a];
+		},	
 		sections: [
 			{
 				title: 'General',
@@ -55,6 +61,11 @@ class SampleExtension extends Extension {
 				]
 			}
 		]
+	}
+
+	/** Stores setting values. */
+	settings = {
+		httpOnly: true
 	}
 }
 
