@@ -11,9 +11,9 @@ export default class SettingsItem extends React.Component {
 	constructor(props) {
 		super(props);
 		if (this.props.type === "number" || this.props.type === "px") {
-			this.state.value = this.props.g(this.props.toChange).replace(/\D/g, "")
+			this.state.value = this.props.defaultValue.replace(/\D/g, "")
 		} else {
-			this.state.value = this.props.g(this.props.toChange);
+			this.state.value = this.props.defaultValue;
 		}
 
 		if (this.props.type === "color" && this.props.stdColor && this.props.stdColor(this.state.value) !== this.state.value) {
@@ -51,7 +51,7 @@ export default class SettingsItem extends React.Component {
 						this.props.type === "color" && 
 						<ColorPicker
 							defaultValue={
-								this.props.g(this.props.toChange)
+								this.props.defaultValue
 							}
 							stdColor={
 								this.props.stdColor

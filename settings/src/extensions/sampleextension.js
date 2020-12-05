@@ -40,7 +40,7 @@ class SampleExtension extends Extension {
 		saveAs: 'sampleExtension',
 		title: 'SampleExtension Settings',
 		defaults: {
-			httpOnly: true
+			httpOnly: false
 		},
 		setVar: (a,b) => {
 			this.settings[a] = b;
@@ -65,7 +65,7 @@ class SampleExtension extends Extension {
 
 	/** Stores setting values. */
 	settings = {
-		httpOnly: true
+		httpOnly: false
 	}
 }
 
