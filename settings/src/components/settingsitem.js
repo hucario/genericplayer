@@ -11,7 +11,7 @@ export default class SettingsItem extends React.Component {
 	constructor(props) {
 		super(props);
 		if (this.props.type === "number" || this.props.type === "px") {
-			this.state.value = this.props.defaultValue.replace(/\D/g, "")
+			this.state.value = ("" + this.props.defaultValue).replace(/\D/g, "")
 		} else {
 			this.state.value = this.props.defaultValue;
 		}
@@ -26,6 +26,9 @@ export default class SettingsItem extends React.Component {
 					break;
 				}
 			}
+		}
+		if (this.props.type === "toggle") {
+			this.state.value = (this.props.defaultValue === "true");
 		}
 	}
 	getColorVar = (a) => {
@@ -62,11 +65,10 @@ export default class SettingsItem extends React.Component {
 										return;
 									}
 									if (this.props.transformFunc) {
-										this.props.changeWith(this.props.toChange,
-											this.props.transformFunc(e.target.value))
+										this.props.changeWith(this.props.transformFunc(e.target.value))
 									} else {
 										this.forceUpdate();
-										this.props.changeWith(this.props.toChange, e.target.value);
+										this.props.changeWith(e.target.value);
 									}
 								}
 							}
@@ -90,10 +92,9 @@ export default class SettingsItem extends React.Component {
 											return;
 										}
 										if (this.props.transformFunc) {
-											this.props.changeWith(this.props.toChange,
-												this.props.transformFunc(e.target.value))
+											this.props.changeWith(this.props.transformFunc(e.target.value))
 										} else {
-											this.props.changeWith(this.props.toChange, e.target.value + 'px');
+											this.props.changeWith(e.target.value + 'px');
 										}
 									}
 								}
@@ -109,17 +110,19 @@ export default class SettingsItem extends React.Component {
 								this.state.value?'toggleChecked':'toggleUnchecked'
 							}
 							onChange={(e) => {
+								console.log(e, this.state.value);
 								this.setState({
 									value: e
 								})
 								if (this.props.transformFunc) {
-									this.props.changeWith(this.props.toChange,
-										this.props.transformFunc(e))
+									this.props.changeWith(this.props.transformFunc(e))
 								} else {
-									this.props.changeWith(this.props.toChange, e);
+									this.props.changeWith(e);
 								}
 							}}
-							checked={Boolean(this.state.value)}
+							checked={
+								this.state.value
+							}
 							onColor="#FFF"
 							offColor="#000"
 						/>
@@ -132,10 +135,9 @@ export default class SettingsItem extends React.Component {
 									value: e
 								})
 								if (this.props.transformFunc) {
-									this.props.changeWith(this.props.toChange,
-										this.props.transformFunc(e))
+									this.props.changeWith(this.props.transformFunc(e))
 								} else {
-									this.props.changeWith(this.props.toChange, e.value);
+									this.props.changeWith(e.value);
 								}
 							}}
 							options={
@@ -179,6 +181,32 @@ export default class SettingsItem extends React.Component {
 							}}
 							blurInputOnSelect={true}
 						/>
+					}
+					{
+						this.props.type === "number" &&
+							<input
+								type="number"
+								min={this.props.min}
+								max={this.props.max}
+								value={
+									this.state.value
+								}
+								onChange={
+									(e) => {
+										this.setState({
+											value: e.target.value
+										})
+										if (!this.props.changeWith) {
+											return;
+										}
+										if (this.props.transformFunc) {
+											this.props.changeWith(this.props.transformFunc(e.target.value))
+										} else {
+											this.props.changeWith(e.target.value);
+										}
+									}
+								}
+							/>
 					}
 					{this.props.children}
 				</div>

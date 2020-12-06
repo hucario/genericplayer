@@ -37,26 +37,33 @@ class SampleExtension extends Extension {
 	 */
 
 	settingsPage = {
-		saveAs: 'sampleExtension',
 		title: 'SampleExtension Settings',
+		showReq: (settings) => {
+			if (!settings.settings) {
+				return false;
+			}
+			return (settings.settings.extSelect === "sampleExtension")
+		},
 		defaults: {
-			httpOnly: false
+			httpOnly: false,
+			doPlay: true,
+			doRandom: true
 		},
-		setVar: (a,b) => {
-			this.settings[a] = b;
-		},
-		getVar: (a) => {
-			return this.settings[a];
-		},	
 		sections: [
 			{
 				title: 'General',
 				fields: [
 					{
-						label: 'Only use secured connections',
-						sublabel: 'HTTP may be used if HTTPS is unavailable and this is unchecked.',
+						label: 'Play on open',
+						sublabel: 'When player page is opened, have player... playing.',
 						type: 'toggle',
-						rawName: 'httpOnly'
+						rawName: 'doPlay'
+					},
+					{
+						label: 'Play a random song',
+						sublabel: 'do prepRandom()',
+						type: 'toggle',
+						rawName: 'doRandom'
 					}
 				]
 			}
@@ -64,9 +71,7 @@ class SampleExtension extends Extension {
 	}
 
 	/** Stores setting values. */
-	settings = {
-		httpOnly: false
-	}
+	settings = {}
 }
 
 export {

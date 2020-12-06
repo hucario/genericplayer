@@ -151,7 +151,8 @@ input[type="number"]:invalid {
     box-sizing: border-box;
     height: 24px;
     text-align: left;	
-    outline: none !important;
+	outline: none !important;
+	user-select: none;
 }
 
 

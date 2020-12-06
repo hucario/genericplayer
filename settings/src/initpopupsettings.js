@@ -28,8 +28,10 @@ export class Popup extends React.Component {
 	settings = chrome.extension.getBackgroundPage().getSettings();
 	/** @type {Object} */
 	settingsPage = {
-		saveAs: 'popup',
 		title: 'Popup Settings',
+		showReq: () => {
+			return (true)
+		},
 		defaults: {
 		},
 		setVar: this.setVar,

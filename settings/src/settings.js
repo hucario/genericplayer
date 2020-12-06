@@ -20,46 +20,17 @@ let chrome =  {
 				},
 				settings: {
 					getSettingsPages() {
-						return [
-							{
-								saveAs: 'settings',
-								title: 'GenericPlayer',
-								defaults: {
-				
-								},
-								sections: [
-									{
-										title: 'General Settings',
-										fields: [
-											{
-												label: 'Streaming service',
-												sublabel: 'Which streaming service to play from.',
-												type: 'select',
-												options: [
-												{ value: 'sampleExtension', label: 'Sample Extension' },
-												{ value: 'pandoraExtension', label: 'Pandora' },
-												],
-												rawName: 'extSelect'
-											},
-											{
-												label: 'Show lyrics',
-												sublabel: 'Attempt to show lyrics. This would send your listening information to Genius.',
-												type: 'toggle',
-												rawName: 'httpsonly'
-											}
-										]
-									}
-								]
-							},
-							new Popup().settingsPage,
-							new SampleExtension().settingsPage
-						]
+						return {
+							"settings": {},
+							"sampleExtension": new SampleExtension().settingsPage,
+							"pandoraExtension": {},
+							"popup": new Popup().settingsPage,
+						}
 					},
 					registerSettingsPage(page) {
 						
 					},
 					getSetting(daemon, key) {
-						console.log(daemon, key);
 						// damn I hate using a synchronous xmlhttprequest, fetch is so much better, but...
 						// I need a synchronous solution because this is literally only for testing
 						var request = new XMLHttpRequest();
@@ -72,19 +43,25 @@ let chrome =  {
 						return null;
 					},
 					setSetting(daemon, key, value) {
+						this.__store.toSet[daemon] = this.__store.toSet[daemon] ?? {}
+						this.__store.toSet[daemon][key] = value;
 						if (!this.__store.timeouts[daemon]) {
 							this.__store.timeouts[daemon] = {}
 						}
 						if (this.__store.timeouts[daemon][key]) {
-							return value;
+							clearTimeout(this.__store.timeouts[daemon][key]);
 						}
 						this.__store.timeouts[daemon][key] = setTimeout(() => {
-							this.__set(daemon, key, value);
+							this.__set(daemon, key, this.__store.toSet[daemon][key]);
 							delete this.__store.timeouts[daemon][key];
+							delete this.__store.toSet[daemon][key];
 						}, 1500)
 						return value;
 					},
 					__set(daemon, key, value) {
+						if (value == null) {
+							return;
+						}
 						fetch(`http://localhost:8085/setting/${
 								encodeURIComponent(daemon)
 							}/${
@@ -97,6 +74,9 @@ let chrome =  {
 					},
 					__store: {
 						timeouts: {
+
+						},
+						toSet: {
 
 						}
 					},
@@ -131,12 +111,78 @@ export default class SettingsApp extends React.Component {
 		}
 
 		this.state.inpSettings = yeah.getSettingsPages();
+		this.state.inpSettings.settings = {
+			title: 'GenericPlayer',
+			showReq: () => {
+				return true;
+			},
+			defaults: {
+
+			},
+			sections: [
+				{
+					fields: [
+						{
+							label: 'Streaming service',
+							sublabel: 'Which streaming service to play from.',
+							type: 'select',
+							options: [
+							{ value: 'sampleExtension', label: 'Sample Extension' },
+							{ value: 'pandoraExtension', label: 'Pandora' },
+							],
+							rawName: 'extSelect'
+						},
+						{
+							label: 'Show lyrics',
+							sublabel: 'Attempt to show lyrics. This would send your listening information to Genius.',
+							type: 'toggle',
+							rawName: 'showLyrics'
+						}
+					]
+				}
+			]
+		}
+		this.state.inpSettings.pandoraExtension = {
+			title: 'Pandora Settings',
+			showReq: (settings) => {
+				if (!settings.settings) {
+					return false;
+				}
+				return ( settings.settings.extSelect === "pandoraExtension")
+			},
+			defaults: {
+				httpsOnly: true,
+				historyLength: 20
+			},
+			sections: [
+				{
+					fields: [
+						{
+							label: 'Only use secured connections',
+							sublabel: 'HTTP may be used if HTTPS is unavailable and this is unchecked.',
+							type: 'toggle',
+							rawName: 'httpsOnly'
+						},
+						{
+							label: 'History length',
+							sublabel: 'Amount of songs to keep in history.',
+							type: 'number',
+							rawName: 'historyLength',
+							min: 0,
+							max: 999
+						},
+						
+					]
+				}
+			]
+		}
+
 		this.state.settings = yeah.getAllSettings();
 		for (let key in this.state.inpSettings) {
 			for (let i = 0; i < this.state.inpSettings[key].sections.length; i++) {
 				for (let p = 0; p < this.state.inpSettings[key].sections[i].fields.length; p++) {
-					this.settingsByRawName[this.state.inpSettings[key].saveAs] = this.settingsByRawName[this.state.inpSettings[key].saveAs] ?? {}
-					this.settingsByRawName[this.state.inpSettings[key].saveAs][
+					this.settingsByRawName[key] = this.settingsByRawName[key] ?? {}
+					this.settingsByRawName[key][
 						this.state.inpSettings[key].sections[i].fields[p].rawName
 					] = this.state.inpSettings[key].sections[i].fields[p]
 				}
@@ -150,10 +196,11 @@ export default class SettingsApp extends React.Component {
 							this.settingsByRawName[key][nkey].type === "color" ||
 							this.settingsByRawName[key][nkey].type === "px"
 						)
-						) {
-						this.setCSSVar(this.settingsByRawName[key][nkey].rawName, 
+					) {
+						this.setCSSVar(
+							this.settingsByRawName[key][nkey].rawName, 
 							this.state.settings[key][nkey]
-							)
+						)
 					}
 				}
 			}
@@ -166,7 +213,6 @@ export default class SettingsApp extends React.Component {
 		window.gaming = yeah;
 	}
 	setCSSVar = (key,value) => {
-		console.log(key, value);
 		document.documentElement.style.setProperty("--" + key, value);
 	}
 	getCSSVar = (key) => {
@@ -174,6 +220,32 @@ export default class SettingsApp extends React.Component {
 		x = (x + "").trim();
 		console.log(key, x);
 		return x;
+	}
+	updateSettings = (daemon, key, value) => {
+		yeah.setSetting(daemon, key, value)
+		if (this.state.settings[daemon]) {
+			this.setState((prevState) => {
+				return {
+					settings: {
+						...prevState.settings,
+						[daemon]: {
+							...prevState.settings[daemon],
+							[key]: value
+						}
+					}
+				}
+			})
+		} else {
+			this.setState((prevState) => ({
+				settings: {
+					...prevState.settings,
+					[daemon]: {
+						[key]: value
+					}
+				}
+			}))
+		}
+		
 	}
 	standardize_color = (str) => {
 		if (
@@ -193,8 +265,8 @@ export default class SettingsApp extends React.Component {
 		let inpSettings = this.state.inpSettings
 		let segs = []
 		let count = 2;
-		for (let i = 0; i < inpSettings.length; i++) {
-			if (!inpSettings[i].saveAs || !inpSettings[i].sections) {
+		for (let i in inpSettings) {
+			if (!inpSettings[i].sections || !inpSettings[i].showReq(this.state.settings)) {
 				continue;
 			}
 			if (inpSettings[i].title) {
@@ -229,9 +301,23 @@ export default class SettingsApp extends React.Component {
 							min={theseFields[b].min}
 							max={theseFields[b].max}
 							toChange={theseFields[b].rawName}
-							defaultValue={this.state.settings[inpSettings[i].saveAs]?.[theseFields[b].rawName] ?? "unset"}
+							defaultValue={
+								this.state.settings[i]?.[theseFields[b].rawName] ?? 
+								inpSettings[i].defaults[theseFields[b].rawName] ??
+								""
+							}
 							changeWith={(e) => {
-								yeah.setSetting(inpSettings[i].saveAs, theseFields[b].rawName, e);	
+								if (
+									theseFields[b].type === "color" ||
+									theseFields[b].type === "px"
+								) {
+
+									this.setCSSVar(
+										theseFields[b].rawName,
+										e
+									)
+								}
+								this.updateSettings(i, theseFields[b].rawName, e);	
 							}}
 							key={count++}
 							options={theseFields[b].options ?? null}
