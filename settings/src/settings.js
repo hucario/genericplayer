@@ -1,11 +1,4 @@
 import React from 'react';
-import {
-	SampleExtension
-} from './extensions/sampleextension.js'
-import {
-	Popup
-} from './initpopupsettings.js'
-
 import SettingsItem from './components/settingsitem.js';
 
 /* polyfilling during dev because this sure ain't an extension yet */
@@ -14,18 +7,16 @@ let chrome =  {
 	extension: {
 		getBackgroundPage: function() {
 			return {
-				getCurrentExtension() {
-					let x = new SampleExtension();
-					return x;
-				},
 				settings: {
 					getSettingsPages() {
-						return {
-							"settings": {},
-							"sampleExtension": new SampleExtension().settingsPage,
-							"pandoraExtension": {},
-							"popup": new Popup().settingsPage,
+						var request = new XMLHttpRequest();
+						request.open('GET', `http://localhost:8085/settingspages/`, false);  // `false` makes the request synchronous
+						request.send(null);
+						
+						if (request.status === 200) {
+							return JSON.parse(request.responseText);
 						}
+						return null;
 					},
 					registerSettingsPage(page) {
 						
@@ -105,79 +96,16 @@ export default class SettingsApp extends React.Component {
 
 
 		this.state = {
-			activeExtension: chrome.extension.getBackgroundPage().getCurrentExtension(),
 			colorStandardizerCanvas: document.createElement('canvas').getContext("2d"),
 			settings: {}
 		}
 
 		this.state.inpSettings = yeah.getSettingsPages();
-		this.state.inpSettings.settings = {
-			title: 'GenericPlayer',
-			showReq: () => {
-				return true;
-			},
-			defaults: {
-
-			},
-			sections: [
-				{
-					fields: [
-						{
-							label: 'Streaming service',
-							sublabel: 'Which streaming service to play from.',
-							type: 'select',
-							options: [
-							{ value: 'sampleExtension', label: 'Sample Extension' },
-							{ value: 'pandoraExtension', label: 'Pandora' },
-							],
-							rawName: 'extSelect'
-						},
-						{
-							label: 'Show lyrics',
-							sublabel: 'Attempt to show lyrics. This would send your listening information to Genius.',
-							type: 'toggle',
-							rawName: 'showLyrics'
-						}
-					]
-				}
-			]
-		}
-		this.state.inpSettings.pandoraExtension = {
-			title: 'Pandora Settings',
-			showReq: (settings) => {
-				if (!settings.settings) {
-					return false;
-				}
-				return ( settings.settings.extSelect === "pandoraExtension")
-			},
-			defaults: {
-				httpsOnly: true,
-				historyLength: 20
-			},
-			sections: [
-				{
-					fields: [
-						{
-							label: 'Only use secured connections',
-							sublabel: 'HTTP may be used if HTTPS is unavailable and this is unchecked.',
-							type: 'toggle',
-							rawName: 'httpsOnly'
-						},
-						{
-							label: 'History length',
-							sublabel: 'Amount of songs to keep in history.',
-							type: 'number',
-							rawName: 'historyLength',
-							min: 0,
-							max: 999
-						},
-						
-					]
-				}
-			]
-		}
 
 		this.state.settings = yeah.getAllSettings();
+
+		console.log(this.state.inpSettings, this.state.settings)
+
 		for (let key in this.state.inpSettings) {
 			for (let i = 0; i < this.state.inpSettings[key].sections.length; i++) {
 				for (let p = 0; p < this.state.inpSettings[key].sections[i].fields.length; p++) {
@@ -266,7 +194,9 @@ export default class SettingsApp extends React.Component {
 		let segs = []
 		let count = 2;
 		for (let i in inpSettings) {
-			if (!inpSettings[i].sections || !inpSettings[i].showReq(this.state.settings)) {
+			if (!inpSettings[i].sections && 
+				(!inpSettings[i].showReq || inpSettings[i].showReq(this.state.settings))
+			) {
 				continue;
 			}
 			if (inpSettings[i].title) {

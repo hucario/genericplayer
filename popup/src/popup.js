@@ -8,7 +8,7 @@ import Stations from './components/stations/stations.js';
 
 /* polyfilling during dev because this sure ain't an extension yet */
 // eslint-disable-next-line no-unused-vars
-let chrome =  {
+let chromea =  {
 	extension: {
 		getBackgroundPage: function() {
 			return {
@@ -16,17 +16,53 @@ let chrome =  {
 					let x = new SampleExtension();
 					x.prepareRandom(); // for indev testing
 					return x;
+				},
+				settings: {
+					getSettingsPages() {
+						var request = new XMLHttpRequest();
+						request.open('GET', `http://localhost:8085/settingspages/`, false);  // `false` makes the request synchronous
+						request.send(null);
+						
+						if (request.status === 200) {
+							return JSON.parse(request.responseText);
+						}
+						return null;
+					},
+					getSetting(daemon, key) {
+						// damn I hate using a synchronous xmlhttprequest, fetch is so much better, but...
+						// I need a synchronous solution because this is literally only for testing
+						var request = new XMLHttpRequest();
+						request.open('GET', `http://localhost:8085/setting/${encodeURIComponent(daemon)}/${encodeURIComponent(key)}`, false);  // `false` makes the request synchronous
+						request.send(null);
+						
+						if (request.status === 200) {
+							return request.responseText;
+						}
+						return null;
+					},
+					getAllSettings() {
+						var request = new XMLHttpRequest();
+						request.open('GET', `http://localhost:8085/settings/`, false);
+						request.send(null);
+						
+						if (request.status === 200) {
+							return JSON.parse(request.responseText);
+						}
+						return null;
+					}
 				}
 			}
 		}
 	}
 }
+let yeah = chromea.extension.getBackgroundPage().settings
 
 export default class Popup extends React.Component {
+	settingsByRawName = {}
 	constructor(props) {
 		super(props);
 		this.state = {
-			activeExtension: chrome.extension.getBackgroundPage().getCurrentExtension(),
+			activeExtension: chromea.extension.getBackgroundPage().getCurrentExtension(),
 			recentsGridMode: false,
 			stationsGridMode: false,
 			showingLoginExp: false,
@@ -43,13 +79,21 @@ export default class Popup extends React.Component {
 			stations: []
 		}
 
-		localStorage.popupSettings = localStorage.popupSettings ?? "{}"
+		this.state.settings = yeah.getAllSettings().popup ?? {};
+		this.state.inpSettings = yeah.getSettingsPages().popup;
 
-		this.state.settings = JSON.parse(localStorage.popupSettings);
-
-		for (let key in this.state.settings) {
-			document.documentElement.style.setProperty('--' + key, this.state.settings[key])
+		for (let i = 0; i < this.state.inpSettings.sections.length; i++) {
+			// for each section
+			let p = this.state.inpSettings.sections[i];
+			for (let b = 0; b < p.fields.length; b++) {
+				// for each field in each section
+				this.settingsByRawName[p.fields[b].rawName] = p.fields[b];
+				if (this.state.settings[p.fields[b].rawName] && (p.fields[b].type === "px" || p.fields[b].type === "color")) {
+					document.documentElement.style.setProperty("--" + p.fields[b].rawName, this.state.settings[p.fields[b].rawName]);
+				}
+			}
 		}
+		console.log(this.settingsByRawName);
 
 		this.state.activeExtension.addSetStateCb(this.wrappedSetState.bind(this));
 		this.state.activeExtension.getStations().then(e => {
@@ -216,6 +260,24 @@ export default class Popup extends React.Component {
 					/>
 				</section>
 				<section id="player">
+					<a 
+						id="albumLink" 
+						href={
+							this.state.currentSong && 
+							this.state.currentSong.album && 
+							this.state.currentSong.album.url
+						}
+					>
+						<img 
+							alt='Album art for song.' 
+							id="albumArt" 
+							src={
+								this.state.currentSong && 
+								this.state.currentSong.album && 
+								this.state.currentSong.album.coverUrl
+							}
+						/>
+					</a>
 					<div id="attribution">
 						<a 
 							id="songname"
@@ -277,24 +339,6 @@ export default class Popup extends React.Component {
 							this.state.currentSong.artist.name
 						}</a>
 					</div>
-					<a 
-						id="albumLink" 
-						href={
-							this.state.currentSong && 
-							this.state.currentSong.album && 
-							this.state.currentSong.album.url
-						}
-					>
-						<img 
-							alt='Album art for song.' 
-							id="albumArt" 
-							src={
-								this.state.currentSong && 
-								this.state.currentSong.album && 
-								this.state.currentSong.album.coverUrl
-							}
-						/>
-					</a>
 					<Range 
 						id="seekBar" 
 						max={

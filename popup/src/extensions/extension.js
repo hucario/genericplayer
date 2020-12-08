@@ -5,9 +5,9 @@
 
 
 class Artist {
-	name = "ARTIST NAME"
-	url = "ARTIST URL"
-	picUrl = "ARTIST PICTURE URL"
+	name = ""
+	url = ""
+	picUrl = ""
 
 	constructor(opts) {
 		for (let key in opts) {
@@ -17,9 +17,9 @@ class Artist {
 }
 
 class Album {
-	name = "ALBUM NAME"
-	url = "ALBUM URL"
-	coverUrl = "ALBUM PICTURE URL"
+	name = ""
+	url = ""
+	coverUrl = ""
 	constructor(opts) {
 		for (let key in opts) {
 			this[key] = opts[key];

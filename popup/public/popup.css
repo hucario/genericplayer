@@ -11,8 +11,8 @@
 	--width: 500px;
 	--height: 579px;
 	--button-size: 2rem;
-	--interactive-active: #ffffff2b;
-	--interactive-hover: #ffffff33;
+	--icon-color: #ffffff2b;
+	--active-icon-color: #ffffff33;
 	--recents-album-image-size: 9em;
 	--recents-button-size: calc(var(--recents-album-image-size) / 4);
 	--player-button-color: white;
@@ -138,11 +138,11 @@ input#listgrid::before, #refresh::before, #listgrid2::before {
     text-align: center;
 }
 input#listgrid:checked, #listgrid2:checked {
-    background: var(--interactive-active);
+    background: var(--icon-color);
 }
 
 input#listgrid:not(:checked):hover, #refresh:not(.refreshing):hover, #listgrid2:not(:checked):hover {
-    background: var(--interactive-hover);
+    background: var(--hint-icon-color);
 }
 
 .separator {
@@ -212,7 +212,7 @@ h1 {
     padding: 0;
     display: flex;
 	align-items: center;
-	border-bottom: solid 1px var(--interactive-hover);
+	border-bottom: solid 1px var(--active-icon-color);
 }
 
 .gridmode .hI {
@@ -460,11 +460,11 @@ button#loginButton {
 }
 
 button#loginButton:hover {
-    background: var(--interactive-hover);
+    background: var(--hint-icon-color);
 }
 
 button#loginButton:active {
-    background: var(--interactive-active);
+    background: var(--icon-color);
 }
 
 #butwhytho:before, #closeExp:before {content: "[ ";}
@@ -526,7 +526,7 @@ button#loginButton:active {
 }
 
 #player .bx:hover {
-    background: var(--interactive-hover);
+    background: var(--hint-icon-color);
 }
 
 a#albumLink {
@@ -538,6 +538,7 @@ a#albumLink {
 	overflow: hidden;
 	max-width: 400px;
 	max-height: 400px;
+	margin-bottom: 0.5rem;
 }
 
 #bottomControls .bx {
@@ -548,7 +549,7 @@ a#albumLink {
 }
 
 #bottomControls .bx.active {
-	color: gold;
+	color: var(--active-icon-color);
 }
 
 .bx.bx-cog#settingsCog {
@@ -702,10 +703,15 @@ form#login {
 	max-width: calc(var(--width) * 0.75);
     display: flex;
     flex-direction: column;
-    align-items: start;
+	align-items: start;
+	margin-bottom: 0.8rem;
 }
 
 #songname {
-    font-size: 2em;
+    font-size: 1.2em;
     font-weight: bold;
+}
+
+a#albumname {
+	display: none;
 }
