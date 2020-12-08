@@ -21,6 +21,7 @@ allows for extensions (of the extension) that add more services.
  - ~~maybe maybe maybe airplay??? maybe? if that's even possible?~~ 
  Not possible currently
  - Queue view (?): Will implement in the big player.
+I didn't steal Spotify's UI at all :upside_down:
 
 #### Stations panel:
 - Search: Not functional currently
