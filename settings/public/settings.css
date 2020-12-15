@@ -81,7 +81,7 @@ main {
 	flex-basis: 0.000000001px;
 	font-weight: 500;
 	color: var(--text-color);
-	font-size: calc(var(--font-size) - 2px);
+	font-size: var(--font-size);
 }
 ul {
 	background: var(--background-floating-higher);

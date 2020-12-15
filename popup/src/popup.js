@@ -10,7 +10,7 @@ import Stations from './components/stations/stations.js';
 // eslint-disable-next-line no-unused-vars
 let chromea =  {
 	extension: {
-		getBackgroundPage: function() {
+		getBackgroundPage: () => {
 			return {
 				getCurrentExtension() {
 					let x = new SampleExtension();

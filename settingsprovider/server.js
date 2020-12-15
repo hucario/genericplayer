@@ -243,8 +243,7 @@ app.get('/', (req, res) => {
 			b[i] = b[i].substring(1);
 		}
 	}
-
-	res.send(`
+		res.send(`
 		<!DOCTYPE html>
 		<html>
 			<head>
@@ -256,6 +255,11 @@ app.get('/', (req, res) => {
 						padding: 2em 2em;
 						font-weight: bold;
 						border-radius: 1em;
+						box-sizing: border-box;
+						margin: 0;
+						${req.query.trim?`height: 100%;
+						width: 100%;`:''}
+						
 					}
 					
 					body {
@@ -265,22 +269,29 @@ app.get('/', (req, res) => {
 						background: black;
 						color: white;
 						box-sizing: border-box;
-						padding: 2em;
+						padding: 1em;
+						margin: 0;
+						width: 100vw;
+						height: 100vh;
+					}
+					html {
+						padding: 0;
+						margin: 0;
 					}
 				</style>
 			</head>
 			<body>
-				<h1>hey what is this?</h1>
+				${req.query.trim?``:`<h1>hey what is this?</h1>
 				<p>this is a development settings provider.<br>
 				due to the fact that localstorage doesn't work between ports (rightfully),<br>
 				I have to have some way for the different react apps to communicate.<br>
 				this is that.
 				</p>
-				<h2>current settings stored:</h2>
+				<h2>current settings stored:</h2>`}
 				<pre>${b.join('<br>')}</pre>
 			</body>
 		</html>
-	`)
+		`)
 })
 
 app.get('/setting/:daemon/:key/', (req, res) => {
