@@ -6,13 +6,14 @@
     border: none;
     border-radius: 0.3em;
     outline: none;
-    transition: background-color 250ms;
+    transition: text-shadow 250ms, background-color 250ms, color 250ms;
     cursor: pointer;
     align-self: center;
 	font-size: inherit;
-	color: white;
+	color: var(--icon-color);
     display: flex;
-    align-items: center;
+	align-items: center;
+	text-shadow: 0 0 transparent;
 }
 
 .icontoggle::before {
@@ -20,9 +21,11 @@
     text-align: center;
 }
 .icontoggle:checked {
-    background: var(--interactive-active);
+	background: var(--active-icon-color);
+	color: var(--hint-icon-color);
+    text-shadow: 2px -2px 2px var(--icon-color);
 }
 
 .icontoggle:not(:checked):hover {
-    background: var(--interactive-hover);
+    background: var(--hint-icon-color);
 }

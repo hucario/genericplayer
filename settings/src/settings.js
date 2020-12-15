@@ -194,11 +194,21 @@ export default class SettingsApp extends React.Component {
 		let segs = []
 		let count = 2;
 		for (let i in inpSettings) {
-			if (!inpSettings[i].sections && 
-				(!inpSettings[i].showReq || inpSettings[i].showReq(this.state.settings))
-			) {
+			if (!inpSettings[i].sections ||
+				!inpSettings[i].showReq) {
 				continue;
 			}
+				if (typeof inpSettings[i] === "boolean") {
+
+				} else if (!inpSettings[i][2]) {
+					continue; // skips checking 0 and 1, because... arrays
+				} else if (
+						this.settingsByRawName[inpSettings[i].showReq[0]]?.
+					[inpSettings[i].showReq[1]] != inpSettings[i].showReq[2]
+					) {
+
+				}
+			
 			if (inpSettings[i].title) {
 				segs.push(
 					<h1 

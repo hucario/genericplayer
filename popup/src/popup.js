@@ -260,6 +260,14 @@ export default class Popup extends React.Component {
 					/>
 				</section>
 				<section id="player">
+					<img id="bg" 
+						alt=""
+						src={
+							this.state.currentSong &&
+							this.state.currentSong.album &&
+							this.state.currentSong.album.coverUrl
+						}
+					/>
 					<a 
 						id="albumLink" 
 						href={

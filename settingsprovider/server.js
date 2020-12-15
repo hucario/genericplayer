@@ -11,15 +11,19 @@ let settings = {},
 	settingsPages = {
 		popup: {
 			title: 'Popup Settings',
-			showReq: () => {
-				return (true)
-			},
+			showReq: true,
 			defaults: {
 			},
 			sections: [
 				{
 					title: 'Colors',
 					fields: [
+						{
+							label: 'Blurred album background',
+							sublabel: 'Puts a blurred album cover behind the player pane.',
+							type: 'toggle',
+							rawName: 'blurredAlbumBackground'
+						},
 						{
 							label: 'Background color',
 							sublabel: 'Color of the background of the player.',
@@ -108,9 +112,7 @@ let settings = {},
 		},
 		"settings": {
 			title: 'GenericPlayer',
-			showReq: () => {
-				return true;
-			},
+			showReq: true,
 			defaults: {
 
 			},
@@ -139,12 +141,11 @@ let settings = {},
 		},
 		"sampleExtension": {
 			title: 'SampleExtension Settings',
-			showReq: (settings) => {
-				if (!settings.settings) {
-					return false;
-				}
-				return (settings.settings.extSelect === "sampleExtension")
-			},
+			showReq: [
+				'settings',
+				'extSelect',
+				'sampleExtension'
+			],
 			defaults: {
 				httpOnly: false,
 				doPlay: true,
@@ -172,12 +173,11 @@ let settings = {},
 		},
 		"pandoraExtension": {
 			title: 'Pandora Settings',
-			showReq: (settings) => {
-				if (!settings.settings) {
-					return false;
-				}
-				return ( settings.settings.extSelect === "pandoraExtension")
-			},
+			showReq: [
+				'settings',
+				'extSelect',
+				'pandoraExtension'	
+			],
 			defaults: {
 				httpsOnly: true,
 				historyLength: 20
@@ -251,15 +251,16 @@ app.get('/', (req, res) => {
 				<style>
 					pre {
 						background: #313131;
-						color: #76ffe6;
+						color: transparent;
 						padding: 2em 2em;
 						font-weight: bold;
 						border-radius: 1em;
 						box-sizing: border-box;
 						margin: 0;
 						${req.query.trim?`height: 100%;
-						width: 100%;`:''}
-						
+						width: 100%;
+						overflow-x: hidden;
+						overflow-y: auto;`:''}
 					}
 					
 					body {
@@ -272,11 +273,29 @@ app.get('/', (req, res) => {
 						padding: 1em;
 						margin: 0;
 						width: 100vw;
-						height: 100vh;
+						height: 100vh;${req.query.fontSize?`
+						font-size: ${req.query.fontSize}px;`:''}
 					}
 					html {
 						padding: 0;
 						margin: 0;
+					}
+					code.hljs {
+						background: unset;
+						width: 100%;
+						padding: 0;
+						margin: 0;
+						height: unset;
+						overflow: hidden;
+						animation: fadeIn 500ms;
+					}
+					@keyframes fadeIn {
+						0% {
+							opacity: 0;
+						}
+						100% {
+							opacity: 1;
+						}
 					}
 				</style>
 			</head>
@@ -288,7 +307,11 @@ app.get('/', (req, res) => {
 				this is that.
 				</p>
 				<h2>current settings stored:</h2>`}
-				<pre>${b.join('<br>')}</pre>
+				<pre><code>${b.join('<br>')}</code></pre>
+				<link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/styles/atom-one-dark.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 			</body>
 		</html>
 		`)
