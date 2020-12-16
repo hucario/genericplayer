@@ -63,9 +63,35 @@ class SampleStation extends Station {
 			new SampleSong({
 				name: "Pluie",
 				album: new Album({
-					name: "",
+					name: "L'été",
 					coverUrl: "http://mediaserver-cont-dc6-1-v4v6.pandora.com/images/public/int/1/4/7/2/859727392741_500W_500H.jpg",
 					url: "http://www.pandora.com/snails-house/lt/ALV6k47dKjkmt9J"
+				}),
+				artist: new Artist({
+					name: "Snail's House",
+					url: "https://www.pandora.com/artist/snails-house/AR5d3XhxgdVKJ92"
+				})
+			}),
+			new SampleSong({
+				name: "Cosmo Funk",
+				url: "https://www.pandora.com/artist/snails-house/eirianpotsupu-2/cosmo-funk/TRhXnhfxlh9ghlk",
+				album: new Album({
+					name: "エイリアン☆ポップ II [Alien Pop 2]",
+					coverUrl: "http://cont.p-cdn.us/images/public/int/1/0/5/3/859730413501_500W_500H.jpg",
+					url: "https://www.pandora.com/artist/snails-house/eirianpotsupu-2/AL4tcnfK2Kjpjr6"
+				}),
+				artist: new Artist({
+					name: "Snail's House",
+					url: "https://www.pandora.com/artist/snails-house/AR5d3XhxgdVKJ92"
+				})
+			}),
+			new SampleSong({
+				name: "Warp Star",
+				url: "https://www.pandora.com/artist/snails-house/warp-star-single/warp-star/TR6zpvkrXX7XxdP",
+				album: new Album({
+					name: "Warp Star (Single)",
+					coverUrl: "http://cont-3.p-cdn.us/images/public/int/3/9/8/3/859727693893_500W_500H.jpg",
+					url: "https://www.pandora.com/artist/snails-house/warp-star-single/ALdtXhX49gt62v9"
 				}),
 				artist: new Artist({
 					name: "Snail's House",

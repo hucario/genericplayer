@@ -7,12 +7,53 @@ app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	next();
 });
-let settings = {},
+let settings = {
+	"popup": {
+		"blurredAlbumBackground": "true",
+		"background": "#ffffff",
+		"background-floating": "#ededed",
+		"background-floating-higher": "#c2c2c2",
+		"text-color": "#000000",
+		"text-muted": "#383838",
+		"hint-icon-color": "#ffc23d",
+		"icon-color": "#000000",
+		"active-icon-color": "#e6bf00",
+		"accent-color": "#1dc98f",
+		"height": "580px",
+		"width": "500px",
+		"font-size": "16px"
+	},
+	"settings": {
+		"extSelect": "sampleExtension",
+		"showLyrics": "true"
+	},
+	"sampleExtension": {
+		"doPlay": "true",
+		"doRandom": "true"
+	},
+	"pandoraExtension": {
+		"httpsOnly": "true",
+		"historyLength": "20"
+	}
+},
 	settingsPages = {
 		popup: {
 			title: 'Popup Settings',
 			showReq: true,
 			defaults: {
+				blurredAlbumBackground: true,
+				background: "#ffffff",
+				"background-floating": "#ededed",
+				"background-floating-higher": "#c2c2c2",
+				"text-color": "#000000",
+				"text-muted": "#383838",
+				"hint-icon-color": "#ffc23d",
+				"icon-color": "#000000",
+				"active-icon-color": "#e6bf00",
+				"accent-color": "#1dc98f",
+				height: "580px",
+				width: "500px",
+				"font-size": "16px"
 			},
 			sections: [
 				{
@@ -114,7 +155,8 @@ let settings = {},
 			title: 'GenericPlayer',
 			showReq: true,
 			defaults: {
-
+				"extSelect": "sampleExtension",
+				"showLyrics": "true"
 			},
 			sections: [
 				{
@@ -147,9 +189,8 @@ let settings = {},
 				'sampleExtension'
 			],
 			defaults: {
-				httpOnly: false,
-				doPlay: true,
-				doRandom: true
+				httpsOnly: true,
+				historyLength: 20
 			},
 			sections: [
 				{

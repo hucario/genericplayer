@@ -279,7 +279,19 @@ export default class Popup extends React.Component {
 						}
 					>
 						<img 
-							alt='Album art for song.' 
+							alt={
+								(this.state.currentSong &&
+									this.state.currentSong.album &&
+									this.state.currentSong.album.name) ||
+								'Album art for song.' 
+							}
+							title={
+								(this.state.currentSong &&
+									this.state.currentSong.album &&
+									this.state.currentSong.album.name)?
+									this.state.currentSong.album.name:
+									null
+							}
 							id="albumArt" 
 							src={
 								this.state.currentSong && 
