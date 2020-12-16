@@ -198,7 +198,7 @@ export default class SettingsApp extends React.Component {
 				!inpSettings[i].showReq) {
 				continue;
 			}
-				if (typeof inpSettings[i] === "boolean") {
+/*				if (typeof inpSettings[i] === "boolean") {
 
 				} else if (!inpSettings[i][2]) {
 					continue; // skips checking 0 and 1, because... arrays
@@ -207,7 +207,7 @@ export default class SettingsApp extends React.Component {
 					[inpSettings[i].showReq[1]] != inpSettings[i].showReq[2]
 					) {
 
-				}
+				}*/
 			
 			if (inpSettings[i].title) {
 				segs.push(

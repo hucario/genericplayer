@@ -55,8 +55,23 @@ class SampleSong extends Song {
 }
 
 class SampleStation extends Station {
+	/**
+	 *  @returns {SampleSong[]}
+	 */
 	getPlaylist() {
 		return [
+			new SampleSong({
+				name: "Pluie",
+				album: new Album({
+					name: "",
+					coverUrl: "http://mediaserver-cont-dc6-1-v4v6.pandora.com/images/public/int/1/4/7/2/859727392741_500W_500H.jpg",
+					url: "http://www.pandora.com/snails-house/lt/ALV6k47dKjkmt9J"
+				}),
+				artist: new Artist({
+					name: "Snail's House",
+					url: "https://www.pandora.com/artist/snails-house/AR5d3XhxgdVKJ92"
+				})
+			}),
 			new SampleSong({
 				name: "No Cover Bois",
 				album: new Album({
@@ -225,7 +240,7 @@ class SampleExtension extends Extension {
 	/** @type { String } */
 	name = "Pandora"
 	/** @type { Boolean } */
-	loggedIn = true
+	loggedIn = false
 	currentlyPlaying = {
 		station: null,
 		time: 0,
@@ -418,6 +433,10 @@ class SampleExtension extends Extension {
 			playing: true
 		})
 	}
+	/**
+	 * 
+	 * @returns SampleStation[]
+	 */
 	getStations = async () => {
 		let res= [
 			new SampleStation({

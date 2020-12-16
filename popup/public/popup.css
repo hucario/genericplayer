@@ -68,6 +68,7 @@ button {
 	overflow-y: auto;
 	overflow-x: hidden;
 	padding: 0;
+	background: var(--background);
 }
 
 #goleft, #goright {
@@ -124,7 +125,7 @@ input#listgrid, #refresh, #listgrid2 {
     border: none;
     border-radius: 0.3em;
     outline: none;
-    transition: background-color 250ms;
+    transition: color 250ms;
     cursor: pointer;
     align-self: center;
 	font-size: inherit;
@@ -142,7 +143,7 @@ input#listgrid:checked, #listgrid2:checked {
 }
 
 input#listgrid:not(:checked):hover, #refresh:not(.refreshing):hover, #listgrid2:not(:checked):hover {
-    background: var(--hint-icon-color);
+    color: var(--hint-icon-color);
 }
 
 .separator {
@@ -212,7 +213,7 @@ h1 {
     padding: 0;
     display: flex;
 	align-items: center;
-	border-bottom: solid 1px var(--active-icon-color);
+	border-bottom: solid 1px var(--background-floating);
 }
 
 .gridmode .hI {
@@ -456,11 +457,11 @@ button#loginButton {
     border-radius: 0.5em;
     padding: 0.1em 1em;
     outline: none;
-    transition: background 150ms;
+    transition: color 150ms;
 }
 
 button#loginButton:hover {
-    background: var(--hint-icon-color);
+    color: var(--hint-icon-color);
 }
 
 button#loginButton:active {
@@ -472,14 +473,11 @@ button#loginButton:active {
 #butwhytho:after, #closeExp:after {content: " ]";}
 
 #butwhytho, #closeExp {
-    text-decoration-color: var(--text-muted);
     color: var(--text-color);
-    text-decoration-color: var(--text-muted);
     background: none;
     border: none;
     font: unset;
-    text-decoration: underline;
-	text-decoration-style: dashed;
+    text-decoration: none;
 	margin-top: 1em;
 }
 
@@ -488,10 +486,11 @@ button#loginButton:active {
 }
 
 /* 12:56AM paste */
-#player {
+#slider > section#player { /* Specific enough to overrule the general slider settings. */
     display: flex;
     flex-direction: column;
-    align-items: center;
+	align-items: center;
+	background: unset;
 }
 
 #player .bx {
@@ -502,8 +501,8 @@ button#loginButton:active {
     font-size: var(--player-button-size);
     border-radius: 100%;
     outline: none;
-    transition: background-color 200ms;
-	cursor: pointer;
+    transition: color 200ms;
+	cursor: normal;
 	border: none;
 	position: relative;
 }
@@ -526,7 +525,7 @@ button#loginButton:active {
 }
 
 #player .bx:hover {
-    background: var(--hint-icon-color);
+    color: var(--hint-icon-color);
 }
 
 a#albumLink {
@@ -563,6 +562,7 @@ a#albumLink {
 	font-size: var(--player-button-size);
 	transform: translate(0.25em,0.25em);
 	display: block;
+	cursor: pointer;
 }
 #player button#mute {
     border: none;
@@ -626,9 +626,6 @@ form#login {
 	font-family: var(--header-font-family);
 }
 
-#loginExplanation p, #loginExplanation ol {
-    font-family: system-ui;
-}
 #topControls .bx:before {
     position: relative;
     right: 3px;

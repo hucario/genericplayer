@@ -203,7 +203,7 @@ export default class Popup extends React.Component {
 		}
 	}
 	volumeClick = () => {
-		if (this.state.volume === 0) {
+		if (this.state.volume < 1) {
 			this.setState({
 				volume: this.state.prevVolume || 100
 			})
@@ -238,6 +238,16 @@ export default class Popup extends React.Component {
 
 		return (
 		<React.Fragment>
+			{this.state.settings.blurredAlbumBackground &&
+						<img id="bg" 
+							alt=""
+							src={
+								this.state.currentSong &&
+								this.state.currentSong.album &&
+								this.state.currentSong.album.coverUrl
+							}
+						/>
+					}
 			<div id="slider" style={{
 				right: `calc(var(--width) * ${this.state.pageOn}`
 			}}>
@@ -260,16 +270,6 @@ export default class Popup extends React.Component {
 					/>
 				</section>
 				<section id="player">
-					{this.settingsByRawName.settings.blurredAlbumBackground &&
-						<img id="bg" 
-							alt=""
-							src={
-								this.state.currentSong &&
-								this.state.currentSong.album &&
-								this.state.currentSong.album.coverUrl
-							}
-						/>
-					}
 					<a 
 						id="albumLink" 
 						href={
@@ -465,9 +465,11 @@ export default class Popup extends React.Component {
 					<div id="volume">
 						<button 
 							aria-label={
-								this.state.volume === 0?'Unmute':'Mute'
+								this.state.volume < 1?'Unmute':'Mute'
 							}
-							className="bx bxs-volume-full"
+							className={
+								"bx bxs-volume-" +	(this.state.volume < 1?"mute":'full')
+							}
 							id="mute"
 							onClick={this.volumeClick}
 						/>
@@ -582,6 +584,17 @@ export default class Popup extends React.Component {
 							<li><strong>Because the code is open-source, you can see everywhere I handle your login details.</strong></li>
 							<li>Yeah I don't have another point but I wanted it to look like I have more than two points</li>
 						</ol>
+						also hey, you're cool for actually caring about your privacy 
+						<img 
+							src="https://discord.com/assets/5f80f04e6ee97feebdd00feff92ced82.svg" 
+							alt="sunglasses emoji"
+							style={{
+								width: "1.5em", 
+								height: "1.5em",
+								verticalAlign: "middle",
+								marginLeft: "0.5em"
+							}}
+						/>
 						<button 
 							id="closeExp"
 							onClick={

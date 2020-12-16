@@ -22,10 +22,11 @@
 }
 .icontoggle:checked {
 	background: var(--active-icon-color);
-	color: var(--hint-icon-color);
-    text-shadow: 2px -2px 2px var(--icon-color);
+/*	color: var(--hint-icon-color);
+	text-shadow: 2px -2px 2px var(--icon-color);*/
+	color: var(--icon-color);
 }
 
 .icontoggle:not(:checked):hover {
-    background: var(--hint-icon-color);
+    color: var(--hint-icon-color);
 }
