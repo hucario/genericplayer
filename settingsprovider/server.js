@@ -227,6 +227,12 @@ let settings = {
 				{
 					fields: [
 						{
+							label: 'Play ads',
+							sublabel: 'We hate ads too, which is why this is off by default - but if you don\'t mind too much, please turn this on to support the artists you love <3',
+							type: 'toggle',
+							rawName: 'playAds'
+						},
+						{
 							label: 'Only use secured connections',
 							sublabel: 'HTTP may be used if HTTPS is unavailable and this is unchecked.',
 							type: 'toggle',

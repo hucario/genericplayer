@@ -1,0 +1,33 @@
+<html style="--background:#000000; --background-floating:#1c1c1c; --background-floating-higher:#212121; --accent-color:#1dc98f; --active-icon-color:#e6bf00; --icon-color:#ffffff; --hint-icon-color:#ffc23d; --text-color:#dbdbdb; --text-muted:#51511f; --height:580px; --width:500px; --font-size:16px;">
+	<head>
+		<meta charset="utf-8">
+		<title>GenericPlayer Background</title>
+		<link rel="stylesheet" href="./background.css" type="text/css">
+		<link rel="stylesheet" href="./devtools.css" type="text/css">
+		<link rel="preconnect" href="https://fonts.gstatic.com">
+		<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&amp;display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<h1>Debug page (which is also the background page)</h1>
+		<main>
+			<section>
+				<h2>Actual audio player</h2>
+				<p>What plays when you press <code>play</code></p>
+				<audio id="player" controls>
+					<source type="audio/mpeg" src="">
+				</audio>
+			</section>
+			<section>
+				<h2>Settings stored</h2>
+				<div id="settingsView"></div>
+				<label><a href="https://github.com/luyuan/json-tree-view/">Viewer</a> made by <a href="https://github.com/richard-livingston/">Richard Livingston (@richard-livingston)</a> and <a href="https://github.com/luyuan/">@luyuan</a>, among others</label>
+			</section>
+			<section>
+				<h2>Logs</h2>
+				<div id="logs"></div>
+			</section>
+		</main>
+		<script src="./json-tree-view.js"></script>
+		<script src="./background.js"></script>
+	</body>
+</html>

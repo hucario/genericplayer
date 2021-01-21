@@ -20,7 +20,7 @@ let chromea =  {
 				settings: {
 					getSettingsPages() {
 						var request = new XMLHttpRequest();
-						request.open('GET', `http://localhost:8085/settingspages/`, false);  // `false` makes the request synchronous
+						request.open('GET', `http://localhost:8085/settingspages/`, false);
 						request.send(null);
 						
 						if (request.status === 200) {
@@ -55,8 +55,15 @@ let chromea =  {
 		}
 	}
 }
-let yeah = chromea.extension.getBackgroundPage().settings
-
+let yeah;
+// TODO: make this switch work
+// eslint-disable-next-line no-undef
+if (true || (!chrome || !chrome?.extension)) {
+	yeah = chromea.extension.getBackgroundPage().settings
+} else {
+	// eslint-disable-next-line no-undef
+	yeah = chrome.extension.getBackgroundPage().settings
+}
 export default class Popup extends React.Component {
 	settingsByRawName = {}
 	constructor(props) {

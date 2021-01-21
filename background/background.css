@@ -1,0 +1,104 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: var(--background);
+    color: var(--text-color);
+    box-sizing: border-box;
+    font-family: system-ui;
+}
+
+html {padding: 0 10%;}
+
+body {
+    background: var(--background-floating);
+    padding: 2em;
+}
+
+h1 {
+    margin: 0;
+}
+
+section {
+    background: var(--background-floating-higher);
+    display: block;
+    min-width: 48%;
+    padding: 1rem 2rem;
+    box-sizing: border-box;
+    flex-grow: 1;
+    min-height: 0;
+    margin-top: 1rem;
+}
+
+main {
+    width: 100%;
+    display: flex;
+    gap: 2%;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.jsonView {background: white;border-radius: 0.5rem;}
+
+.jsonView :nth-child(1) {
+    color: var(--text-muted);
+}
+
+a {
+    color: var(--text-color);
+}
+
+label {
+    margin-left: 20px;
+    font-size: 0.8em;
+}
+
+#logs {
+    min-height: 5em;
+    background: #151515;
+    color: #ffffff;
+    font-family: "Jetbrains Mono";
+    padding: 5px;
+}
+
+#logs > div {
+    border-bottom: solid 1px #ffffff29;
+    padding: 0.1em 0;
+    display: flex;
+}
+
+.timestamp {
+    color: #777777;
+    user-select: none;
+    height: 100%;
+    display: inline-block;
+    margin-right: 0.7em;
+    flex-shrink: 0;
+}
+
+.timestamp::after {content: " | ";}
+
+#logs > div:nth-of-type(1) {
+    border-top: solid 1px #ffffff29;
+}
+
+.error {
+    color: red;
+}
+
+.error .timestamp {
+    color: red;
+}
+
+.warning {
+    color: yellow;
+}
+
+.warning .timestamp {
+    color: yellow;
+}
+
+#logs > div > span {
+    word-break: break-word;
+}
