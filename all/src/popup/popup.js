@@ -30,7 +30,10 @@ export default class Popup extends React.Component {
 			rating: 'unrated',
 			repeatOne: false,
 			stations: [],
-			localSeekValue: 0
+			localSeekValue: 0,
+			searchTerm: sett.getSetting('popup', 'searchTerm') || '',
+			downloading: false,
+			loadingSkip: false
 		}
 
 		this.state.settings = sett.getAllSettings().popup ?? {};
@@ -179,10 +182,12 @@ export default class Popup extends React.Component {
 		})
 	}
 	render() {
-		this.state.setSeekValue && this.state.setSeekValue();
-		// @ts-ignore
 		window.popupState = this.state
-
+		window.actE = this.state.activeExtension;
+		let lSV = this.state.localSeekValue;
+		if (this.state.playing) {
+			lSV = this.state.time;
+		}
 		return (
 		<React.Fragment>
 			<Helmet>
@@ -190,7 +195,7 @@ export default class Popup extends React.Component {
 			</Helmet>
 			{this.state.settings.blurredAlbumBackground &&
 						<img id="bg" 
-							alt=""
+							alt={" "}
 							src={
 								this.state.currentSong &&
 								this.state.currentSong.album &&
@@ -230,12 +235,7 @@ export default class Popup extends React.Component {
 						}
 					>
 						<img 
-							alt={
-								(this.state.currentSong &&
-									this.state.currentSong.album &&
-									this.state.currentSong.album.name) ||
-								'Album art for song.' 
-							}
+							alt={String.fromCodePoint(0xec5b)}
 							title={
 								(this.state.currentSong &&
 									this.state.currentSong.album &&
@@ -318,7 +318,7 @@ export default class Popup extends React.Component {
 							this.state.currentSong && 
 							this.state.currentSong.length
 						}
-						value={this.state.localSeekValue}
+						value={lSV}
 						onMouseDown={
 							this.seekStart
 						}
@@ -362,14 +362,24 @@ export default class Popup extends React.Component {
 								}
 								id="play" 
 								className={"bx "+(this.state.playing?'bx-pause':'bx-play')}
-								onClick={this.state.activeExtension.togglePlay}
+								onClick={() => {
+									this.setState({
+										localSeekValue: this.state.time
+									});
+									this.state.activeExtension.togglePlay()
+								}}
 							/>
 							<button 
 								aria-label={
 									'Skip'
 								}
-								className="bx bx-skip-next"
-								onClick={this.state.activeExtension.skip}
+								className={"bx "+(this.state.loadingSkip?'downloading':'bx-skip-next')}
+								onClick={() => {
+									this.setState({
+										loadingSkip: true
+									})
+									this.state.activeExtension.skip();
+								}}
 							/>
 					</div>
 					<div id="bottomControls">
@@ -403,7 +413,7 @@ export default class Popup extends React.Component {
 							aria-label={
 								'Download'
 							}
-							className="bx bxs-download"
+							className={"bx "+(this.state.downloading?'downloading':'bxs-download')}
 							onClick={
 								() => {
 									this.state.currentSong &&
@@ -474,7 +484,16 @@ export default class Popup extends React.Component {
 				<section className={this.state.stationsGridMode?'gridmode':''}>
 					<div className="topbar">
 						<h1>Stations</h1>
-						<input id="search" placeholder="Search..." />
+						<input 
+							id="search" 
+							placeholder="Search..." 
+							value={this.state.searchTerm}
+							onChange={
+								(e) => {
+
+								}
+							}
+						/>
 						<button 
 							className={
 								"bx bx-refresh" +

@@ -13,7 +13,7 @@
 	--button-size: 2rem;
 	--icon-color: #ffffff2b;
 	--active-icon-color: #ffffff33;
-	--recents-album-image-size: 9em;
+	--recents-album-image-size: 9rem;
 	--recents-button-size: calc(var(--recents-album-image-size) / 4);
 	--player-button-color: var(--icon-color);
 	--player-button-size: 1.7rem;
@@ -184,9 +184,6 @@ h1 {
     min-width: var(--recents-album-image-size);
 }
 
-img[src=""]::before {
-	content: "\ebf6"
-}
 
 #history {
     padding: 0;
@@ -315,8 +312,8 @@ span.historyName {
 }
 
 .gridmode .historyButtons button {
-	width: calc(var(--recents-button-size) / 2);
-	height: calc(var(--recents-button-size) / 2);
+	width: var(--recents-button-size);
+	height: var(--recents-button-size);
 	font-size: var(--recents-button-size);
 	padding: 0;
 	margin: 0;
@@ -523,6 +520,8 @@ a#albumLink {
 	max-width: 400px;
 	max-height: 400px;
 	margin-bottom: 0.5rem;
+	text-decoration: none;
+	position: relative;
 }
 
 #bottomControls .bx {
@@ -568,6 +567,14 @@ a#albumLink {
 img#albumArt {
     height: 100%;
     width: 100%;
+    font-size: var(--art-size);
+    text-decoration: none;
+    background: var(--background-floating-higher);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 #volumeBar {
@@ -617,14 +624,12 @@ form#login {
     text-align: center;
 }
 
-.hI > img:before {
-	content: "\e97a";
+img[alt="\ec5b"] {
+	font-family: boxicons;
 	color: var(--icon-color);
-	height: 100%;
-	width: 100%;
 	font-family: 'boxicons';
 	font-size: var(--recents-album-image-size);
-	display: block;
+	text-decoration: none;
 }
 
 .gridmode .historyAaa > span {
@@ -714,4 +719,20 @@ a#albumname {
     z-index: 0;
     filter: blur(20px);
 	opacity: 0.5;
+}
+
+.downloading {
+	color: var(--active-icon-color) !important;
+	animation: spin 750ms linear infinite;
+}
+.downloading::before {
+	content: "\eb11";
+	position: relative;
+	left: -1px; /* Fix off-center */
+}
+#topControls .downloading::before {
+    left: -2px;
+    right: unset;
+    top: -5px;
+    font-size: calc(var(--player-big-button-size) * 0.8);
 }

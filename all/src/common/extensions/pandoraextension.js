@@ -119,6 +119,11 @@ class PandoraExtension extends Extension {
 		this.setStates({
 			loggedIn: true
 		})
+		this.getStations().then((r) => {
+			this.setStates({
+				stations: r
+			})
+		});
 		return res.stat!=='fail';
 	}
 	async getStations() {
@@ -318,6 +323,7 @@ class PandoraExtension extends Extension {
 			
 			
 			let p = b.result.items;
+			this.playlist = [];
 			p.forEach(l => {
 				if (l.adToken) {
 					// For now...
@@ -354,7 +360,8 @@ class PandoraExtension extends Extension {
 				currentSong: this.currentlyPlaying.song,
 				time: this.currentlyPlaying.time,
 				rating: this.currentlyPlaying.song.rating,
-				repeatOne: this.currentlyPlaying.repeatOne
+				repeatOne: this.currentlyPlaying.repeatOne,
+				loadingSkip: false
 			})
 		})
 	}
@@ -367,6 +374,9 @@ class PandoraExtension extends Extension {
 
 	setRepeat = (bool) => {
 		this.currentlyPlaying.repeatOne = bool;
+		if (this.sound) {
+			this.sound.loop(bool);
+		}
 		this.setStates({
 			repeatOne: this.currentlyPlaying.repeatOne
 		})
@@ -428,16 +438,31 @@ class PandoraExtension extends Extension {
 	play = () => {
 		this.currentlyPlaying.playing = true
 
-		if (this.sound) {
-			this.sound.play();
-		} else if (this.currentlyPlaying.song.audioLink) {
+		if (this.sound?._src !== this.currentlyPlaying.song?.audioLink) {
+			if (this.sound) {
+				this.sound.stop();
+			}
 			this.sound = new Howl({
 				src: this.currentlyPlaying.song.audioLink,
 				autoplay: true,
 				html5: true,
-				volume: (Math.min(Math.max(this.currentlyPlaying.volume, 0), 100) * 0.01)
+				volume: (Math.min(Math.max(this.currentlyPlaying.volume, 0), 100) * 0.01),
+				onend: this.skip
 			});
+		} else {
+			if (this.sound) {
+				this.sound.play();
+			} else if (this.currentlyPlaying.song?.audioLink) {
+				this.sound = new Howl({
+					src: this.currentlyPlaying.song.audioLink,
+					autoplay: true,
+					html5: true,
+					volume: (Math.min(Math.max(this.currentlyPlaying.volume, 0), 100) * 0.01),
+					onend: this.skip
+				});
+			}
 		}
+
 
 		this.setStates({
 			playing: this.currentlyPlaying.playing
@@ -455,9 +480,15 @@ class PandoraExtension extends Extension {
 		})
 	}
 	skip = () => {
+		if (!this.currentlyPlaying.song) {
+			return;
+		}
 		if (this.playlist.length > 0) {
 			this.history.unshift(this.currentlyPlaying.song);
 			this.currentlyPlaying.song = this.playlist.shift();
+			this.setStates({
+				loadingSkip: false
+			})
 		} else {
 			if (this.currentlyPlaying.station) {
 				this.playStation(this.currentlyPlaying.station);
@@ -468,8 +499,11 @@ class PandoraExtension extends Extension {
 			}
 		}
 		this.currentlyPlaying.time = 0;
+		this.setStates({
+			time: 0
+		})
 
-		if (this.currentlyPlaying.song.audioLink) {
+		if (this.currentlyPlaying.song?.audioLink) {
 			if (this.sound) {
 				this.sound.stop();
 			}
@@ -580,17 +614,26 @@ class PandoraSong  extends Song {
 	}
 	download = () => {
 		if (!this.audioLink) {
-			alert('There\'s no audio source for this song!');
 			return;
 		}
-		alert('Downloading...');
+		this.parent.setStates({
+			downloading: true
+		})
 		fetch(this.audioLink)
 		.then(res => res.blob())
 		.then(blob => {
-			var link = document.createElement("a");
-			link.download = this.name;
+			let z = this.audioLink.split('.');
+			z = z[z.length-1];
+			z = z.split('?');
+			z = z[0];
+			let link = document.createElement("a");
+			
+			link.download = this.name + '.' + z;
 			link.href = URL.createObjectURL(blob);;
 			link.click();
+			this.parent.setStates({
+				downloading: false
+			})
 		})
 	}
 	getRating() {

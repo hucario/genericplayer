@@ -57,3 +57,33 @@
 .stations > li:not(:last-child) {
 	border-bottom: solid 1px #ffffff2b;
 }
+
+section[class*='gridmode'] .stations li {
+	width: var(--recents-album-image-size);
+	height: var(--recents-album-image-size);
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	position: relative;
+	border: none;
+}
+section[class*='gridmode'] .stations {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	padding: 0.7rem;
+}
+section[class*='gridmode']  .stations li > button {
+	margin: 0;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	text-shadow: 0 0 6px black;
+}
+section[class*='gridmode'] .stations > li > img, section[class*='gridmode'] .stations > li > img::before {
+	width: 100%;
+	height: 100%;
+	font-size: var(--recents-album-image-size) !important;
+	background: var(--background-floating);
+	border-radius: 4px;
+}

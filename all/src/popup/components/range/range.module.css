@@ -15,10 +15,21 @@
     appearance: none;
     width: 1rem;
     height: 1rem;
-	border-radius: 100%;
-    position: relative;
-	left: -3px;
-	user-select: none;
+    border-radius: 100%;
+	transform: translateX(-2px);
+    user-select: none;
+    border: none;
+}
+
+.control::-moz-range-thumb {
+    background: var(--icon-color);
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 100%;
+	transform: translateX(-2px);
+    user-select: none;
+    border: none;
 }
 
 .previous {

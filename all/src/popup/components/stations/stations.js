@@ -62,6 +62,7 @@ class StationElement extends React.Component {
 			<li>
 				<img 
 					src={this.state.data.latestCover ?? ""}
+					alt={String.fromCodePoint(0xec5b)}
 					title={this.state.data.name}
 					style={{
 						color: this.state.color

@@ -36,6 +36,7 @@ class HistoryItem extends React.Component {
 		return (<li className='hI'>
 		<img 
 			src={tHI.album.coverUrl ?? ''}
+			alt={String.fromCodePoint(0xec5b)}
 			title={'Album art for '+ tHI.album.name}
 		/>
 		<div className="historyAaa">
