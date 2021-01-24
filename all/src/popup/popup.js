@@ -87,12 +87,7 @@ export default class Popup extends React.Component {
 	}
 	login = async (e) => {
 		e.preventDefault();
-		let x = await this.state.activeExtension.login('hughy62@gmail.com', 'monkey').catch((e) => {
-
-		})
-		if (!x) {
-			return;
-		}
+		return;
 		this.setState({
 			loggedIn: true
 		})

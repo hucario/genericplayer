@@ -30,7 +30,8 @@
     overflow: hidden;
     box-sizing: border-box;
     min-height: 5rem;
-    min-width: 5rem;
+	min-width: 5rem;
+	object-fit: cover;
 }
 
 .stations > li > img:before {
@@ -74,11 +75,17 @@ section[class*='gridmode'] .stations {
 	padding: 0.7rem;
 }
 section[class*='gridmode']  .stations li > button {
-	margin: 0;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	text-shadow: 0 0 6px black;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    width: 100%;
+    opacity: 0;
+    background: var(--background-floating);
+    transition: opacity 150ms;
 }
 section[class*='gridmode'] .stations > li > img, section[class*='gridmode'] .stations > li > img::before {
 	width: 100%;
@@ -86,4 +93,8 @@ section[class*='gridmode'] .stations > li > img, section[class*='gridmode'] .sta
 	font-size: var(--recents-album-image-size) !important;
 	background: var(--background-floating);
 	border-radius: 4px;
+}
+
+section[class*='gridmode'] .stations li:hover > button {
+    opacity: 1;
 }

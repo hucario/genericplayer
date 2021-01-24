@@ -10,6 +10,9 @@ import {
 import SettingsApp from './settings/settings.js'
 import Popup from './popup/popup.js'
 
+import settingsProvider from './settingsProvider'
+
+window.settingsProvider = settingsProvider;
 
 localStorage.settingsPages = localStorage.settingsPages || JSON.stringify({
 		popup: {
@@ -143,6 +146,7 @@ localStorage.settingsPages = localStorage.settingsPages || JSON.stringify({
 							options: [
 							{ value: 'sampleExtension', label: 'Sample Extension' },
 							{ value: 'pandoraExtension', label: 'Pandora' },
+							{ value: 'youtubeExtension', label: 'Youtube playlists'}
 							],
 							rawName: 'extSelect'
 						},
@@ -225,6 +229,18 @@ localStorage.settingsPages = localStorage.settingsPages || JSON.stringify({
 					]
 				}
 			]
+		},
+		youtubeExtension: {
+			title: 'Youtube Settings',
+			showReq: [
+				'settings',
+				'extSelect',
+				'youtubeExtension'
+			],
+			defaults: {
+
+			},
+			sections: []
 		}
 	})
 localStorage.settings = localStorage.settings || JSON.stringify({
@@ -244,7 +260,7 @@ localStorage.settings = localStorage.settings || JSON.stringify({
 		"font-size": "16px"
 	},
 	"settings": {
-		"extSelect": "sampleExtension",
+		"extSelect": "youtubeExtension",
 		"showLyrics": "true"
 	},
 	"sampleExtension": {

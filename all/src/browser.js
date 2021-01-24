@@ -1,14 +1,15 @@
 import settingsProvider from './settingsProvider'
 import PandoraExtension from './common/extensions/pandoraextension';
 import SampleExtension from './common/extensions/sampleextension';
+import YoutubeExtension from './common/extensions/youtubeextension';
 
-
-
-let asdf2 = new ({
+let asdf = {
 	sampleextension: SampleExtension,
-	pandoraextension:PandoraExtension
-}[
-	(settingsProvider.getSetting('settings', 'extselect') || '').toLowerCase()
+	pandoraextension:PandoraExtension,
+	youtubeextension:YoutubeExtension
+};
+let asdf2 = new (asdf[
+	(settingsProvider.getSetting('settings', 'extSelect') || '').toLowerCase()
 ] || SampleExtension)();
 
 const faker = {
@@ -24,4 +25,4 @@ const faker = {
 	}
 }
 
-export default (window.chrome || window.browser || faker);
+export default ((window.chrome.extension?window.chrome:undefined) || window.browser || faker);
