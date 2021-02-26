@@ -1,3 +1,6 @@
+// Packages
+//#region
+
 import React from 'react'
 import {
 	render
@@ -5,15 +8,30 @@ import {
 import {
 	BrowserRouter as Router,
 	Switch,
-	Route
+	Route,
+	useLocation
 } from 'react-router-dom'
-import SettingsApp from './settings/settings.js'
-import Popup from './popup/popup.js'
+import Helmet from 'react-helmet'
 
+//#endregion
+
+// Internal modules
+//#region
+import SettingsApp from './settings/settings'
+import Popup from './popup/popup'
 import settingsProvider from './settingsProvider'
+import HomePage from './pages/home/home'
+import NotFoundPage from './pages/notfound/notfound'
+import SearchPage from './pages/search/search'
+import StationsPage from './pages/stations/stations'
+import SideBar from './components/sidebar/sidebar'
+import BottomBar from './components/bottombar/bottombar'
 
+//#endregion
+
+// Settings defaults
+//#region
 window.settingsProvider = settingsProvider;
-
 localStorage.settingsPages = localStorage.settingsPages || JSON.stringify({
 		popup: {
 			title: 'Popup Settings',
@@ -273,18 +291,36 @@ localStorage.settings = localStorage.settings || JSON.stringify({
 		"trimUrls": true
 	}
 });
+//#endregion
 
-render((
-	<Router>
-		<Switch>
-			<Route
-				path="/settings"
-				component={SettingsApp}
-			/>
-			<Route
-				path="/popup"
-			><Popup /></Route>
-		</Switch>
-	</Router>),
-	document.getElementById('main')
+function App() {
+	let location = useLocation().pathname;
+	return (<>
+	<Switch>
+		<Route path="/settings" component={SettingsApp} />
+		<Route path="/popup" component={Popup} />
+		<Route path="">
+			<Helmet><link href='/main.css' rel='stylesheet' /></Helmet>
+			<div className="growUp">
+				<SideBar />
+				<section id="main">
+					<Switch>
+						<Route path="/search" component={SearchPage} />
+						<Route path="/stations" component={StationsPage} />
+						<Route path="/" exact component={HomePage} />
+						<Route path="" component={NotFoundPage} />
+					</Switch>
+				</section>
+			</div>
+			<BottomBar />
+		</Route>
+	</Switch>
+		</>
+	)
+}
+
+render((<Router>
+	<App />
+</Router>),
+	document.getElementById('app')
 );

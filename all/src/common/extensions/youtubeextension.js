@@ -3,6 +3,7 @@
  /*
  * Youtube playlist extension.
  *
+ * TODO: Seeking makes it rewind to beginning?
  */
 
 import { Extension, Song, Station, Album, Artist } from './extension';
@@ -99,8 +100,10 @@ class YoutubeExtension extends Extension {
 			let yea = 0;
 			let pls = [
 				'https://www.youtube.com/playlist?list=PL2q9e5qYXSm_1EbhWL07OQwpsVDjbLRJp',
-				'https://youtube.com/playlist?list=FLu35IW_37tLDBCCWcVbh9tw',
-				'https://www.youtube.com/playlist?list=PLEJlH4AF_A2YdXGfkTMr8RctfOOfxNYTX'
+				'https://www.youtube.com/playlist?list=FLu35IW_37tLDBCCWcVbh9tw',
+				'https://www.youtube.com/playlist?list=PLEJlH4AF_A2YdXGfkTMr8RctfOOfxNYTX',
+				'https://www.youtube.com/playlist?list=OLAK5uy_k2FivlV4BFfc5fGkDXmmt_gTGAqhN00YE',
+				'https://www.youtube.com/playlist?list=PLXESviDBYb8GKdi4XL2A9Ew50IYbbPs4T'
 			]
 			for (let currentPlaylist of pls) {
 				ytpl(currentPlaylist, {
@@ -154,19 +157,18 @@ class YoutubeExtension extends Extension {
 			let asdf = 0;
 			for (let b of p) {
 				ytdl.getInfo(b.url).then(e => {
-					let audioFormat = ytdl.filterFormats(e.formats, 'audioonly').sort((a, b) => {
-						if (a.audioBitrate > b.audioBitrate) {
-							return -1;
-						} else if (a.audioBitrate < b.audioBitrate) {
-							return 1;
-						} else {
-							return 0;
-						}
-					})[0];
+					let audioFormat = ytdl.chooseFormat(e.formats, { quality: 'highestaudio', filter: 'audioonly' });
 	
 					let t = e.videoDetails;
+					let tootle =  t.title.replace(/((\[|\().*((Official)|(Directed)).*(\)|\]))/g, '').trim();
+					tootle = tootle.split('-');
+					if (tootle.length > 0) {
+						tootle = tootle[1];
+					} else {
+						tootle = tootle[0];
+					}
 					this.playlist.push(new YoutubeVideo({
-						name: t.title.replace(/((\[|\().*((Official)|(Directed)).*(\)|\]))/g, '').trim(),
+						name: tootle,
 						parentStation: stat,
 						url: t.video_url,
 						rating: 'unrated',

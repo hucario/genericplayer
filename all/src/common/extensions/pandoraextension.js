@@ -338,11 +338,11 @@ class PandoraExtension extends Extension {
 					album: new Album({
 						name: l.albumName,
 						coverUrl: l.albumArtUrl,
-						url: l.albumDetailUrl
+						url: this.doTrim(l.albumDetailUrl)
 					}),
 					artist: new Artist({
 						name: l.artistName,
-						url: l.artistDetailUrl
+						url: this.doTrim(l.artistDetailUrl)
 					}),
 					audioLink: l.additionalAudioUrl || l.audioUrlMap.highQuality.audioUrl || l.audioUrlMap.mediumQuality.audioUrl || l.audioUrlMap.lowQuality.audioUrl
 				}, this))

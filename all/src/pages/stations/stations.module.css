@@ -1,0 +1,36 @@
+.station {
+	--width: 20rem;
+	width: var(--width);
+	padding: 1rem;
+	padding-bottom: 2rem;
+	background: var(--bg);
+	transition: background 250ms;
+	cursor: pointer;
+}
+.station:hover {
+	background: var(--bghover);
+}
+.imgHolder {
+	width: 100%;
+	position: relative;
+}
+.staticon {
+	width: 100%;
+	aspect-ratio: 1/1;
+	object-fit: cover;
+	object-position: center;
+
+}
+.h1 {}
+.sub {}
+.play {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+.sauceindicator {
+	width: 20%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}

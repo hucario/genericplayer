@@ -19,7 +19,7 @@
     "ytdl-core": "^4.4.4",
     "ytpl": "^2.0.4"
   },
-  "homepage": "/",
+  "homepage": ".",
   "scripts": {
     "start": "set PORT=8080 && react-scripts start",
     "build": "react-scripts build",

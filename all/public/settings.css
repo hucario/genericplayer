@@ -7,7 +7,7 @@
 	--font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-	--header-font-family: "Zilla Slab";
+	--header-font-family: var(--font-family);
 	--accent-color: #4BD89B;
 	--width: 500px;
 	--height: 579px;

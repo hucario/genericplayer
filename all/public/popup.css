@@ -6,7 +6,7 @@
 	--font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-	--header-font-family: "Zilla Slab";
+	--header-font-family: var(--font-family);
 	--accent-color: #009a00;
 	--width: 500px;
 	--height: 579px;
@@ -31,7 +31,7 @@ button {
 	cursor: pointer;
 }
 
-#main {
+main {
 	background: var(--background);
 	color: var(--text-color);
 	font-family: var(--font-family);
@@ -720,6 +720,7 @@ a#albumname {
     z-index: 0;
     filter: blur(20px);
 	opacity: 0.5;
+	object-fit: cover;
 }
 
 .downloading {

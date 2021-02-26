@@ -1,0 +1,68 @@
+.searchBar {
+	font: inherit;
+	color: var(--text-color);
+	background: none;
+	appearance: none;
+	border: none;
+	outline: none;
+	cursor: text;
+	font-weight: lighter;
+	width: 100%;
+}
+
+.searchBarWrap {
+	font-size: 2rem;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	margin: 1em;
+	transition: all 250ms;
+}
+
+.icon {
+	margin-right: 0.5em;
+	color: var(--text-muted);
+	transition: color 250ms;
+}
+.label {
+	max-height: max-content;
+}
+
+.searchBarWrap:focus-within .icon {
+	color: var(--text-color);
+}
+
+.result {
+	display: flex;
+	align-items: center;
+	height: 5rem;
+	width: 100%;
+	overflow: hidden;
+	margin: 0 1rem;
+	padding: 0 1rem;
+	border-radius: 1rem;
+}
+.resultImage {
+	height: 4rem;
+	width: 4rem;
+}
+.group {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    font-weight: 600;
+}
+.trackName {
+	color: var(--text-color);
+}
+.artistName {
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+}
+
+.result:hover .artistName {
+	color: var(--text-color);
+}
+.result:hover {
+	background-color: var(--background-floating);
+}
