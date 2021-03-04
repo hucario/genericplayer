@@ -1,0 +1,51 @@
+.accordion {
+	margin-top: 3rem;
+	width: 100%;
+}
+.open {}
+.closed {}
+.spacer {
+	flex-grow: 1;
+	height: 0;
+}
+
+.accInner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.accHeaderHolder {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+}
+
+.accHeaderHolder > button {
+    appearance: none;
+    background: none;
+    border: 0;
+    color: var(--icon-color);
+    font-size: 2rem;
+    display: block;
+    cursor: pointer;
+    background: var(--background-floating-higher);
+    margin: 0 0.3rem;
+    padding: 0.3rem;
+    border-radius: 100%;
+    transition: background .3s;
+    transform: scale(1);
+    outline: none;
+}
+
+.accHeaderHolder > button:hover, .accHeaderHolder > button:focus {
+    background: var(--interactive-hover);
+}
+
+.accHeaderHolder > button:active {
+    transform: scale(0.9);
+}
+
+button.upButton {
+	margin-right: 2rem;
+}
