@@ -16,7 +16,6 @@ import Helmet from 'react-helmet'
 import { Provider } from 'react-redux'
 import store from './redux/store'
 
-
 //#endregion
 
 // Internal modules
