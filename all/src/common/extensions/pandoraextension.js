@@ -3,16 +3,17 @@
  *
  */
 
-import { Extension, Song, Station, Album, Artist } from './extension';
+import { Extension, Song, Station, Album, Artist } from '../../oldext/extension';
 import { encrypt, decrypt } from './pandora/crypt';
-import { Howl, Howler } from 'howler'
+import { Howl
+	//, Howler 
+} from 'howler'
 
 import settingsProvider from '../../settingsProvider';
 
 
 let SETT = settingsProvider;
 function gS(setting) {
-	console.log(setting, SETT.getSetting('pandora', setting));
 	return SETT.getSetting('pandora', setting);
 }
 function sS(setting, value) {
@@ -43,6 +44,8 @@ class PandoraExtension extends Extension {
 
 	constructor() {
 		super();
+		return;
+		/*
 		if (gS('username') && gS('password')) {
 			this.login(gS('username'), gS('password'));
 		} else if (gS('uaToken') && gS('uID') && gS('paToken') && gS('syncTime') && gS('syncStart')) {
@@ -89,7 +92,7 @@ class PandoraExtension extends Extension {
 				});
 			}
 		}, 1000)
-
+		*/
 	}
 	async login(username, pw) {
 		if (!this.partnerAuthToken || !this.partnerID) {
@@ -219,7 +222,7 @@ class PandoraExtension extends Extension {
 		if (this.userID) {
 			queryString += '&user_id=' + encodeURIComponent(this.userID);
 		}
-		console.log(data, method + queryString);
+//		console.log(data, method + queryString);
 		
 		if (encryptthis) {
 			// @ts-ignore

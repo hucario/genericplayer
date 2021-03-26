@@ -1,6 +1,6 @@
 import settingsProvider from './settingsProvider'
 import PandoraExtension from './common/extensions/pandoraextension';
-import SampleExtension from './common/extensions/sampleextension';
+import SampleExtension from './oldext/sampleextension';
 import YoutubeExtension from './common/extensions/youtubeextension';
 
 let asdf = {
@@ -25,4 +25,5 @@ const faker = {
 	}
 }
 
-export default ((window.chrome.extension?window.chrome:undefined) || window.browser || faker);
+//export default ((window.chrome.extension?window.chrome:undefined) || window.browser || faker);
+export default faker;

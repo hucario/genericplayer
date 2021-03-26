@@ -6,15 +6,15 @@
  * TODO: Seeking makes it rewind to beginning?
  */
 
-import { Extension, Song, Station, Album, Artist } from './extension';
+import { Extension, Song, Station, Album, Artist } from '../../oldext/extension';
 import { Howl, Howler } from 'howler'
 import ytdl from 'ytdl-core'
 import ytpl from 'ytpl'
-import settingsProvider from '../../settingsProvider';
+// import settingsProvider from '../../settingsProvider';
 
 window.ytdl = ytdl;
 
-let SETT = settingsProvider;
+/*let SETT = settingsProvider;
 function gS(setting) {
 	console.log(setting, SETT.getSetting('youtube', setting));
 	return SETT.getSetting('youtube', setting);
@@ -22,7 +22,7 @@ function gS(setting) {
 function sS(setting, value) {
 	return SETT.setSetting('pandora', setting, value);
 }
-
+*/
 class YoutubeExtension extends Extension {
 	allowsRatings = false
 	logo = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/YouTube_social_white_circle_(2017).svg/1024px-YouTube_social_white_circle_(2017).svg.png"

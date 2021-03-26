@@ -1,5 +1,4 @@
 .accordion {
-	margin-top: 3rem;
 	width: 100%;
 }
 .open {}
@@ -8,13 +7,20 @@
 	flex-grow: 1;
 	height: 0;
 }
-
+.accHeader {
+	margin-top: 1em;
+}
 .accInner {
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
+	min-height: 0;
+	transition: height 250ms, min-height 250ms, max-height 250ms;
+	overflow: hidden;
 }
-
+.peek {
+	min-height: 2rem;
+}
 .accHeaderHolder {
     display: flex;
     align-items: center;
@@ -46,6 +52,8 @@
     transform: scale(0.9);
 }
 
-button.upButton {
-	margin-right: 2rem;
+.horizontal .accInner {
+	flex-wrap: nowrap;
+	transition: transform 250ms;
+	width: max-content;
 }

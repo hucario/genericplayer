@@ -1,0 +1,109 @@
+.album a.eventCatcher {
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 2;
+}
+.album {
+	--width: 226px;
+	width: var(--width);
+	padding: 16px;
+	position: relative;
+	display: flex;
+	background: var(--bg);
+	border-radius: 4px;
+	transition: background .3s ease;
+	cursor: pointer;
+	flex-shrink: 0;
+	flex-grow: 0;
+}
+
+.album a {
+	z-index: 3;
+	position: relative;
+}
+
+.album:hover {
+	background: var(--bghover);
+}
+.albumInner {
+	height: 100%;
+	width: 100%;
+}
+.imgHolder {
+	width: 100%;
+	position: relative;
+	margin-bottom: 15px;
+}
+.albicon {
+	width: 100%;
+	aspect-ratio: 1/1;
+	object-fit: cover;
+	object-position: center;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+.infoHolder {
+	margin-bottom: 1em;
+}
+.h1 {
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 24px;
+	letter-spacing: normal;
+	text-transform: none;
+	margin-bottom: 0.2rem;
+}
+.sub {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 16px;
+	letter-spacing: normal;
+	text-transform: none;
+	color: var(--text-muted);
+}
+.play {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+.sauceindicator {
+	width: 20%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.h1, .sub {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+	display: block;
+}
+
+.play {
+    appearance: none;
+    border: none;
+    background: #41c741;
+    padding: 0.3em;
+    font-size: 2rem;
+    color: white;
+    border-radius: 100%;
+    bottom: 4px;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
+    transform: translate(0, 0) scale(1);
+    opacity: 0;
+    transition: all .25s ease;
+	cursor: default;
+	outline: none;
+	z-index: 4;
+}
+
+.album:hover .play, .album:focus .play, .album:focus-within .play {
+    opacity: 1;
+    transform: translate(0,-10px) scale(1);
+}
+.album button.play:active {
+	transform: translate(0, -10px) scale(0.95);
+}

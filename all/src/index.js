@@ -1,7 +1,7 @@
 // Packages
 //#region
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
 	render
 } from 'react-dom';
@@ -13,6 +13,10 @@ import {
 } from 'react-router-dom'
 import Helmet from 'react-helmet'
 
+import { Provider } from 'react-redux'
+import store from './redux/store'
+
+
 //#endregion
 
 // Internal modules
@@ -20,12 +24,15 @@ import Helmet from 'react-helmet'
 import SettingsApp from './settings/settings'
 import Popup from './popup/popup'
 import settingsProvider from './settingsProvider'
-import HomePage from './pages/home/home'
-import NotFoundPage from './pages/notfound/notfound'
-import SearchPage from './pages/search/search'
-import StationsPage from './pages/stations/stations'
-import SideBar from './components/sidebar/sidebar'
-import BottomBar from './components/bottombar/bottombar'
+import HomePage from './pages/home/'
+import NotFoundPage from './pages/notfound/'
+import SearchPage from './pages/search/'
+import StationsPage from './pages/stations/'
+import SideBar from './components/sidebar/'
+import BottomBar from './components/bottombar/'
+import AlbumPage from './pages/albumdetail/'
+import ArtistPage from './pages/artistdetail/'
+
 
 //#endregion
 
@@ -293,8 +300,14 @@ localStorage.settings = localStorage.settings || JSON.stringify({
 });
 //#endregion
 
+window.store = store
+
 function App() {
-	let location = useLocation().pathname;
+	const location = useLocation();
+	useEffect(() => {
+		console.log('Page changed to '+location.pathname);
+
+	},[location.pathname])
 	return (<>
 	<Switch>
 		<Route path="/settings" component={SettingsApp} />
@@ -305,8 +318,11 @@ function App() {
 				<SideBar />
 				<section id="main">
 					<Switch>
+						<Route path="/search/:id" component={SearchPage} />
 						<Route path="/search" component={SearchPage} />
 						<Route path="/stations" component={StationsPage} />
+						<Route path="/album/:id" component={AlbumPage} />
+						<Route path="/artist/:id" component={ArtistPage} />
 						<Route path="/" exact component={HomePage} />
 						<Route path="" component={NotFoundPage} />
 					</Switch>
@@ -319,8 +335,10 @@ function App() {
 	)
 }
 
-render((<Router>
-	<App />
-</Router>),
+render((<Provider store={store}>
+		<Router>
+			<App />
+		</Router>
+	</Provider>),
 	document.getElementById('app')
 );

@@ -61,7 +61,7 @@ h1, h2, h3, h4, h5, h6 {
 	position: relative;
 	min-height: 100%;
 	width: 0;
-	overflow-y: auto;
+	overflow-y: scroll;
 	overflow-x: hidden;
 	background: var(--background);
 	flex-grow: 1;

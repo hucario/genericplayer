@@ -4,9 +4,53 @@
 	display: flex;
 	align-items: center;
 }
-.albImg {
-	height: 80%;
-	min-height: 80%;
-	max-height: 80%;
+.infoGroup:hover, .infoGroup:focus {
+	background: var(--bghover);
+}
 
+
+.infoGroup {
+	margin-left: 0.4em;
+	display: flex;
+	align-items: center;
+	gap: 0.7em;
+	padding: 0.3rem;
+	border-radius: 4px;
+	width: 19.6em;
+	height: 80%;
+	background: var(--bg);
+	transition: background-color 250ms;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+
+.infoGroup * {
+	-webkit-user-drag: none;
+}
+
+.align {
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	max-width: 70%;
+}
+
+.songName {
+	font-weight: 700;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	width: 100%;
+	white-space: nowrap;
+}
+
+.albImg {
+	height: 100%;
+	min-height: 100%;
+	max-height: 100%;
+	border-radius: 2px;
+	box-shadow: 0 3px 4px 1px rgb(0 0 0 / 25%);
+}
+
+.artistname {
+	font-size: 0.9em;
 }
