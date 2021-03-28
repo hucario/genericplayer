@@ -12,6 +12,8 @@ import { Album, Artist, Extension, Song } from '../../ext/Extension';
 import sty from './search.module.css'
 import { Helmet } from 'react-helmet';
 
+import store from '../../redux/store'
+import cachedFetch from '../../cachedFetch'
 
 // I'm lazy, so see here:
 // https://stackoverflow.com/a/11486026/11726576
@@ -35,14 +37,14 @@ function fancyTimeFormat(duration)
 }
 
 async function search(term) {
-	let p = await fetch("https://www.pandora.com/api/v3/sod/search", {
+	let p = await cachedFetch("https://www.pandora.com/api/v3/sod/search", {
 	headers: {
 		"content-type": "application/json"
 	},
 		"body": "{\"query\":\""+term+"\",\"types\":[\"AL\",\"AR\",\"CO\",\"TR\",\"SF\",\"PL\",\"ST\",\"PE\"],\"listener\":null,\"start\":0,\"count\":30,\"annotate\":true,\"searchTime\":0,\"annotationRecipe\":\"CLASS_OF_2019\"}",
 		"method": "POST",
 	});
-	p = await p.json();
+	p = JSON.parse(p);
 	let m = [];
 	p.results && p.results.forEach(e => {
 		m.push(p.annotations[e]);
@@ -60,6 +62,27 @@ export default function SearchPage(props) {
 
 
 	const debouncedSearch = (term,resfunc) => {
+		const state = store.getState();
+		const url = "https://www.pandora.com/api/v3/sod/search";
+		const options = {
+			headers: {
+				"content-type": "application/json"
+			},
+			"body": "{\"query\":\""+term+"\",\"types\":[\"AL\",\"AR\",\"CO\",\"TR\",\"SF\",\"PL\",\"ST\",\"PE\"],\"listener\":null,\"start\":0,\"count\":30,\"annotate\":true,\"searchTime\":0,\"annotationRecipe\":\"CLASS_OF_2019\"}",
+			"method": "POST",
+		}
+		if (state.cachedReqs[url] && state.cachedReqs[url][JSON.stringify(options)]) {
+			let p = state.cachedReqs[url][JSON.stringify(options)];
+			p = JSON.parse(p);
+			let m = [];
+			p.results && p.results.forEach(e => {
+				m.push(p.annotations[e]);
+			})
+			props?.history?.replace({ pathname: `/search/${term}`})
+			setSearchResults(m);
+			setLoading(false);
+			return;
+		}
 		if (debounceId) {
 			clearTimeout(debounceId);
 		}

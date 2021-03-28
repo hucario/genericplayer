@@ -1,0 +1,47 @@
+.wrap {
+	position: relative;
+}
+.inner {
+	aspect-ratio: 1/1;
+	height: 100%;
+	border-radius: inherit;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+.fallback {
+	display: none;
+	width: 100%;
+	height: 100%;
+	mask-image: url('./mask3.svg');
+	mask-size: cover;
+	mask-position: center top;
+	mask-repeat: no-repeat;
+	mask-type: luminance;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	border-radius: inherit;
+	user-select: none;
+	-webkit-user-drag: none;
+}
+
+.failed .fallback {
+	display: block;
+}
+.failed .inner {
+	display: none;
+}
+.failed.wrap {
+    background: linear-gradient(233deg, #ffc800, #e70e0e, #0e80e7);
+    background-size: 600% 600%;
+
+    animation: Gamer 8s ease infinite;
+}
+
+@keyframes Gamer {
+    0%{background-position:0% 92%}
+    50%{background-position:100% 9%}
+    100%{background-position:0% 92%}
+}

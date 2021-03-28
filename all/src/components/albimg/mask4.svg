@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   width="600"
+   height="1200"
+   id="svg4110"
+   version="1.1">
+  <defs
+     id="defs4112">
+    <mask
+       maskUnits="userSpaceOnUse"
+       id="mask-powermask-path-effect940">
+      <path
+         id="mask-powermask-path-effect940_box"
+         style="fill:#ffffff;fill-opacity:1"
+         d="M -1,-1 H 601 V 1101 H -1 Z" />
+      <g
+         transform="matrix(0.68661007,0,0,0.63420843,12.14743,427.42127)"
+         style="display:inline;fill:#3f3f3f;fill-opacity:1"
+         id="g938">
+        <path
+           id="path928"
+           d="m 301.42856,312.42213 372.68414,-76 v 103.92858 l -372.68414,76 z"
+           style="fill:#3f3f3f;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+        <rect
+           y="312.34177"
+           x="301.42856"
+           height="388.5"
+           width="60"
+           id="rect930"
+           style="fill:#3f3f3f;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           d="m 301.42856,312.34177 h 60 v 388.5 h -60 z" />
+        <ellipse
+           transform="matrix(0.77274066,-0.20705524,0.24886447,0.92877483,273.33148,240.33751)"
+           id="ellipse932"
+           style="fill:#3f3f3f;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           cx="-165"
+           cy="470.36218"
+           rx="125"
+           ry="78"
+           d="m -40,470.36218 a 125,78 0 0 1 -125,78 125,78 0 0 1 -125,-78 125,78 0 0 1 125,-78 125,78 0 0 1 125,78 z" />
+        <rect
+           y="248.87701"
+           x="614.11267"
+           height="388.5"
+           width="60"
+           id="rect934"
+           style="display:inline;fill:#3f3f3f;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           d="m 614.11267,248.87701 h 60 v 388.5 h -60 z" />
+        <ellipse
+           transform="matrix(0.77274066,-0.20705524,0.24886447,0.92877483,586.01559,176.87275)"
+           id="ellipse936"
+           style="display:inline;fill:#3f3f3f;fill-opacity:1;fill-rule:nonzero;stroke:none"
+           cx="-165"
+           cy="470.36218"
+           rx="125"
+           ry="78"
+           d="m -40,470.36218 a 125,78 0 0 1 -125,78 125,78 0 0 1 -125,-78 125,78 0 0 1 125,-78 125,78 0 0 1 125,78 z" />
+      </g>
+    </mask>
+    <filter
+       id="mask-powermask-path-effect940_inverse"
+       style="color-interpolation-filters:sRGB"
+       height="100"
+       width="100"
+       x="-50"
+       y="-50">
+      <feColorMatrix
+         id="mask-powermask-path-effect940_primitive1"
+         values="1"
+         type="saturate"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         id="mask-powermask-path-effect940_primitive2"
+         values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0 "
+         in="fbSourceGraphic" />
+    </filter>
+  </defs>
+  <metadata
+     id="metadata4115">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     width="100%"
+     height="600"
+     fill="#000000"
+     id="rect26"
+     x="0"
+     y="452.36218"
+     style="fill:#ffffff;fill-opacity:1;stroke-width:0.5"
+     mask="url(#mask-powermask-path-effect940)"
+     d="M 0,0 H 600 V 1100 H 0 Z"
+     transform="translate(0,-499.99998)" />
+</svg>

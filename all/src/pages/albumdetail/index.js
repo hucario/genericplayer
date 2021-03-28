@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react'
 import { Album, Artist, Extension, Song } from '../../ext/Extension';
 import Helmet from 'react-helmet'
 import { Link } from 'react-router-dom'
+import AlbImg from '../../components/albimg/'
 
 import sty from './albumdetail.module.css'
 
 import ColorThief from 'colorthief'
 import { connect } from 'react-redux';
 import { setCurrentlyPlaying } from '../../redux/actions';
+import cachedFetch from '../../cachedFetch'
 
 // I'm lazy, so see here:
 // https://stackoverflow.com/a/11486026/11726576
@@ -44,13 +46,14 @@ function AlbumPage(props) {
 		const idSegs = props.match.params.id.toString().split(':');
 		switch(idSegs[0].toLowerCase()) {
 			case "pandora":
-				fetch("https://www.pandora.com/api/v1/music/album", {
+				cachedFetch("https://www.pandora.com/api/v1/music/album", {
 					method: "POST",
 					headers: {
 						"content-type": "application/json"
 					},
 					body: "{\"token\":\"AL:"+idSegs[1]+"\"}"
-				}).then(j => j.json()).then((p) => {
+				}).then((p) => {
+					p = JSON.parse(p);
 					let newD = new Album({
 						title: p.albumTitle,
 						icon: p.art[p.art.length-1].url,
@@ -92,8 +95,15 @@ function AlbumPage(props) {
 					setColorThief(true);
 					setFailed(false);
 				}).catch(async () => {
-					let gamer = await fetch("https://pandora.com/album/AL:"+idSegs[1]);
-					gamer = await gamer.text();
+					
+					let yeah = "AL:";
+					if (isNaN(idSegs[1])) { 
+						// seo token, not a pandora id (which are all numeric)
+						// probably flimsy method but I'll handle the edge cases Later:tm:
+						yeah = "";
+					}
+
+					let gamer = await cachedFetch("https://pandora.com/al/"+yeah+idSegs[1]);
 					gamer = gamer.match(/.*storeData.*/gi)[0];
 					gamer = gamer.substring(20, gamer.length-1);
 					gamer = JSON.parse(gamer);
@@ -253,14 +263,26 @@ function AlbumPage(props) {
 		<div className={sty.head} style={{
 			"--gradcol": (gradCol?`rgb(${gradCol[0]},${gradCol[1]},${gradCol[2]})`:`transparent`)
 		}}>
-			<img className={sty.img} src={data.icon} alt="" ref={imgRef} crossOrigin="anonymous"/>
+			<AlbImg onError={() => {
+				setGradCol([255, 255, 255]);
+			}} className={sty.img} src={data.icon} alt="" ref={imgRef} crossOrigin="anonymous"/>
 			<div className={sty.align}>
 				<span className={sty.type}>ALBUM</span>
 				<span className={sty.albName}>{data.title}</span>
 				<Link className={sty.artName} to={'/artist/' + data.artist?.id}>{data.artist?.name}</Link>
 			</div>
 		</div>
-		<div className={sty.actionBar} />
+		<div className={sty.actionBar} style={{
+			"--gradcol": (gradCol?`rgb(${gradCol[0]},${gradCol[1]},${gradCol[2]})`:`transparent`)
+		}}>
+			<button className={sty.actionButton}><i className='bx bx-play' />Play</button>
+			<button className={sty.actionButton}><i className='bx bx-shuffle' />Shuffle</button>
+			<button className={sty.actionButton}><i className='bx bx-add-to-queue' />Play Next</button>
+			<button className={sty.actionButton}><i className='bx bx-add-to-queue' />Queue</button>
+			<button className={sty.actionButton}><i className='bx bx-share' />Share</button>
+			<div className={sty.actionSpacer} />
+			<button className={sty.actionButton}>...</button>
+		</div>
 		<table className={sty.songs}>
 			<thead className={sty.thead}>
 				<tr className={sty.tr}>

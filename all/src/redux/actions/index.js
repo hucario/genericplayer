@@ -23,3 +23,10 @@ export function setFailSearch(payload) {
 		payload
 	}
 }
+
+export function setCachedReq(payload) {
+	return {
+		type: "SET_CACHED_REQ",
+		payload
+	}
+}
