@@ -102,7 +102,6 @@ export default function SearchPage(props) {
 		debouncedSearch(props.match.params.id)
 	}
 
-
 	let resultstitles = [];
 	let resultsauthors = [];
 	
