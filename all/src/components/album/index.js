@@ -3,6 +3,7 @@ import sty from'./album.module.css'
 import { setCurrentlyPlayingAlbum, setFailSearch } from '../../redux/actions/index'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
+import AlbImg from '../albimg'
 
 function Station(props) {
 	return (<div className={sty.album} style={{
@@ -15,7 +16,7 @@ function Station(props) {
 		<div className={sty.albumInner}>
 			<div className={sty.imgHolder}>
 				<img src={props.sauce.sauce.icon} alt="" className={sty.sauceindicator} />
-				<img src={props.sauce.icon} className={sty.albicon} alt=""/>
+				<AlbImg src={props.sauce.icon} className={sty.albicon} alt=""/>
 				<button className={'bx bx-play '+sty.play} 
 					onClick={() => {
 						props?.play(props.sauce);

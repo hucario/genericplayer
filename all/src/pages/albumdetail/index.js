@@ -103,7 +103,7 @@ function AlbumPage(props) {
 						yeah = "";
 					}
 
-					let gamer = await cachedFetch("https://pandora.com/al/"+yeah+idSegs[1]);
+					let gamer = await cachedFetch("https://pandora.com/album/"+yeah+idSegs[1]);
 					gamer = gamer.match(/.*storeData.*/gi)[0];
 					gamer = gamer.substring(20, gamer.length-1);
 					gamer = JSON.parse(gamer);

@@ -7,9 +7,6 @@
 	flex-grow: 1;
 	height: 0;
 }
-.accHeader {
-	margin-top: 1em;
-}
 .accInner {
     display: flex;
     flex-wrap: wrap;
@@ -25,6 +22,7 @@
     display: flex;
     align-items: center;
     margin-bottom: 1em;
+	margin-top: 1em;
 }
 
 .accHeaderHolder > button {

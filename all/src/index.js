@@ -31,7 +31,7 @@ import SideBar from './components/sidebar/'
 import BottomBar from './components/bottombar/'
 import AlbumPage from './pages/albumdetail/'
 import ArtistPage from './pages/artistdetail/'
-
+import TrendingPage from './pages/trending/'
 
 //#endregion
 
@@ -320,6 +320,7 @@ function App() {
 						<Route path="/search/:id" component={SearchPage} />
 						<Route path="/search" component={SearchPage} />
 						<Route path="/stations" component={StationsPage} />
+						<Route path="/trending" component={TrendingPage} />
 						<Route path="/album/:id" component={AlbumPage} />
 						<Route path="/artist/:id" component={ArtistPage} />
 						<Route path="/" exact component={HomePage} />

@@ -74,6 +74,7 @@
 	position: absolute;
 	top: 0;
 	left: 0;
+	z-index: 2;
 }
 .h1, .sub {
     width: 100%;
@@ -99,7 +100,7 @@
 	outline: none;
 	z-index: 4;
 }
-
+	
 .album:hover .play, .album:focus .play, .album:focus-within .play {
     opacity: 1;
     transform: translate(0,-10px) scale(1);
