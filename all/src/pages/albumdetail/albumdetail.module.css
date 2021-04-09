@@ -24,6 +24,7 @@
 	flex-direction: column;
 	font-family: "Open Sans";
 	margin: 50px 0;
+    max-width: 45vw;
 }
 
 .type {
@@ -32,7 +33,11 @@
 	user-select: none;
 	text-shadow: 0 1px 4px rgb(0 0 0 / 25%);
 }
-
+.albName, .artName {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
 .albName {
 	font-weight: bold;
 	font-size: 48px;
@@ -43,6 +48,7 @@
 	font-size: 24px;
 	font-weight: 600;
 }
+
 
 .head::after {
 	content: "";
