@@ -1,12 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
 	useEffect,
 	useState
 } from 'react'
 
 import sty from './trending.module.css'
-import Accordion from '../../components/accordion/'
-import AlbumElem from '../../components/album/'
-
 import {
 	Song,
 	Extension,
@@ -16,6 +14,8 @@ import {
 import { Helmet } from 'react-helmet'
 import cachedFetch from '../../cachedFetch'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { setCurrentlyPlaying } from '../../redux/actions'
 
 
 // https://stackoverflow.com/a/11486026/11726576
@@ -39,24 +39,21 @@ function fancyTimeFormat(duration)
 }
 
 const ALLOW_EXPLICIT = false;
+const HOW_MANY_INCREMENT = 10;
 
-function altFormat(url, size) {
-	url = url.split('/');
-	url.pop();
-	url = url.join('/');
-	url += '/' + size + 'x' + size + '.png';
-	return url;
-}
 
-export default function StationsPage() {
+function TrendingPage(props) {
 	const [data, setData] = useState([])
 	const [elems, setElems] = useState([])
 	const [featured, setFeatured ] = useState({})
+	const [howMany, setHowMany] = useState(HOW_MANY_INCREMENT);
+	const [resetTable, resetTableF] = useState(false);
+	//#region Fetch & process tracks 
 	useEffect(() => {
 		(async() => {
-			let tElems = [];
-			let tData = [];
-
+			if (data.length > 0) {
+				return;
+			}
 			let trendingData = await cachedFetch("https://www.pandora.com/playlist/PL:562949997174247:1756780791");
 			trendingData = trendingData.match(/.*storeData.*/gi)[0];
 			trendingData = trendingData.substring(20, trendingData.length-1);
@@ -74,40 +71,75 @@ export default function StationsPage() {
 				return n[e.trackPandoraId]
 			}).filter((e) => {
 				return !!e; // yeets undefined and null
-			})
+			}).map((e, i) => {
+				return new Song({
+					num: i + 1,
+					title: e.name,
+					artist: new Artist({
+						name: e.artistName,
+						id: 'pandora:' + e.artistId.split(':')[1]
+					}),
+					album: new Album({
+						title: e.albumName,
+						id: 'pandora:' + e.albumId.split(':')[1],
+						icon: 'https://content-images.p-cdn.com/' + e.icon.artUrl,
+						artist: new Artist({
+							name: e.artistName,
+							id: 'pandora:' + e.artistId.split(':')[1]
+						}),
+						sauce: new Extension({
+							colors: {
+								normal: '#342ac0',
+								hover: '#1659a5'
+							},
+							icon: '/pandora.png'
+						})
+					}),
+					length: fancyTimeFormat(e.duration),
+					id: 'pandora:' + e.pandoraId.split(':')[1]
+				})
+			});
+
 
 			let mostPopular = tracks.shift();
-
-			console.log(tracks, mostPopular);
-			setFeatured(new Song({
-				num: mostPopular.trackNumber,
-				title: mostPopular.name,
-				artist: new Artist({
-					name: mostPopular.artistName,
-					id: 'pandora:' + mostPopular.artistId.split(':')[1]
-				}),
-				album: new Album({
-					title: mostPopular.albumName,
-					id: 'pandora:' + mostPopular.albumId.split(':')[1],
-					icon: 'https://content-images.p-cdn.com/' + mostPopular.icon.artUrl,
-					artist: new Artist({
-						name: mostPopular.artistName,
-						id: 'pandora:' + mostPopular.artistId.split(':')[1]
-					}),
-					sauce: new Extension({
-						colors: {
-							normal: '#342ac0',
-							hover: '#1659a5'
-						},
-						icon: '/pandora.png'
-					})
-				}),
-				length: fancyTimeFormat(mostPopular.duration),
-				id: 'pandora:' + mostPopular.pandoraId.split(':')[1]
-			}))
-			setData(tData);
+			setFeatured(mostPopular)
+			setData(tracks);
+			resetTableF(true);
 		})()
 	}, [])
+	//#endregion
+	//#region Create and store table elements
+	useEffect(() => {
+		let tElems = (resetTable?[]:elems);
+		let tData = data.slice(howMany - HOW_MANY_INCREMENT, howMany)
+		tData.forEach((e, i) => {
+			tElems.push(<div className={sty.tr} key={i} onClick={() => {
+				props.play(e)
+			}}>
+				<div className={sty.td}>
+					<span className={sty.tdplay} />
+					<span className={sty.tdnum}>{e.num}</span>
+				</div>
+				<div className={sty.td}>
+					<div className={sty.tdGroup}>
+						<span className={sty.sName}>{e.title}</span>
+						<Link to={
+							e.artist && e.artist.id ? 
+								'/artist/' + e.artist.id :
+								''
+						} className={sty.aName}>{e.artist.name}</Link>
+					</div>
+				</div>
+				<div className={sty.td}>{e.length}</div>
+			</div>)
+		})
+		if (resetTable) {
+			resetTableF(false);
+		}
+		setElems(tElems);
+	}, [data, howMany])
+	//#endregion
+
 	
 	return (<>
 		<Helmet>
@@ -123,6 +155,23 @@ export default function StationsPage() {
 					<h3><Link to={'/artist/' + featured?.artist?.id}>{featured?.artist?.name}</Link></h3>
 				</div>
 			</div>
+			<div className={sty.table}>
+				<div className={sty.tbody}>{elems}</div>
+				{(data.length > elems.length && <button className={sty.greeny} onClick={() => {
+					setHowMany(howMany + HOW_MANY_INCREMENT);
+				}}>Show More</button>)}
+			</div>
 		</div>
 	</>)
 }
+
+const cTPage = connect(
+	(state) => ({
+		failSearch: state.failSearch
+	}),
+	(dispatch) => ({
+		play: song => {dispatch(setCurrentlyPlaying(song))}
+	})
+)(TrendingPage)
+
+export default cTPage;
