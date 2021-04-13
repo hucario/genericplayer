@@ -33,6 +33,8 @@ import AlbumPage from './pages/albumdetail/'
 import ArtistPage from './pages/artistdetail/'
 import TrendingPage from './pages/trending/'
 
+import './main.css';
+
 //#endregion
 
 // Settings defaults

@@ -8,6 +8,6 @@ export default function NotFoundPage() {
 			<Helmet>
 				<title>GenericPlayer</title>
 			</Helmet>
-			<h1>Sorry, that page can't be found.</h1>
+			<h1>Sorry, we couldn't find that page.</h1>
 		</>)
 }

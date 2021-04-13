@@ -10,7 +10,7 @@ import sty from './albumdetail.module.css'
 import ColorThief from 'colorthief'
 import { connect } from 'react-redux';
 import { setCurrentlyPlaying } from '../../redux/actions';
-import cachedFetch from '../../cachedFetch'
+import { cachedFetch } from '../../cachedItems'
 
 // I'm lazy, so see here:
 // https://stackoverflow.com/a/11486026/11726576
@@ -236,14 +236,14 @@ function AlbumPage(props) {
 
 	let trs = [];
 	items.forEach((e, i) => {
-		trs.push(<tr className={sty.tr} key={i} onClick={() => {
+		trs.push(<div className={sty.tr} key={i} onClick={() => {
 			props.play(e)
 		}}>
-			<td className={sty.td}>
+			<div className={sty.td}>
 				<span className={sty.tdplay} />
 				<span className={sty.tdnum}>{e.num}</span>
-			</td>
-			<td className={sty.td}>
+			</div>
+			<div className={sty.td}>
 				<div className={sty.tdGroup}>
 					<span className={sty.sName}>{e.title}</span>
 					<Link to={
@@ -252,9 +252,9 @@ function AlbumPage(props) {
 							''
 					} className={sty.aName}>{e.artist.name}</Link>
 				</div>
-			</td>
-			<td className={sty.td}>{e.length}</td>
-		</tr>)
+			</div>
+			<div className={sty.td}>{e.length}</div>
+		</div>)
 	})
 	return (<>
 		<Helmet>
@@ -283,27 +283,20 @@ function AlbumPage(props) {
 			<div className={sty.actionSpacer} />
 			<button className={sty.actionButton}>...</button>
 		</div>
-		<table className={sty.songs}>
-			<thead className={sty.thead}>
-				<tr className={sty.tr}>
-					<th className={sty.th}>#</th>
-					<th className={sty.th}>Title</th>
-					<th className={sty.th}>Time</th>
-				</tr>
-			</thead>
-			<tbody className={sty.tbody}>{trs}</tbody>
-			{(data.len > items.length && <tfoot>
-				<tr>
-					<td className={sty.td} colSpan="3">
+		<div className={sty.songs}>
+			<div className={sty.th}>
+				<div className={sty.td}>#</div>
+				<div className={sty.td}>Title</div>
+				<div className={sty.td}>Time</div>
+			</div>
+			<div className={sty.tbody}>{trs}</div>
+			{(data.len > items.length && 
 						<button className={sty.greeny} onClick={() => {
 							data.getMoreItems(items.length).then((e) => {
 								setItems(Array.prototype.concat(items, e))
 							})
-						}}>Show More</button>
-					</td>
-				</tr>
-			</tfoot>)}
-		</table>
+						}}>Show More</button>)}
+		</div>
 	</>)
 }
 

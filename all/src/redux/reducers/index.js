@@ -20,7 +20,9 @@ const dInfo = {
 		name: "",
 	}),
 	failSearch: '', // used to search for latest album if it can't be found,
-	cachedReqs: {}
+	cachedReqs: {},
+	cachedItems: {},
+	cachedSearches: {}
 }
 dInfo.album.artist = dInfo.artist;
 
@@ -45,11 +47,20 @@ export default function rootReducer(state = dInfo, action) {
 			newState.failSearch = payload;
 			return newState;
 		case "SET_CACHED_REQ":
+			// last resort
 			const { url, options, result } = payload;
 
 			newState.cachedReqs[url] =newState.cachedReqs[url] ?? {};
 			newState.cachedReqs[url][JSON.stringify(options)] = result;
 			// woot cached reqs now
+			return newState;
+		case "SET_CACHED_ITEM":
+			const { id } = payload;
+			newState.cachedItems[id] = payload;
+			return newState;
+		case "SET_CACHED_SEARCH":
+			const { term, results } = payload;
+			newState.cachedSearches[term] = results;
 			return newState;
 		default:
 			return newState;

@@ -66,3 +66,154 @@
     left: -1.4em;
     top: -0.3em;
 }
+
+
+/* #region Table stuff */
+.table {
+	border-spacing: 0 0.5rem;
+	width: 100%;
+	padding: 2rem;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+}
+.td {
+	padding: 0.5rem;
+}
+
+.td > *, .th {
+	position: relative; /* be over the gradient */
+}
+
+
+.th, .td:first-child, .td:last-child {
+    text-align: center;
+}
+
+.th {
+    color: var(--text-muted);
+    font-weight: 300;
+}
+
+.th:nth-child(2) {
+	text-align: left;
+}
+
+.tr:not(.th)/*useless but raises specificity*/:hover {
+	transform: translateY(-2px);
+	background: var(--interactive-hover);
+}
+.tr:nth-child(2n) {
+    background: var(--background-floating);
+}
+
+.tr {
+	border-radius: 10px;
+	transition: all .1s;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+}
+.tr::before {
+	display: block;
+	content: "";
+	position: absolute;
+	z-index: 0;
+	left: -10px;
+	right: -10px;
+	top: -10px;
+	bottom: -10px;
+	border-radius: inherit;
+	background: var(--bg);
+	background-size: cover;
+	filter: blur(5px);
+	opacity: 0.4;
+	background-position: 0% 48%;
+}
+
+.th, .tr {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	margin: 0.3em 0;
+
+}
+
+.thead .tr {
+    border-bottom: solid 1px white;
+	user-select: none;
+}
+
+.greeny {
+    appearance: none;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-family: "Open Sans";
+    font-size: 17px;
+    background: #1ABD5D;
+    display: inline-block;
+    padding: .5rem 2rem;
+    border-radius: 200px;
+    cursor: pointer;
+    outline: none;
+    transition: all .1s;
+    transform: translate(0, 0);
+	margin-top: 1rem;
+}
+
+.greeny:focus {
+    background: #12823f;
+}
+
+.greeny:active {
+    transform: translateY(1px);
+}
+
+.sName {
+    font-weight: 700;
+}
+
+.tdGroup {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.aName {
+    color: var(--text-muted);
+}
+
+.tdplay {
+	display: none;
+}
+.tdplay::before {
+	font-family: "boxicons";
+	content: "\eb86";
+	font-size: 2rem;
+	margin: 0 -100rem; /* don't margin. at all. don't. don't do it. */
+	display: block;
+}
+
+.tr:not(.th):hover > .td > .tdplay {
+	display: block;
+}
+
+
+.tr:not(.th):hover > .td > .tdnum {
+	display: block;
+	max-height:0;
+	height:0;
+	min-height:0;
+	overflow:hidden;
+}
+
+.td:first-child, .td:last-child {
+    padding: 0 1.3em 0 2em;
+}
+
+
+.td:nth-child(2) {
+    flex-grow: 1;
+}
+/* #endregion */

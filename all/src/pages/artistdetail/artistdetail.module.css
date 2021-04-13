@@ -233,3 +233,7 @@ td.albumdetail_td__1Ihlz:first-child {
 .padder {
 	padding: 2rem;
 }
+
+.td > *, .th {
+	position: relative; /* be over the gradient */
+}

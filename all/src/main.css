@@ -87,3 +87,94 @@ h1, h2, h3, h4, h5, h6 {
 	background: var(--text-muted);
 	box-shadow: 5px 5px black;
 }
+
+
+.songs {
+	border-spacing: 0 0.5rem;
+	width: 100%;
+	padding: 2rem;
+}
+.td {
+	padding: 0.5rem;
+}
+
+.td > *, .th {
+	position: relative; /* be over the gradient */
+}
+
+
+.th, .td:first-child, .td:last-child {
+    text-align: center;
+}
+
+.th {
+    color: var(--text-muted);
+    font-weight: 300;
+}
+
+.th:nth-child(2) {
+	text-align: left;
+}
+
+.tr:not(th)/*:not(th) is useless but raises specificity*/:hover > *:not(th) {
+    background: var(--interactive-hover);
+	transform: translateY(-2px);
+}
+
+.td:first-child {
+    border-radius: 10px 0 0 10px;
+}
+
+.td:last-child {
+    border-radius: 0 10px 10px 0;
+}
+
+.td:not([colspan]/* show more button */) {
+	cursor: pointer;
+	transition: all .1s;
+}
+
+.tr:nth-child(2n) > *:not(th) {
+    background: var(--background-floating);
+}
+
+.thead .tr {
+    border-bottom: solid 1px white;
+}
+
+.tdGroup {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.aName {
+    color: var(--text-muted);
+}
+
+.tdplay {
+	display: none;
+}
+.tdplay::before {
+	font-family: "boxicons";
+	content: "\eb86";
+	font-size: 2rem;
+	margin: 0 -100rem; /* don't margin. at all. don't. don't do it. */
+	display: block;
+}
+
+.tr:not(th)/*:not(th) is useless but raises specificity*/:hover > .td > .tdplay {
+	display: block;
+}
+
+.tr:not(th)/*:not(th) is useless but raises specificity*/:hover > .td > .tdnum {
+	display: block;
+	max-height:0;
+	height:0;
+	min-height:0;
+	overflow:hidden;
+}
+
+td.td:first-child {
+    padding: 0;
+}

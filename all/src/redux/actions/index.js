@@ -30,3 +30,16 @@ export function setCachedReq(payload) {
 		payload
 	}
 }
+
+export function setCachedItem(payload) {
+	return {
+		type: "SET_CACHED_ITEM",
+		payload
+	}
+}
+export function setCachedSearch(payload) {
+	return {
+		type: "SET_CACHED_SEARCH",
+		payload
+	}
+}

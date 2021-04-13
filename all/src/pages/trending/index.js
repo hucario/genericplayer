@@ -12,7 +12,7 @@ import {
 	Artist
 } from '../../ext/Extension'
 import { Helmet } from 'react-helmet'
-import cachedFetch from '../../cachedFetch'
+import { cachedFetch } from '../../cachedItems'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { setCurrentlyPlaying } from '../../redux/actions'
@@ -38,6 +38,16 @@ function fancyTimeFormat(duration)
     return ret;
 }
 
+function altFormat(url, size) {
+	if (!url) {
+		return; 
+	} else {
+		return url.split('/').map((e, i) => {
+			return (i === url.split('/').length-1?e.replace(/500/g, '250'):e);
+		}).join('/');
+	}
+}
+
 const ALLOW_EXPLICIT = false;
 const HOW_MANY_INCREMENT = 10;
 
@@ -54,7 +64,8 @@ function TrendingPage(props) {
 			if (data.length > 0) {
 				return;
 			}
-			let trendingData = await cachedFetch("https://www.pandora.com/playlist/PL:562949997174247:1756780791");
+			let trendingData = await fetch("https://www.pandora.com/playlist/PL:562949997174247:1756780791");
+			trendingData = await trendingData.text();
 			trendingData = trendingData.match(/.*storeData.*/gi)[0];
 			trendingData = trendingData.substring(20, trendingData.length-1);
 			trendingData = JSON.parse(trendingData);
@@ -102,9 +113,9 @@ function TrendingPage(props) {
 
 
 			let mostPopular = tracks.shift();
+			resetTableF(true);
 			setFeatured(mostPopular)
 			setData(tracks);
-			resetTableF(true);
 		})()
 	}, [])
 	//#endregion
@@ -113,9 +124,16 @@ function TrendingPage(props) {
 		let tElems = (resetTable?[]:elems);
 		let tData = data.slice(howMany - HOW_MANY_INCREMENT, howMany)
 		tData.forEach((e, i) => {
-			tElems.push(<div className={sty.tr} key={i} onClick={() => {
-				props.play(e)
-			}}>
+			tElems.push(<div 
+				className={sty.tr} 
+				key={i} 
+				onClick={() => {
+					props.play(e)
+				}}
+				style={{
+					"--bg": `url("${altFormat(e.album?.icon, 100)}")`
+				}}
+			>
 				<div className={sty.td}>
 					<span className={sty.tdplay} />
 					<span className={sty.tdnum}>{e.num}</span>

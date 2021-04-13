@@ -12,8 +12,11 @@ import { Album, Artist, Extension, Song } from '../../ext/Extension';
 import sty from './search.module.css'
 import { Helmet } from 'react-helmet';
 
-import store from '../../redux/store'
-import cachedFetch from '../../cachedFetch'
+import {
+	cachedSearch,
+	cachedItem,
+	setCachedItem
+} from '../../cachedItems'
 
 // I'm lazy, so see here:
 // https://stackoverflow.com/a/11486026/11726576
@@ -36,23 +39,6 @@ function fancyTimeFormat(duration)
     return ret;
 }
 
-async function search(term) {
-	let p = await cachedFetch("https://www.pandora.com/api/v3/sod/search", {
-	headers: {
-		"content-type": "application/json"
-	},
-		"body": "{\"query\":\""+term+"\",\"types\":[\"AL\",\"AR\",\"CO\",\"TR\",\"SF\",\"PL\",\"ST\",\"PE\"],\"listener\":null,\"start\":0,\"count\":30,\"annotate\":true,\"searchTime\":0,\"annotationRecipe\":\"CLASS_OF_2019\"}",
-		"method": "POST",
-	});
-	p = JSON.parse(p);
-	let m = [];
-	p.results && p.results.forEach(e => {
-		m.push(p.annotations[e]);
-	})
-
-	return m;
-}
-
 export default function SearchPage(props) {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [setSearchTermFromParams, longFuncName] = useState(false)
@@ -62,34 +48,13 @@ export default function SearchPage(props) {
 
 
 	const debouncedSearch = (term,resfunc) => {
-		const state = store.getState();
-		const url = "https://www.pandora.com/api/v3/sod/search";
-		const options = {
-			headers: {
-				"content-type": "application/json"
-			},
-			"body": "{\"query\":\""+term+"\",\"types\":[\"AL\",\"AR\",\"CO\",\"TR\",\"SF\",\"PL\",\"ST\",\"PE\"],\"listener\":null,\"start\":0,\"count\":30,\"annotate\":true,\"searchTime\":0,\"annotationRecipe\":\"CLASS_OF_2019\"}",
-			"method": "POST",
-		}
-		if (state.cachedReqs[url] && state.cachedReqs[url][JSON.stringify(options)]) {
-			let p = state.cachedReqs[url][JSON.stringify(options)];
-			p = JSON.parse(p);
-			let m = [];
-			p.results && p.results.forEach(e => {
-				m.push(p.annotations[e]);
-			})
-			props?.history?.replace({ pathname: `/search/${term}`})
-			setSearchResults(m);
-			setLoading(false);
-			return;
-		}
 		if (debounceId) {
 			clearTimeout(debounceId);
 		}
 		setDebounceId(setTimeout(() => {
 			setLoading(true);
 			props?.history?.replace({ pathname: `/search/${term}`})
-			search(term).then((b) => {
+			cachedSearch(term).then((b) => {
 				setSearchResults(b);
 				setLoading(false);
 			});
@@ -123,42 +88,48 @@ export default function SearchPage(props) {
 			albums.push((
 				<AlbumElem
 					sauce={
-						new Album({
+						cachedItem('pandora:' + p.pandoraId.split(':')[1]) ??
+						setCachedItem(new Album({
 							title: p.name,
 							icon: 'https://content-images.p-cdn.com/' + p?.icon?.artUrl,
 							len: p.trackCount,
 							id: 'pandora:'+p.pandoraId.split(':')[1],
-							artist: new Artist({
+							artist: cachedItem('pandora:'+p.artistId.split(':')[1]) ??
+							setCachedItem(new Artist({
 								name: p.artistName,
-								id: 'pandora:'+p.artistId.split(':')[1]
-							}),
-							sauce: new Extension({
+								id: 'pandora:'+p.artistId.split(':')[1],
+								shard: true
+							})),
+							sauce: cachedItem('pandoraExt') ?? setCachedItem(new Extension({
 								colors: {
 									normal: '#342ac0',
 									hover: '#1659a5'
 								},
-								icon: '/pandora.png'
-							})
-						})
+								icon: '/pandora.png',
+								id: 'pandoraExt'
+							}))
+						}))
 					}
 				/>
 			))
 		} else if (p.type === 'TR') {
-			songs.push(new Song({
+			songs.push(cachedItem('pandora: ' + p.pandoraId) ?? setCachedItem(new Song({
 				num: p.trackNumber,
 				title: p.name,
-				artist: new Artist({
+				artist: cachedItem('pandora:' + p.artistId) ?? setCachedItem(new Artist({
 					name: p.artistName,
-					id: p.artistId
-				}),
-				album: new Album({
+					id: 'pandora:' + p.artistId,
+					shard: true
+				})),
+				album: cachedItem('pandora:' + p.albumId) ?? setCachedItem(new Album({
 					title: p.albumName,
-					id: p.albumId
-				}),
+					id: 'pandora:' + p.albumId,
+					shard: true
+				})),
 				length: fancyTimeFormat(p.duration),
-				id: p.pandoraId,
+				id: 'pandora:' + p.pandoraId,
 				icon: 'https://content-images.p-cdn.com/' + p?.icon?.artUrl
-			}));
+			})));
 		}
 	}
 

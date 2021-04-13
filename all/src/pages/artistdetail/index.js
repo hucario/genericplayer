@@ -14,7 +14,11 @@ import { setCurrentlyPlaying } from '../../redux/actions';
 import Accordion from '../../components/accordion/'
 import ArtistImage from '../../components/artistimg/'
 
-import cachedFetch from '../../cachedFetch'
+import {
+	cachedFetch,
+	cachedItem,
+	setCachedItem
+} from '../../cachedItems'
 
 // I'm lazy, so see here:
 // https://stackoverflow.com/a/11486026/11726576
@@ -56,6 +60,14 @@ function ArtistPage(props) {
 		switch(idSegs[0].toLowerCase()) {
 			case "pandora":
 				(async () => {
+					let possibleCached = cachedItem(props.match.params.id.toString())
+					if (possibleCached) {
+						setData(possibleCached);
+						setItems(possibleCached.topTracks);
+						setColorThief(true);
+						setFailed(false); 
+						return;
+					}
 					let yeah = "AR:";
 					if (isNaN(idSegs[1])) { 
 						// seo token, not a pandora id (which are all numeric)
@@ -63,7 +75,8 @@ function ArtistPage(props) {
 						yeah = "";
 					}
 
-					let gamer = await cachedFetch("https://pandora.com/artist/"+yeah+idSegs[1]);
+					let gamer = await fetch("https://pandora.com/artist/"+yeah+idSegs[1]);
+					gamer = await gamer.text();
 					gamer = gamer.match(/.*storeData.*/gi)[0];
 					gamer = gamer.substring(20, gamer.length-1);
 					gamer = JSON.parse(gamer);
@@ -95,7 +108,7 @@ function ArtistPage(props) {
 						icon: icon,
 						id: props.match.params.id,
 						discography: gamer["v1/music/artist"][0].discography.map((e) => {
-							return new Album({
+							return cachedItem('pandora:' + e.pandoraId.split(':')[1]) || setCachedItem(new Album({
 								id: 'pandora:' + e.pandoraId.split(':')[1],
 								title: e.albumTitle,
 								icon: (e.art && e.art.length>0 ? e.art[e.art.length-1].url : ''),
@@ -106,22 +119,23 @@ function ArtistPage(props) {
 									},
 									icon: '/pandora.png'
 								}),
-							})
+							}))
 						}),
-						sauce: new Extension({
+						sauce: cachedItem('pandoraExt') || setCachedItem(new Extension({
 							colors: {
 								normal: '#342ac0',
 								hover: '#1659a5'
 							},
-							icon: '/pandora.png'
-						}),
+							icon: '/pandora.png',
+							id: 'pandoraExt'
+						})),
 						topTracks: gamer["v4/catalog/getDetails"][0].artistDetails.topTracks.map((e, i) => {
 							e = gamer["v4/catalog/annotateObjects"][0][e];
 
-							return new Song({
+							return cachedItem('pandora:' + e.pandoraId.split(':')[1]) || setCachedItem(new Song({
 								num: i,
 								title: e.name,
-								album: new Album({
+								album: cachedItem('pandora:' + e.albumId) || setCachedItem(new Album({
 									id: 'pandora:' + e.albumId,
 									title: e.albumName.replace(/\(single\)/gi, ''),
 									icon: 'https://cont.p-cdn.us/' + e.icon.artUrl,
@@ -132,22 +146,23 @@ function ArtistPage(props) {
 										},
 										icon: '/pandora.png'
 									})
-								}),
+								})),
 								length: fancyTimeFormat(e.duration),
 								id: 'pandora:' + e.pandoraId.split(':')[1],
-								sauce: new Extension({
+								sauce: cachedItem('pandoraExt') || setCachedItem(new Extension({
 									colors: {
 										normal: '#342ac0',
 										hover: '#1659a5'
 									},
-									icon: '/pandora.png'
-								})
-							})
+									icon: '/pandora.png',
+									id: 'pandoraExt'
+								}))
+							}))
 						}),
 						topAlbums: gamer["v4/catalog/getDetails"][0].artistDetails.topAlbums.map((e, i) => {
 							e = gamer["v4/catalog/annotateObjects"][0][e];
 
-							return new Album({
+							return cachedItem('pandora:' + e.pandoraId.split(':')[1]) || setCachedItem(new Album({
 								id: 'pandora:' + e.pandoraId.split(':')[1],
 								title: e.name,
 								icon: e.icon.artUrl,
@@ -158,7 +173,7 @@ function ArtistPage(props) {
 									},
 									icon: '/pandora.png'
 								})
-							})
+							}))
 						})
 					})
 
@@ -176,6 +191,7 @@ function ArtistPage(props) {
 						e.artist = newD;
 						return e;
 					})
+					setCachedItem(newD);
 					setData(newD);
 					setItems(newD.topTracks);
 					setColorThief(true);
@@ -278,6 +294,9 @@ function ArtistPage(props) {
 		disc.push(<AlbumElem
 			sauce={e}
 			key={i}
+			style={{
+				alignSelf: "start"
+			}}
 		/>)
 	});
 	return (<>

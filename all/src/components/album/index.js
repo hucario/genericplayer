@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom'
 import AlbImg from '../albimg'
 
 function Station(props) {
-	return (<div className={sty.album} style={{
+	return (<div className={sty.album+(props.className?' '+props.className:'')} style={{
 		"--bg": props.sauce.sauce.colors.normal ?? 'black',
-		"--bghover": props.sauce.sauce.colors.hover ?? props.sauce.sauce.colors.normal ?? 'black'
+		"--bghover": props.sauce.sauce.colors.hover ?? props.sauce.sauce.colors.normal ?? 'black',
+		...props.style
 	}}>
 		<Link className={sty.eventCatcher} to={'/album/'+props.sauce.id} onClick={() => {
 			props?.setFailSearch(props.sauce.title + (props.sauce.artist?.name?' ' + props.sauce.artist?.name:''))

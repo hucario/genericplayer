@@ -37,6 +37,7 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+	max-width: 100%;
 }
 .albName {
 	font-weight: bold;
@@ -66,9 +67,16 @@
 	border-spacing: 0 0.5rem;
 	width: 100%;
 	padding: 2rem;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
 }
 .td {
 	padding: 0.5rem;
+}
+
+.td > *, .th {
+	position: relative; /* be over the gradient */
 }
 
 
@@ -85,35 +93,36 @@
 	text-align: left;
 }
 
-.tr:not(th)/*:not(th) is useless but raises specificity*/:hover > *:not(th) {
-    background: var(--interactive-hover);
+.tr:not(.th)/*useless but raises specificity*/:hover {
 	transform: translateY(-2px);
+    background: var(--interactive-hover);
+	transition: all .1s;	
 }
-
-.td:first-child {
-    border-radius: 10px 0 0 10px;
-}
-
-.td:last-child {
-    border-radius: 0 10px 10px 0;
-}
-
-.td:not([colspan]/* show more button */) {
-	cursor: pointer;
-	transition: all .1s;
-}
-
-.tr:nth-child(2n) > *:not(th) {
+.tr:nth-child(2n) {
     background: var(--background-floating);
+}
+
+.tr {
+	border-radius: 10px;
+	transition: all .1s;
+	cursor: pointer;
+}
+
+.th, .tr {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	margin: 0.3em 0;
+
 }
 
 .thead .tr {
     border-bottom: solid 1px white;
+	user-select: none;
 }
 
 .greeny {
     appearance: none;
-    background: none;
     border: none;
     color: white;
     font-weight: bold;
@@ -127,6 +136,7 @@
     outline: none;
     transition: all .1s;
     transform: translate(0, 0);
+	margin-top: 1rem;
 }
 
 .greeny:focus {
@@ -162,11 +172,12 @@
 	display: block;
 }
 
-.tr:not(th)/*:not(th) is useless but raises specificity*/:hover > .td > .tdplay {
+.tr:not(.th):hover > .td > .tdplay {
 	display: block;
 }
 
-.tr:not(th)/*:not(th) is useless but raises specificity*/:hover > .td > .tdnum {
+
+.tr:not(.th):hover > .td > .tdnum {
 	display: block;
 	max-height:0;
 	height:0;
@@ -174,8 +185,13 @@
 	overflow:hidden;
 }
 
-td.albumdetail_td__1Ihlz:first-child {
-    padding: 0;
+.td:first-child, .td:last-child {
+    padding: 0 1.3em 0 2em;
+}
+
+
+.td:nth-child(2) {
+    flex-grow: 1;
 }
 
 .full {
