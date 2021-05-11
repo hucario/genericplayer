@@ -100,7 +100,6 @@
 }
 
 .tr:not(.th)/*useless but raises specificity*/:hover {
-	transform: translateY(-2px);
 	background: var(--interactive-hover);
 }
 .tr:nth-child(2n) {
@@ -109,7 +108,7 @@
 
 .tr {
 	border-radius: 10px;
-	transition: all .1s;
+	transition: background-color .1s;
 	cursor: pointer;
 	position: relative;
 	overflow: hidden;

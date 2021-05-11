@@ -10,8 +10,11 @@ import sty from './albumdetail.module.css'
 import ColorThief from 'colorthief'
 import { connect } from 'react-redux';
 import { setCurrentlyPlaying } from '../../redux/actions';
-import { cachedFetch } from '../../cachedItems'
-
+import { cachedItem as notCachedItem, setCachedItem } from '../../cachedItems'
+function cachedItem(id) {
+	let x = notCachedItem(id);
+	return (x && !x.incomplete ? x : undefined);
+}
 // I'm lazy, so see here:
 // https://stackoverflow.com/a/11486026/11726576
 function fancyTimeFormat(duration)
@@ -46,43 +49,49 @@ function AlbumPage(props) {
 		const idSegs = props.match.params.id.toString().split(':');
 		switch(idSegs[0].toLowerCase()) {
 			case "pandora":
-				cachedFetch("https://www.pandora.com/api/v1/music/album", {
+				fetch("https://www.pandora.com/api/v1/music/album", {
 					method: "POST",
 					headers: {
 						"content-type": "application/json"
 					},
 					body: "{\"token\":\"AL:"+idSegs[1]+"\"}"
-				}).then((p) => {
-					p = JSON.parse(p);
-					let newD = new Album({
+				}).then(p => p.json()).then(p => {
+					let newD = cachedItem('pandora:'+idSegs[1].toLowerCase()) ?? setCachedItem(new Album({
+						id: 'pandora:'+idSegs[1].toLowerCase(),
 						title: p.albumTitle,
 						icon: p.art[p.art.length-1].url,
 						len: p.tracks.length,
-						artist: new Artist({
+						incomplete: false,
+						artist: cachedItem('pandora:' + p.artistSeoToken.split('/')[1]) ?? setCachedItem(new Artist({
+							incomplete: true,
 							name: p.artistName,
 							id: 'pandora:' + p.artistSeoToken.split('/')[1]
-						}),
-						sauce: new Extension({
+						})),
+						sauce: cachedItem('pandoraExt') ?? setCachedItem(new Extension({
 							colors: {
 								normal: '#342ac0',
 								hover: '#1659a5'
 							},
-							icon: '/pandora.png'
-						})
-					})
+							icon: '/pandora.png',
+							incomplete: true,
+							id: 'pandoraExt'
+						}))
+					}))
 					let tracks = [];
 					p.tracks.forEach((tr) => {
-						tracks.push(new Song({
+						tracks.push(cachedItem('pandora:' + tr.pandoraId.split(':')[1]) ?? setCachedItem(new Song({
 							num: tr.trackNum,
 							title: tr.songTitle,
-							artist: new Artist({
+							artist: cachedItem('pandora:'+tr.artistSeoToken.split('/')[1]) ?? setCachedItem(new Artist({
 								name: tr.artistName,
-								id: 'pandora:' + tr.artistSeoToken.split('/')[1]
-							}),
+								id: 'pandora:' + tr.artistSeoToken.split('/')[1],
+								incomplete: true
+							})),
 							album: newD,
+							incomplete: false,
 							length: fancyTimeFormat(tr.trackLength),
 							id: 'pandora:' +tr.pandoraId.split(':')[1]
-						}))
+						})))
 					})
 
 					newD.items = tracks.slice(0, 10); // TODO: Settingsprovider config the amount of songs initially
@@ -103,7 +112,8 @@ function AlbumPage(props) {
 						yeah = "";
 					}
 
-					let gamer = await cachedFetch("https://pandora.com/album/"+yeah+idSegs[1]);
+					let gamer = await fetch("https://pandora.com/album/"+yeah+idSegs[1]);
+					gamer = await gamer.text();
 					gamer = gamer.match(/.*storeData.*/gi)[0];
 					gamer = gamer.substring(20, gamer.length-1);
 					gamer = JSON.parse(gamer);
@@ -112,36 +122,43 @@ function AlbumPage(props) {
 					Object.keys(n).forEach(e => { if (e.includes('AL:')) r = e; });
 					r = n[r];
 
-					let newD = new Album({
+					let newD = cachedItem('pandora:'+idSegs[1].toLowerCase()) ?? setCachedItem(new Album({
+						incomplete: false,
+						id: 'pandora:'+idSegs[1].toLowerCase(),
 						title: r.name.replace(/\(single\)/gi, ''),
 						icon: 'https://content-images.p-cdn.com/' + r.icon.artUrl,
 						len: r.tracks.length,
-						artist: new Artist({
+						artist: cachedItem('pandora:'+r.artistId.split(':')[1]) ?? setCachedItem(new Artist({
 							name: r.artistName,
-							id: 'pandora:' + r.artistId.split(':')[1]
-						}),
-						sauce: new Extension({
+							id: 'pandora:' + r.artistId.split(':')[1],
+							incomplete: true
+						})),
+						sauce: cachedItem('pandoraExt') ?? setCachedItem(new Extension({
 							colors: {
 								normal: '#342ac0',
 								hover: '#1659a5'
 							},
+							incomplete: true,
+							id: 'pandoraExt',
 							icon: '/pandora.png'
-						})
-					})
+						}))
+					}))
 					let tracks = [];
 					r.tracks.forEach((tr) => {
 						tr = n[tr];
-						tracks.push(new Song({
+						tracks.push(cachedItem('pandora:'+tr.pandoraId.split(':')[1]) ?? setCachedItem(new Song({
 							num: tr.trackNumber,
 							title: tr.name,
-							artist: new Artist({
+							artist: cachedItem('pandora:'+tr.artistId.split(':')[1]) ?? setCachedItem(new Artist({
 								name: tr.artistName,
-								id: 'pandora:' + tr.artistId.split(':')[1]
-							}),
+								id: 'pandora:' + tr.artistId.split(':')[1],
+								incomplete: true
+							})),
+							incomplete: false,
 							album: newD,
 							length: fancyTimeFormat(tr.duration),
 							id: 'pandora:' + tr.pandoraId.split(':')[1]
-						}))
+						})))
 					})
 
 					newD.items = tracks.slice(0, 10); // TODO: Settingsprovider config the amount of initial songs
@@ -176,7 +193,9 @@ function AlbumPage(props) {
 				setGradCol(colorThief.getColor(imgRef.current));
 			} else {
 				imgRef.current.addEventListener('load', function() {
-					setGradCol(colorThief.getColor(imgRef.current));
+					if (imgRef.current.complete && imgRef.current.width > 0 && imgRef.current.height > 0) {
+						setGradCol(colorThief.getColor(imgRef.current));
+					}
 				});
 			}
 		}

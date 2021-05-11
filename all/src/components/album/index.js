@@ -16,7 +16,7 @@ function Station(props) {
 		}} />
 		<div className={sty.albumInner}>
 			<div className={sty.imgHolder}>
-				<img src={props.sauce.sauce.icon} alt="" className={sty.sauceindicator} />
+				{ /* <img src={props.sauce.sauce.icon} alt="" className={sty.sauceindicator} /> */ }
 				<AlbImg src={props.sauce.icon} className={sty.albicon} alt=""/>
 				<button className={'bx bx-play '+sty.play} 
 					onClick={() => {

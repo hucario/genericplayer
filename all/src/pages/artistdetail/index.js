@@ -15,10 +15,17 @@ import Accordion from '../../components/accordion/'
 import ArtistImage from '../../components/artistimg/'
 
 import {
-	cachedFetch,
-	cachedItem,
+	cachedItem as notCachedItem,
 	setCachedItem
 } from '../../cachedItems'
+
+function cachedItem(id) { // needs completes here
+	let x = notCachedItem(id);
+	if (x && !x.incomplete) {
+		return x;
+	}
+	return undefined;
+}
 
 // I'm lazy, so see here:
 // https://stackoverflow.com/a/11486026/11726576
@@ -95,10 +102,8 @@ function ArtistPage(props) {
 								icon = e.art;
 								return e.art !== undefined;
 							})
-							if (icon) {
+							if (icon && icon.length > 0) {
 								icon = icon[icon.length-1].url;
-							} else {
-								icon = "/defaultAvatar.png"
 							}
 						}
 					}
@@ -112,13 +117,15 @@ function ArtistPage(props) {
 								id: 'pandora:' + e.pandoraId.split(':')[1],
 								title: e.albumTitle,
 								icon: (e.art && e.art.length>0 ? e.art[e.art.length-1].url : ''),
-								sauce: new Extension({
+								sauce: cachedItem('pandoraExt') ?? setCachedItem(new Extension({
 									colors: {
 										normal: '#342ac0',
 										hover: '#1659a5'
 									},
+									incomplete: true,
+									id: 'pandoraExt',
 									icon: '/pandora.png'
-								}),
+								})),
 							}))
 						}),
 						sauce: cachedItem('pandoraExt') || setCachedItem(new Extension({

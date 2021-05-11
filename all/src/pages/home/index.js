@@ -8,9 +8,6 @@ export default function HomePage() {
 		<Helmet>
 			<title>Home - GenericPlayer</title>
 		</Helmet>
-		<Accordion
-			header="Live reload test 2"
-			children={[<h2>or something<br /></h2>]}
-		/>
+		<h1>you know this will be a home page at some point</h1>
 		</>)
 }

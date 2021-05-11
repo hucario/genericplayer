@@ -23,7 +23,6 @@ export async function cachedFetch(url, options = {}) {
 		return x;
 	}
 }
-
 export function cachedItem(id) {
 	return store.getState().cachedItems[id];
 }
@@ -55,3 +54,11 @@ export async function cachedSearch(term) {
 	}));
 	return m;
 }
+
+window.cachedStuff = {
+	cachedFetch,
+	cachedItem,
+	setCachedItem,
+	cachedSearch,
+	store
+};

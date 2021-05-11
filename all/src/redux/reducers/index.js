@@ -1,6 +1,13 @@
 import { Song, Album, Artist, Extension } from "../../ext/Extension";
+import ytsr from './../../ytsr'
 
 const dInfo = {
+	playState: {
+		time: 0,
+		volume: 100,
+		playing: false,
+		repeatMode: false,
+	},
 	song: new Song({
 		title: "",
 	}),
@@ -21,7 +28,18 @@ const dInfo = {
 	}),
 	failSearch: '', // used to search for latest album if it can't be found,
 	cachedReqs: {},
-	cachedItems: {},
+	playlist: [],
+	cachedItems: {
+		pandoraExt: new Extension({
+			colors: {
+				normal: '#847fcc33',
+				hover: '#1659a5'
+			},
+			incomplete: false,
+			id: 'pandoraExt',
+			icon: '/pandora.png'
+		})
+	},
 	cachedSearches: {}
 }
 dInfo.album.artist = dInfo.artist;
@@ -39,6 +57,9 @@ export default function rootReducer(state = dInfo, action) {
 				album: payload.album,
 				artist: payload.artist
 			}
+			ytsr(payload.title + ' ' + payload.artist?.name).then(b => {
+				alert(b.items[0].snippet.title);
+			});
 			return newState;
 		case "SET_CURRENTLY_PLAYING_ALBUM":
 //			action.payload.getPlaylist().then()

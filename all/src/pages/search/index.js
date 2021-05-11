@@ -72,11 +72,13 @@ export default function SearchPage(props) {
 	
 	const albums = [],
 		  artists = [],
-		  songs = []
+		  songs = [];
 
+	
+	let yeah = 0;
 
 	for (let p of searchResults) {
-		if (p.type && (p.type === 'LI' || p.type === 'PL')) {
+		if (!p || (p.type && (p.type === 'LI' || p.type === 'PL'))) {
 			continue;
 		}
 		if (resultstitles.indexOf(p.name) !== -1 && (resultsauthors[resultstitles.indexOf(p.name)] === p.artistName)) {
@@ -87,6 +89,7 @@ export default function SearchPage(props) {
 		if (p.type === 'AL') {
 			albums.push((
 				<AlbumElem
+					key={yeah++}
 					sauce={
 						cachedItem('pandora:' + p.pandoraId.split(':')[1]) ??
 						setCachedItem(new Album({
@@ -98,7 +101,7 @@ export default function SearchPage(props) {
 							setCachedItem(new Artist({
 								name: p.artistName,
 								id: 'pandora:'+p.artistId.split(':')[1],
-								shard: true
+								incomplete: true
 							})),
 							sauce: cachedItem('pandoraExt') ?? setCachedItem(new Extension({
 								colors: {
@@ -113,21 +116,21 @@ export default function SearchPage(props) {
 				/>
 			))
 		} else if (p.type === 'TR') {
-			songs.push(cachedItem('pandora: ' + p.pandoraId) ?? setCachedItem(new Song({
-				num: p.trackNumber,
+			songs.push(cachedItem('pandora: ' + p.pandoraId.split(':')[1]) ?? setCachedItem(new Song({
+				num: p.trackNumber.split(':')[1],
 				title: p.name,
-				artist: cachedItem('pandora:' + p.artistId) ?? setCachedItem(new Artist({
+				artist: cachedItem('pandora:' + p.artistId.split(':')[1]) ?? setCachedItem(new Artist({
 					name: p.artistName,
-					id: 'pandora:' + p.artistId,
-					shard: true
+					id: 'pandora:' + p.artistId.split(':')[1],
+					incomplete: true
 				})),
-				album: cachedItem('pandora:' + p.albumId) ?? setCachedItem(new Album({
+				album: cachedItem('pandora:' + p.albumId.split(':')[1]) ?? setCachedItem(new Album({
 					title: p.albumName,
-					id: 'pandora:' + p.albumId,
-					shard: true
+					id: 'pandora:' + p.albumId.split(':')[1],
+					incomplete: true
 				})),
 				length: fancyTimeFormat(p.duration),
-				id: 'pandora:' + p.pandoraId,
+				id: 'pandora:' + p.pandoraId.split(':')[1],
 				icon: 'https://content-images.p-cdn.com/' + p?.icon?.artUrl
 			})));
 		}

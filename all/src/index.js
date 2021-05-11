@@ -15,7 +15,6 @@ import Helmet from 'react-helmet'
 
 import { Provider } from 'react-redux'
 import store from './redux/store'
-
 //#endregion
 
 // Internal modules
@@ -34,6 +33,7 @@ import ArtistPage from './pages/artistdetail/'
 import TrendingPage from './pages/trending/'
 
 import './main.css';
+import ytsr from './ytsr'; // MY ytsr func, not the package ytsr
 
 //#endregion
 
@@ -302,13 +302,13 @@ localStorage.settings = localStorage.settings || JSON.stringify({
 //#endregion
 
 window.store = store
+window.ytsr = ytsr;
 
 function App() {
 	const location = useLocation();
 	useEffect(() => {
-		console.log('Page changed to '+location.pathname);
-
-	},[location.pathname])
+		console.debug('Page changed to '+location.pathname);
+	}, [location.pathname])
 	return (<>
 	<Switch>
 		<Route path="/settings" component={SettingsApp} />
@@ -344,3 +344,5 @@ render((<Provider store={store}>
 	</Provider>),
 	document.getElementById('app')
 );
+
+console.log(process.env)
