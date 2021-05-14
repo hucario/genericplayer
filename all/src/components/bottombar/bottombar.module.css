@@ -55,3 +55,15 @@
 .artistname {
 	font-size: 0.9em;
 }
+
+.loading {
+    background: linear-gradient(270deg, rgba(17, 152, 255, 0.275), transparent, rgba(17, 152, 255, 0.275));
+    background-size: 400% 400%;
+
+    animation: smallLoaderBoi 2s linear infinite;
+}
+
+@keyframes smallLoaderBoi {
+    0%{background-position: 0% 50%}
+    100%{background-position: 265% 50%}
+}

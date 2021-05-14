@@ -7,7 +7,6 @@ import React, {
 import sty from './trending.module.css'
 import {
 	Song,
-	Extension,
 	Album,
 	Artist
 } from '../../ext/Extension'
@@ -92,7 +91,7 @@ function TrendingPage(props) {
 					artist: cachedItem('pandora:' + e.artistId.split(':')[1]) ?? setCachedItem(new Artist({
 						name: e.artistName,
 						id: 'pandora:' + e.artistId.split(':')[1],
-						incomplete: true
+						complete: false
 					})),
 					album: cachedItem('pandora:' + e.albumId.split(':')[1]) ?? setCachedItem(new Album({
 						title: e.albumName,
@@ -101,17 +100,9 @@ function TrendingPage(props) {
 						artist: cachedItem('pandora:' + e.artistId.split(':')[1]) ?? setCachedItem(new Artist({
 							name: e.artistName,
 							id: 'pandora:' + e.artistId.split(':')[1],
-							incomplete: true
+							complete: false
 						})),
-						sauce: cachedItem('pandoraExt') ?? setCachedItem(new Extension({
-							colors: {
-								normal: '#342ac0',
-								hover: '#1659a5'
-							},
-							icon: '/pandora.png',
-							id: 'pandoraExt',
-							incomplete: true
-						}))
+						extension: cachedItem('pandoraExt'),
 					})),
 					length: fancyTimeFormat(e.duration),
 					id: 'pandora:' + e.pandoraId.split(':')[1]

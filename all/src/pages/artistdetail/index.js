@@ -21,7 +21,7 @@ import {
 
 function cachedItem(id) { // needs completes here
 	let x = notCachedItem(id);
-	if (x && !x.incomplete) {
+	if (x && x.complete) {
 		return x;
 	}
 	return undefined;
@@ -117,25 +117,10 @@ function ArtistPage(props) {
 								id: 'pandora:' + e.pandoraId.split(':')[1],
 								title: e.albumTitle,
 								icon: (e.art && e.art.length>0 ? e.art[e.art.length-1].url : ''),
-								sauce: cachedItem('pandoraExt') ?? setCachedItem(new Extension({
-									colors: {
-										normal: '#342ac0',
-										hover: '#1659a5'
-									},
-									incomplete: true,
-									id: 'pandoraExt',
-									icon: '/pandora.png'
-								})),
+								extension: cachedItem('pandoraExt')
 							}))
 						}),
-						sauce: cachedItem('pandoraExt') || setCachedItem(new Extension({
-							colors: {
-								normal: '#342ac0',
-								hover: '#1659a5'
-							},
-							icon: '/pandora.png',
-							id: 'pandoraExt'
-						})),
+						extension: cachedItem('pandoraExt'),
 						topTracks: gamer["v4/catalog/getDetails"][0].artistDetails.topTracks.map((e, i) => {
 							e = gamer["v4/catalog/annotateObjects"][0][e];
 
@@ -146,7 +131,7 @@ function ArtistPage(props) {
 									id: 'pandora:' + e.albumId,
 									title: e.albumName.replace(/\(single\)/gi, ''),
 									icon: 'https://cont.p-cdn.us/' + e.icon.artUrl,
-									sauce: new Extension({
+									extension: new Extension({
 										colors: {
 											normal: '#342ac0',
 											hover: '#1659a5'
@@ -156,14 +141,7 @@ function ArtistPage(props) {
 								})),
 								length: fancyTimeFormat(e.duration),
 								id: 'pandora:' + e.pandoraId.split(':')[1],
-								sauce: cachedItem('pandoraExt') || setCachedItem(new Extension({
-									colors: {
-										normal: '#342ac0',
-										hover: '#1659a5'
-									},
-									icon: '/pandora.png',
-									id: 'pandoraExt'
-								}))
+								extension: cachedItem('pandoraExt')
 							}))
 						}),
 						topAlbums: gamer["v4/catalog/getDetails"][0].artistDetails.topAlbums.map((e, i) => {
@@ -173,7 +151,7 @@ function ArtistPage(props) {
 								id: 'pandora:' + e.pandoraId.split(':')[1],
 								title: e.name,
 								icon: e.icon.artUrl,
-								sauce: new Extension({
+								extension: new Extension({
 									colors: {
 										normal: '#342ac0',
 										hover: '#1659a5'

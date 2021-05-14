@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react'
-import { Album, Artist, Extension, Song } from '../../ext/Extension';
+import { Album, Artist, Song } from '../../ext/Extension';
 import Helmet from 'react-helmet'
 import { Link } from 'react-router-dom'
 import AlbImg from '../../components/albimg/'
@@ -13,7 +13,7 @@ import { setCurrentlyPlaying } from '../../redux/actions';
 import { cachedItem as notCachedItem, setCachedItem } from '../../cachedItems'
 function cachedItem(id) {
 	let x = notCachedItem(id);
-	return (x && !x.incomplete ? x : undefined);
+	return (x && x.complete ? x : undefined);
 }
 // I'm lazy, so see here:
 // https://stackoverflow.com/a/11486026/11726576
@@ -61,21 +61,14 @@ function AlbumPage(props) {
 						title: p.albumTitle,
 						icon: p.art[p.art.length-1].url,
 						len: p.tracks.length,
-						incomplete: false,
+						complete: true,
 						artist: cachedItem('pandora:' + p.artistSeoToken.split('/')[1]) ?? setCachedItem(new Artist({
-							incomplete: true,
+							complete: false,
 							name: p.artistName,
+							extension: cachedItem('pandoraExt'),
 							id: 'pandora:' + p.artistSeoToken.split('/')[1]
 						})),
-						sauce: cachedItem('pandoraExt') ?? setCachedItem(new Extension({
-							colors: {
-								normal: '#342ac0',
-								hover: '#1659a5'
-							},
-							icon: '/pandora.png',
-							incomplete: true,
-							id: 'pandoraExt'
-						}))
+						extension: cachedItem('pandoraExt') // no fallback; if it doesn't exist you're beaned anyways
 					}))
 					let tracks = [];
 					p.tracks.forEach((tr) => {
@@ -84,11 +77,13 @@ function AlbumPage(props) {
 							title: tr.songTitle,
 							artist: cachedItem('pandora:'+tr.artistSeoToken.split('/')[1]) ?? setCachedItem(new Artist({
 								name: tr.artistName,
+								extension: cachedItem('pandoraExt'),
 								id: 'pandora:' + tr.artistSeoToken.split('/')[1],
-								incomplete: true
+								complete: false
 							})),
 							album: newD,
-							incomplete: false,
+							complete: true,
+							extension: cachedItem('pandoraExt'),
 							length: fancyTimeFormat(tr.trackLength),
 							id: 'pandora:' +tr.pandoraId.split(':')[1]
 						})))
@@ -123,7 +118,7 @@ function AlbumPage(props) {
 					r = n[r];
 
 					let newD = cachedItem('pandora:'+idSegs[1].toLowerCase()) ?? setCachedItem(new Album({
-						incomplete: false,
+						complete: true,
 						id: 'pandora:'+idSegs[1].toLowerCase(),
 						title: r.name.replace(/\(single\)/gi, ''),
 						icon: 'https://content-images.p-cdn.com/' + r.icon.artUrl,
@@ -131,17 +126,10 @@ function AlbumPage(props) {
 						artist: cachedItem('pandora:'+r.artistId.split(':')[1]) ?? setCachedItem(new Artist({
 							name: r.artistName,
 							id: 'pandora:' + r.artistId.split(':')[1],
-							incomplete: true
+							extension: cachedItem('pandoraExt'),
+							complete: false
 						})),
-						sauce: cachedItem('pandoraExt') ?? setCachedItem(new Extension({
-							colors: {
-								normal: '#342ac0',
-								hover: '#1659a5'
-							},
-							incomplete: true,
-							id: 'pandoraExt',
-							icon: '/pandora.png'
-						}))
+						extension: cachedItem('pandoraExt')
 					}))
 					let tracks = [];
 					r.tracks.forEach((tr) => {
@@ -151,11 +139,13 @@ function AlbumPage(props) {
 							title: tr.name,
 							artist: cachedItem('pandora:'+tr.artistId.split(':')[1]) ?? setCachedItem(new Artist({
 								name: tr.artistName,
+								extension: cachedItem('pandoraExt'),
 								id: 'pandora:' + tr.artistId.split(':')[1],
-								incomplete: true
+								complete: false
 							})),
-							incomplete: false,
+							complete: true,
 							album: newD,
+							extension: cachedItem('pandoraExt'),
 							length: fancyTimeFormat(tr.duration),
 							id: 'pandora:' + tr.pandoraId.split(':')[1]
 						})))

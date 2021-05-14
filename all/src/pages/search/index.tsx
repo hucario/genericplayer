@@ -1,13 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {
+	Ref,
 	useEffect,
 	useState
 } from 'react'
 
-import AlbumElem from '../../components/album/'
+import AlbumElem from '../../components/album'
 import Accordion from '../../components/accordion'
 
-import { Album, Artist, Extension, Song } from '../../ext/Extension';
+import { Album, Artist, Song } from '../../ext/Extension';
 
 import sty from './search.module.css'
 import { Helmet } from 'react-helmet';
@@ -20,7 +21,7 @@ import {
 
 // I'm lazy, so see here:
 // https://stackoverflow.com/a/11486026/11726576
-function fancyTimeFormat(duration)
+function fancyTimeFormat(duration: number): string
 {   
     // Hours, minutes and seconds
     var hrs = ~~(duration / 3600);
@@ -39,19 +40,33 @@ function fancyTimeFormat(duration)
     return ret;
 }
 
-export default function SearchPage(props) {
-	const [searchTerm, setSearchTerm] = useState('');
-	const [setSearchTermFromParams, longFuncName] = useState(false)
-	const [debounceId, setDebounceId] = useState();
-	const [searchResults, setSearchResults] = useState([]);
+export default function SearchPage(props: any): JSX.Element {
+	const [searchTerm, setSearchTerm] = useState<string>('');
+	const [setSearchTermFromParams, longFuncName] = useState<boolean>(false)
+	const [debounceId, setDebounceId] = useState<number | undefined>();
+	const [searchResults, setSearchResults] = useState<Array<{
+		icon: {
+			artUrl: string
+		},
+		type: string,
+		name: string,
+		artistName: string,
+		pandoraId: string,
+		trackCount: number,
+		artistId: string,
+		trackNumber: number,
+		albumId: string,
+		albumName: string,
+		duration: number
+	}>>([]);
 	const [isLoading, setLoading] = useState(false);
 
 
-	const debouncedSearch = (term,resfunc) => {
+	const debouncedSearch = (term: string) => {
 		if (debounceId) {
 			clearTimeout(debounceId);
 		}
-		setDebounceId(setTimeout(() => {
+		setDebounceId(window.setTimeout(() => {
 			setLoading(true);
 			props?.history?.replace({ pathname: `/search/${term}`})
 			cachedSearch(term).then((b) => {
@@ -71,11 +86,11 @@ export default function SearchPage(props) {
 	let resultsauthors = [];
 	
 	const albums = [],
-		  artists = [],
+		  artists: [] = [],
 		  songs = [];
 
 	
-	let yeah = 0;
+	let yeah:number = 0;
 
 	for (let p of searchResults) {
 		if (!p || (p.type && (p.type === 'LI' || p.type === 'PL'))) {
@@ -101,42 +116,42 @@ export default function SearchPage(props) {
 							setCachedItem(new Artist({
 								name: p.artistName,
 								id: 'pandora:'+p.artistId.split(':')[1],
-								incomplete: true
+								complete: false,
+								extension: cachedItem('pandoraExt')
 							})),
-							sauce: cachedItem('pandoraExt') ?? setCachedItem(new Extension({
-								colors: {
-									normal: '#342ac0',
-									hover: '#1659a5'
-								},
-								icon: '/pandora.png',
-								id: 'pandoraExt'
-							}))
+							complete: false,
+							extension: cachedItem('pandoraExt') // if it doesn't have it you're beansed anyways
 						}))
 					}
 				/>
 			))
 		} else if (p.type === 'TR') {
 			songs.push(cachedItem('pandora: ' + p.pandoraId.split(':')[1]) ?? setCachedItem(new Song({
-				num: p.trackNumber.split(':')[1],
+				num: p.trackNumber,
 				title: p.name,
 				artist: cachedItem('pandora:' + p.artistId.split(':')[1]) ?? setCachedItem(new Artist({
 					name: p.artistName,
 					id: 'pandora:' + p.artistId.split(':')[1],
-					incomplete: true
+					complete: false,
+					extension: cachedItem('pandoraExt')
 				})),
 				album: cachedItem('pandora:' + p.albumId.split(':')[1]) ?? setCachedItem(new Album({
 					title: p.albumName,
 					id: 'pandora:' + p.albumId.split(':')[1],
-					incomplete: true
+					complete: false,
+					artist: cachedItem('pandora:'+p.artistId.split(':')[1]),
+					extension: cachedItem('pandoraExt')
 				})),
 				length: fancyTimeFormat(p.duration),
 				id: 'pandora:' + p.pandoraId.split(':')[1],
-				icon: 'https://content-images.p-cdn.com/' + p?.icon?.artUrl
+				icon: 'https://content-images.p-cdn.com/' + p?.icon?.artUrl,
+				extension: cachedItem('pandoraExt'),
+				complete: true
 			})));
 		}
 	}
 
-	const trs = []
+	const trs: any[] = []
 
 	
 	songs.forEach((e, i) => {
@@ -165,7 +180,7 @@ export default function SearchPage(props) {
 			</Helmet>}
 			<SearchBar 
 				value={searchTerm}
-				onChange={(e) => {
+				onChange={(e: any) => {
 					setSearchTerm(e.target.value);
 					debouncedSearch(e.target.value);
 				}}
@@ -208,7 +223,14 @@ export default function SearchPage(props) {
 	)
 }
 
-function SearchBar(props) {
+function SearchBar(props: {
+	wrapClassName?: string,
+	id?: string,
+	ref?: Ref<HTMLInputElement> | null,
+	className?: string,
+	value: string,
+	onChange: any
+}) {
 	const [id] = useState('SEARCH_' + Math.floor(Math.random()*100000).toString(16))
 	useEffect(() => {
 		document.getElementById(id)?.focus();

@@ -5,13 +5,14 @@ import AlbImg from '../albimg/'
 
 const BottomBar = function(props) {
 	const isEmpty = !(props.sauce?.album?.title || props.sauce?.song?.title || props.sauce?.artist?.name)
-	
+	const extension = props.sauce?.album?.sauce || props.sauce?.album?.extension;
+	const playState = props.playState;
 	return (
 		<section className={sty.bar} style={{
-			"--bg": props?.sauce?.album?.sauce?.colors?.normal,
-			"--bghover": props?.sauce?.album?.sauce?.colors?.hover || props?.sauce?.sauce?.colors?.normal
+			"--bg": extension?.colors?.normal,
+			"--bghover": extension?.colors?.hover || extension?.colors?.normal
 		}}>
-			<div className={sty.infoGroup} style={{
+			<div className={[sty.infoGroup, playState.loading && sty.loading].join(' ')} style={{
 				opacity: (isEmpty ? 0 : 1),
 				pointerEvents: (isEmpty ? 'none' : 'auto')
 			}}>
@@ -30,7 +31,7 @@ const BottomBar = function(props) {
 }
 
 const cBottomBar = connect((state) => {
-	return {sauce: state.currentlyPlayingInfo}
+	return {sauce: state.currentlyPlayingInfo, playState: state.playState}
 })(BottomBar);
 
 export default cBottomBar;

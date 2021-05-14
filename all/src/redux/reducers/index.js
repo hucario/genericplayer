@@ -1,5 +1,4 @@
 import { Song, Album, Artist, Extension } from "../../ext/Extension";
-import ytsr from './../../ytsr'
 
 const dInfo = {
 	playState: {
@@ -7,12 +6,15 @@ const dInfo = {
 		volume: 100,
 		playing: false,
 		repeatMode: false,
+		url: '',
+		audioBit: null,
+		loading: false
 	},
 	song: new Song({
 		title: "",
 	}),
 	album: new Album({
-		sauce: new Extension({
+		extension: new Extension({
 			colors: {
 				normal: '#ffffff12',
 				hover: '#ffffff30'
@@ -35,7 +37,7 @@ const dInfo = {
 				normal: '#847fcc33',
 				hover: '#1659a5'
 			},
-			incomplete: false,
+			complete: true,
 			id: 'pandoraExt',
 			icon: '/pandora.png'
 		})
@@ -51,15 +53,28 @@ export default function rootReducer(state = dInfo, action) {
 	Object.assign(newState, state);
 
 	switch (action.type) {
-		case "SET_CURRENTLY_PLAYING": 
+		case "NOT_LOADING":
+			newState.playState.loading = false;
+			return newState;
+		// see ../saga/index.ts: case "SET_CURRENTLY_PLAYING": 
+		case "ATTEMPTING_PLAYING_SONG":
+			if (!payload.album.extension || !payload.artist.extension || !payload.extension) {
+				console.error(payload);
+				throw new Error("No extension registered for song: "+payload.title);
+			}
+			if (newState.playState.audio) {
+				newState.playState.audio.pause();
+				delete newState.playState.audio;
+			}
+			newState.playState.loading = true;
 			newState.currentlyPlayingInfo = {
 				song: payload,
 				album: payload.album,
 				artist: payload.artist
 			}
-			ytsr(payload.title + ' ' + payload.artist?.name).then(b => {
-				alert(b.items[0].snippet.title);
-			});
+			return newState;
+		case "PLAY_SONG_SUCCEEDED":
+			Object.assign(newState, action.payload)
 			return newState;
 		case "SET_CURRENTLY_PLAYING_ALBUM":
 //			action.payload.getPlaylist().then()

@@ -11,8 +11,10 @@ interface MostBasic {
 	id: string
 }
 
-interface PartialItem<Type> extends MostBasic {
-	fetch: () => Type,
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface PartialItem<T extends BasicItem> extends MostBasic {
+	fetch: () => any,
+	extension: Extension | PartialItem<Extension>
 }
 
 
@@ -34,6 +36,9 @@ interface BasicInfo extends MostBasic {
 
 interface ArtistInterface extends BasicInfo {
 	name: string
+	topTracks?: Song[]
+	topAlbums?: Album[]
+	discography?: Album[]
 }
 
 class Artist extends BasicItem implements ArtistInterface {
@@ -41,31 +46,45 @@ class Artist extends BasicItem implements ArtistInterface {
 	url?: string;
 	extension: Extension | PartialItem<Extension>
 	icon?: string
+	topTracks?: Song[]
+	topAlbums?: Album[]
+	discography?: Album[]
 
 	constructor(opts: ArtistInterface) {
 		super(opts);
 		this.name = opts.name;
-		this.url = opts?.url;
+		this.url = opts.url;
 		this.extension = opts.extension;
+		this.icon = opts.icon;
+		this.topTracks = opts.topTracks;
+		this.topAlbums = opts.topAlbums;
+		this.discography = opts.discography;
 	}
 }
 
 interface AlbumInterface extends BasicInfo {
-	title: string
+	title: string,
+	len?: number,
+	artist: Artist | PartialItem<Artist>
 }
 
 
 class Album extends BasicItem implements AlbumInterface {
 	title: string
+	len?: number
 	url?: string
 	icon?: string
+	artist: Artist | PartialItem<Artist>
+
 	extension: Extension | PartialItem<Extension>
 	constructor(opts: AlbumInterface) {
 		super(opts);
 		this.title = opts.title;
-		this.url = opts?.url;
-		this.icon = opts?.icon;
+		this.url = opts.url;
+		this.icon = opts.icon;
 		this.extension = opts.extension;
+		this.len = opts.len;
+		this.artist = opts.artist;
 	}
 	async getPlaylist() {
 		
@@ -108,9 +127,11 @@ class Extension implements ExtInterface {
 }
 
 interface SongInterface extends BasicInfo {
-	title: string,
+	title: string
 	artist: Artist | PartialItem<Artist>
 	album: Album | PartialItem<Album>
+	num: number
+	length: string
 }
 
 class Song extends BasicItem implements SongInterface{
@@ -119,7 +140,8 @@ class Song extends BasicItem implements SongInterface{
 	album: Album | PartialItem<Album>
 	extension: Extension | PartialItem<Extension>
 	complete: boolean
-
+	num: number
+	length: string
 
 	constructor(opts: SongInterface) {
 		super(opts);
@@ -129,6 +151,8 @@ class Song extends BasicItem implements SongInterface{
 		this.artist = opts.artist;
 		this.album = opts.album;
 		this.extension = opts.extension;
+		this.num = opts.num
+		this.length = opts.length;
 	}
 	async like() {
 
@@ -160,11 +184,24 @@ class Station extends BasicItem implements StationInterface {
 	}
 }
 
+class PartiallyCached extends BasicItem implements PartialItem<BasicItem> {
+	fetch: () => PartialItem<BasicItem>
+	extension: Extension | PartialItem<Extension>
+
+	constructor(opts: PartialItem<BasicInfo>) {
+		super(opts);
+		Object.assign(this, opts);
+		this.fetch = opts.fetch;
+		this.extension = opts.extension;
+	}
+}
+
 
 export { 
 	Extension,
 	Song,
 	Station,
 	Artist,
-	Album
+	Album,
+	PartiallyCached
 }

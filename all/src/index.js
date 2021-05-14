@@ -24,7 +24,7 @@ import Popup from './popup/popup'
 import settingsProvider from './settingsProvider'
 import HomePage from './pages/home/'
 import NotFoundPage from './pages/notfound/'
-import SearchPage from './pages/search/'
+import SearchPage from './pages/search/index.tsx'
 import StationsPage from './pages/stations/'
 import SideBar from './components/sidebar/'
 import BottomBar from './components/bottombar/'
@@ -33,7 +33,7 @@ import ArtistPage from './pages/artistdetail/'
 import TrendingPage from './pages/trending/'
 
 import './main.css';
-import ytsr from './ytsr'; // MY ytsr func, not the package ytsr
+import ytsr from './ytsr.ts'; // MY ytsr func, not the package ytsr
 
 //#endregion
 

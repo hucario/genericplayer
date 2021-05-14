@@ -1,5 +1,4 @@
 import React, {
-	useEffect,
 	useState
 } from 'react'
 
@@ -47,7 +46,7 @@ const sampleData = [
 		name: 'Recents',
 		items: [
 			new Album({
-				sauce: ytExt,
+				extension: ytExt,
 				artist: new Artist({
 					name: "Jack Johnson"
 				}),
@@ -56,7 +55,7 @@ const sampleData = [
 				icon: 'https://i.scdn.co/image/ab67616d00001e0206b42768ebe736eec21336ea'
 			}),
 			new Album({
-				sauce: spotExt,
+				extension: spotExt,
 				artist: new Artist({
 					name: "Jack Johnson"
 				}),
@@ -65,7 +64,7 @@ const sampleData = [
 				icon: 'https://i.scdn.co/image/ab67616d00001e021e0232d637e8313d3ef4923e'
 			}),
 			new Album({
-				sauce: appleExt,
+				extension: appleExt,
 				artist: new Artist({
 					name: "Jack Johnson"
 				}),
@@ -74,7 +73,7 @@ const sampleData = [
 				icon: 'https://i.scdn.co/image/ab67616d00001e024a25251f8c645064ebdec45b'
 			}),
 			new Album({
-				sauce: pandoraExt,
+				extension: pandoraExt,
 				artist: new Artist({
 					name: "Jack Johnson"
 				}),
@@ -88,7 +87,7 @@ const sampleData = [
 		name: 'Another Mockup Category',
 		items: [
 			new Album({
-				sauce: spotExt,
+				extension: spotExt,
 				artist: new Artist({
 					name: "Jack Johnson"
 				}),
@@ -97,7 +96,7 @@ const sampleData = [
 				icon: 'https://i.scdn.co/image/ab67616d00001e021e0232d637e8313d3ef4923e'
 			}),
 			new Album({
-				sauce: pandoraExt,
+				extension: pandoraExt,
 				artist: new Artist({
 					name: "Jack Johnson"
 				}),
@@ -106,7 +105,7 @@ const sampleData = [
 				icon: 'https://i.scdn.co/image/ab67616d00001e0206b42768ebe736eec21336ea'
 			}),
 			new Album({
-				sauce: appleExt,
+				extension: appleExt,
 				artist: new Artist({
 					name: "Jack Johnson"
 				}),
@@ -115,7 +114,7 @@ const sampleData = [
 				icon: 'https://i.scdn.co/image/ab67616d00001e024a25251f8c645064ebdec45b'
 			}),
 			new Album({
-				sauce: ytExt,
+				extension: ytExt,
 				artist: new Artist({
 					name: "Jack Johnson"
 				}),

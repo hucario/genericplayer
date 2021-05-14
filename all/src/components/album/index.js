@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom'
 import AlbImg from '../albimg'
 
 function Station(props) {
+	const sauce = props.sauce.sauce || props.sauce.extension;
 	return (<div className={sty.album+(props.className?' '+props.className:'')} style={{
-		"--bg": props.sauce.sauce.colors.normal ?? 'black',
-		"--bghover": props.sauce.sauce.colors.hover ?? props.sauce.sauce.colors.normal ?? 'black',
+		"--bg": sauce?.colors.normal ?? 'black',
+		"--bghover": sauce?.colors.hover ?? sauce?.colors.normal ?? 'black',
 		...props.style
 	}}>
 		<Link className={sty.eventCatcher} to={'/album/'+props.sauce.id} onClick={() => {
@@ -16,7 +17,7 @@ function Station(props) {
 		}} />
 		<div className={sty.albumInner}>
 			<div className={sty.imgHolder}>
-				{ /* <img src={props.sauce.sauce.icon} alt="" className={sty.sauceindicator} /> */ }
+				{ /* <img src={sauce.icon} alt="" className={sty.sauceindicator} /> */ }
 				<AlbImg src={props.sauce.icon} className={sty.albicon} alt=""/>
 				<button className={'bx bx-play '+sty.play} 
 					onClick={() => {
@@ -33,7 +34,7 @@ function Station(props) {
 						props?.setFailSearch(props.sauce.title + (props.sauce.artist?.name?' ' + props.sauce.artist?.name:''))
 					}}
 				>{props.sauce.title}</Link>
-				<Link className={sty.sub} title={props.sauce.artist?.name} to={'/artist/' + props.sauce.artist.id}>{props.sauce.artist?.name}</Link>
+				<Link className={sty.sub} title={props.sauce.artist?.name} to={'/artist/' + props.sauce.artist?.id}>{props.sauce.artist?.name}</Link>
 			</div>
 		</div>
 	</div>)
