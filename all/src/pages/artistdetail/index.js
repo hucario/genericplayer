@@ -125,7 +125,7 @@ function ArtistPage(props) {
 							e = gamer["v4/catalog/annotateObjects"][0][e];
 
 							return cachedItem('pandora:' + e.pandoraId.split(':')[1]) || setCachedItem(new Song({
-								num: i,
+								num: e.trackNum,
 								title: e.name,
 								album: cachedItem('pandora:' + e.albumId) || setCachedItem(new Album({
 									id: 'pandora:' + e.albumId,
@@ -262,7 +262,7 @@ function ArtistPage(props) {
 		}}>
 			<td className={sty.td}>
 				<span className={sty.tdplay} />
-				<span className={sty.tdnum}>{e.num+1}</span>
+				<span className={sty.tdnum}>{i+1}</span>
 			</td>
 			<td className={sty.td}>
 				<div className={sty.tdGroup}>

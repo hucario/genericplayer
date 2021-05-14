@@ -26,6 +26,9 @@ const BottomBar = function(props) {
 					<span className={sty.artistName}>{props.sauce?.artist?.name}</span>
 				</div>
 			</div>
+			<div className={[sty.playerBar, props.sauce?.song && sty.show].join(' ')}>
+
+			</div>
 		</section>
 	)
 }

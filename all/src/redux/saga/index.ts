@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import { Song, Album, Artist } from '../../ext/Extension';
+import { Song } from '../../ext/Extension';
 import ytsr from '../../ytsr'
 import ytdl from 'ytdl-core';
 
